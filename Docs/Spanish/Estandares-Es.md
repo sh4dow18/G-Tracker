@@ -35,24 +35,24 @@ Aquí irá el índice
 
 | Descripción | Detalle | Ejemplo |
 | ----------- | ------- | ------- |
-| Cabeza de Página |
-| Cuerpo de Página |
-| Pie de Página |
+| Cabeza de Pantalla | El diseño incluye un fondo de color Naranja G-Tracker (#B4F6DB9D), con texto en color negro (#000000), menú en formato hamburguesa, separación visual mediante una línea negra de 2 píxeles de alto. El menú debe ubicarse a la izquierda de la firma, la cual debe centrarse en el encabezado y mostrar el logo de G-Tracker diseñado por Sh4dow18. | Ver Anexo 2 |
+| Cuerpo de Pantalla | La tipografía debe ser sans-serif, con color de letra negro (#000000), color primario en Naranja G-Tracker (#B4F6DB9D), y color de fondo en Naranja Fondo G-Tracker (#DFC397). | Ver Anexo 3 |
+| Pie de Pantalla | El fondo debe ser negro (#000000), con tipografía sans-serif, y la firma debe presentar "Sh4dow18" y "Sh4dowtech". | Ver Anexo 4 |
 
 ## Anexos
 
 ### Anexo 1: Documentación
 
-FALTA
+![G-Tracker-Docs](/Images/G-Tracker-Docs.png)
 
-### Anexo 2: Cabeza de Página
+### Anexo 2: Cabeza de Pantalla
 
-FALTA
+![G-Tracker-Header](/Images/G-Tracker-Header.png)
 
-### Anexo 3: Cuerpo de Página
+### Anexo 3: Cuerpo de Pantalla
 
-FALTA
+![G-Tracker-Body](/Images/G-Tracker-Body.png)
 
-### Anexo 4: Pie de Página
+### Anexo 4: Pie de Pantalla
 
-FALTA
+![G-Tracker-Footer](/Images/G-Tracker-Footer.png)

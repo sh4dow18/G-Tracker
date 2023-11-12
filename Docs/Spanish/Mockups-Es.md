@@ -19,7 +19,17 @@ soluciones propuestas en cada etapa del proyecto.
 
 ## Mockups
 
-FALTA
+### Sprint 1
+
+![G-Tracker-Mockups-Sprint-1](/Images/G-Tracker-Mockups-Sprint-1.png)
+
+### Sprint 2
+
+No Disponible en esta Versión
+
+### Sprint 3
+
+No Disponible en esta Versión
 
 ## Conclusión
 
