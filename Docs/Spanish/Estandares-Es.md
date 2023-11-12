@@ -8,7 +8,17 @@
 
 ## Indice
 
-Aquí irá el índice
+- [Estandares](#estandares)
+  - [Historial de Revisión](#historial-de-revisión)
+  - [Indice](#indice)
+  - [Registro de Estandarés de Programación](#registro-de-estandarés-de-programación)
+  - [Registro de Estandarés de Base de Datos](#registro-de-estandarés-de-base-de-datos)
+  - [Registro de Estandarés de Diseño](#registro-de-estandarés-de-diseño)
+  - [Anexos](#anexos)
+    - [Anexo 1: Documentación](#anexo-1-documentación)
+    - [Anexo 2: Cabeza de Pantalla](#anexo-2-cabeza-de-pantalla)
+    - [Anexo 3: Cuerpo de Pantalla](#anexo-3-cuerpo-de-pantalla)
+    - [Anexo 4: Pie de Pantalla](#anexo-4-pie-de-pantalla)
 
 ## Registro de Estandarés de Programación
 

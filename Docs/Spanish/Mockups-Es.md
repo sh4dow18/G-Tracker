@@ -8,7 +8,15 @@
 
 ## Índice
 
-Aquí irá el índice
+- [Mockups](#mockups)
+  - [Historial de Revisión](#historial-de-revisión)
+  - [Índice](#índice)
+  - [Introducción](#introducción)
+  - [Mockups](#mockups-1)
+    - [Sprint 1](#sprint-1)
+    - [Sprint 2](#sprint-2)
+    - [Sprint 3](#sprint-3)
+  - [Conclusión](#conclusión)
 
 ## Introducción
 

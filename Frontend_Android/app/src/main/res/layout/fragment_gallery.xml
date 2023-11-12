@@ -100,7 +100,7 @@
                             android:id="@+id/PasswordHelper"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Minimum 10 characters and do not allow the following characters"
+                            android:text="Minimum 10 characters and do not allow the special characters"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
