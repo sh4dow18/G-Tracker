@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         // Set Application Bar with the Fragments Ids
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
+                R.id.nav_home, R.id.nav_sign_in, R.id.nav_sign_up, R.id.nav_profile
             ), drawerLayout
         )
         // Set the Navigation Controller with the New Application Bar Configuration

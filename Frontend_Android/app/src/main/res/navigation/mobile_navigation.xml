@@ -12,14 +12,18 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="sh4dow18.gtracker.frontend_android.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
-
+        android:id="@+id/nav_sign_in"
+        android:name="sh4dow18.gtracker.frontend_android.ui.signIn.SignInFragment"
+        android:label="Sign In"
+        tools:layout="@layout/fragment_sign_in" />
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="sh4dow18.gtracker.frontend_android.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_sign_up"
+        android:name="sh4dow18.gtracker.frontend_android.ui.signUp.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" />
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="sh4dow18.gtracker.frontend_android.ui.profile.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>
