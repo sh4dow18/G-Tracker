@@ -34,16 +34,22 @@ class LoginViewModel constructor(
     fun login(loginRequest: UserLoginRequest) {
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             loading.postValue(true)
-            val response = loginRepository.login((loginRequest))
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    _loginResponse.value =
-                        LoginResult(success = LoggedInUserView(username = response.body()?.username
-                            ?: ""))
-                    loading.value = false
-                } else {
-                    _loginResponse.value = LoginResult(error = R.string.login_failed)
-                    onError("Error : ${response.message()}")
+            try {
+                val response = loginRepository.login(loginRequest)
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        _loginResponse.value =
+                            LoginResult(success = LoggedInUserView(username = response.body()?.username ?: ""))
+                        loading.value = false
+                    } else {
+                        _loginResponse.value = LoginResult(error = R.string.login_failed)
+                        onError("Error : ${response.message()}")
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    _loginResponse.value = LoginResult(error = R.string.server_unavailable)
+                    onError("Server Unavailable")
                 }
             }
         }

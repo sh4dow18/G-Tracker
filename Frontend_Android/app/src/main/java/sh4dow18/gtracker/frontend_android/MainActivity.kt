@@ -27,11 +27,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         // Set the Toolbar as App Bar
         setSupportActionBar(binding.appBarMain.toolbar)
-        // Fab Button Click Listener
-        binding.appBarMain.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
         // Get Burger Menu
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView

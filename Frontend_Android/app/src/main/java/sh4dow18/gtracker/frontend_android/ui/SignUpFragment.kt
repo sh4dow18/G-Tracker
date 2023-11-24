@@ -73,7 +73,13 @@ class SignUpFragment : Fragment() {
             userViewModel.state.observe(viewLifecycleOwner){ state ->
                 when (state) {
                     StateUser.Loading -> {}
-                    is StateUser.Error -> {}
+                    is StateUser.Error -> {
+                        Toast.makeText(
+                            requireContext(),
+                            state.message,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                     is StateUser.Success -> {
                         findNavController().navigate(R.id.nav_sign_in)
                         Toast.makeText(

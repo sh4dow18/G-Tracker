@@ -36,12 +36,19 @@ class UserViewModel constructor(
         _state.value = StateUser.Loading
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             loading.postValue(true)
-            val response = userRepository.findUserById(email)
-            withContext(Dispatchers.Main) {
-                _state.postValue(
-                    if (response.isSuccessful) StateUser.Success(response.body())
-                    else StateUser.Error("Error : ${response.message()} ")
-                )
+            try {
+                val response = userRepository.findUserById(email)
+                withContext(Dispatchers.Main) {
+                    _state.postValue(
+                        if (response.isSuccessful) StateUser.Success(response.body())
+                        else StateUser.Error("Error : ${response.message()} ")
+                    )
+                }
+            }
+            catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    _state.postValue(StateUser.Error("Servers Unavailable. Try Again later"))
+                }
             }
         }
     }
@@ -50,15 +57,22 @@ class UserViewModel constructor(
         _state.value = StateUser.Loading
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             loading.postValue(true)
-            val response = userRepository.userRegistration(userRegistrationRequest)
-            withContext(Dispatchers.Main) {
-                _state.postValue(
-                    if (response.isSuccessful) StateUser.Success(response.body())
-                    else StateUser.Error("Error : ${response.message()} ")
-                )
+            try {
+                val response = userRepository.userRegistration(userRegistrationRequest)
+                withContext(Dispatchers.Main) {
+                    _state.postValue(
+                        if (response.isSuccessful) StateUser.Success(response.body())
+                        else StateUser.Error("Error : ${response.message()} ")
+                    )
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    _state.postValue(StateUser.Error("Servers Unavailable. Try Again later"))
+                }
             }
         }
     }
+
     private fun onError(message: String) {
         errorMessage.value = message
         loading.value = false

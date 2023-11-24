@@ -14,4 +14,5 @@
     <string name="invalid_password">Invalid Password</string>
     <string name="title_activity_tracker">TrackerActivity</string>
     <string name="welcome">Welcome to G-Tracker</string>
+    <string name="server_unavailable">Servers Unavailable. Try Again later</string>
 </resources>
