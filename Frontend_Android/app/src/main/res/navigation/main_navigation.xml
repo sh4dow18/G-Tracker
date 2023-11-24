@@ -2,28 +2,23 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
+    android:id="@+id/main_navigation"
     app:startDestination="@+id/nav_home">
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="sh4dow18.gtracker.frontend_android.ui.home.HomeFragment"
+        android:name="sh4dow18.gtracker.frontend_android.ui.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_sign_in"
-        android:name="sh4dow18.gtracker.frontend_android.ui.signIn.SignInFragment"
+        android:name="sh4dow18.gtracker.frontend_android.ui.SignInFragment"
         android:label="Sign In"
         tools:layout="@layout/fragment_sign_in" />
     <fragment
         android:id="@+id/nav_sign_up"
-        android:name="sh4dow18.gtracker.frontend_android.ui.signUp.SignUpFragment"
-        android:label="fragment_sign_up"
+        android:name="sh4dow18.gtracker.frontend_android.ui.SignUpFragment"
+        android:label="Sign Up"
         tools:layout="@layout/fragment_sign_up" />
-    <fragment
-        android:id="@+id/nav_profile"
-        android:name="sh4dow18.gtracker.frontend_android.ui.profile.ProfileFragment"
-        android:label="Profile"
-        tools:layout="@layout/fragment_profile" />
 </navigation>

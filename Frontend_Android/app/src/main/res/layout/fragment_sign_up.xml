@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.signUp.SignUpFragment">
+    tools:context=".ui.SignUpFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -61,7 +61,8 @@
                             android:layout_height="50dp"
                             android:ems="10"
                             android:hint="Example: example@example.com"
-                            android:inputType="textEmailAddress" />
+                            android:inputType="textEmailAddress"
+                            android:text="ramsess.a.2001@gmail.com" />
 
                         <TextView
                             android:id="@+id/EmailHelper"
@@ -93,7 +94,8 @@
                             android:layout_height="50dp"
                             android:ems="10"
                             android:hint="Example: Sh4dow18"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:text="ElMagoPepe" />
 
                         <TextView
                             android:id="@+id/UserNameHelper"
@@ -125,7 +127,8 @@
                             android:layout_height="50dp"
                             android:ems="10"
                             android:hint="Password"
-                            android:inputType="textPassword" />
+                            android:inputType="textPassword"
+                            android:text="rootroot123" />
 
                         <TextView
                             android:id="@+id/PasswordHelper"
@@ -157,7 +160,8 @@
                             android:layout_height="50dp"
                             android:ems="10"
                             android:hint="Password"
-                            android:inputType="textPassword" />
+                            android:inputType="textPassword"
+                            android:text="rootroot123" />
 
                         <TextView
                             android:id="@+id/ConfirmPasswordHelper"

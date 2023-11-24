@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.signIn.SignInFragment">
+    tools:context=".ui.SignInFragment">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
@@ -61,7 +61,8 @@
                             android:layout_height="50dp"
                             android:ems="10"
                             android:hint="Example: example@example.com"
-                            android:inputType="textEmailAddress" />
+                            android:inputType="textEmailAddress"
+                            android:text="ramses.solano.arias@gmail.com" />
 
                         <TextView
                             android:id="@+id/EmailHelper"
@@ -93,7 +94,8 @@
                             android:layout_height="50dp"
                             android:ems="10"
                             android:hint="Password"
-                            android:inputType="textPassword" />
+                            android:inputType="textPassword"
+                            android:text="rootroot123" />
 
                         <TextView
                             android:id="@+id/PasswordHelper"

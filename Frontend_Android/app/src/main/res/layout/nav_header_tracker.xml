@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main_header_menu"
+    android:id="@+id/tracker_header_menu"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
     android:background="#B4F6DB9D"
@@ -22,10 +22,11 @@
         app:srcCompat="@drawable/icon" />
 
     <TextView
+        android:id="@+id/AppName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="No Active Session"
+        android:text="Welcome to G-Tracker"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/black" />
 
@@ -33,6 +34,6 @@
         android:id="@+id/AppSlogan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Please sign in to see your information"
+        android:text="Play Now, Track Now"
         android:textColor="@color/black" />
 </LinearLayout>

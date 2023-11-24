@@ -17,10 +17,5 @@
             android:icon="@drawable/sign_up"
             android:title="Sign Up" />
 
-        <item
-            android:id="@+id/nav_profile"
-            android:icon="@drawable/profile"
-            android:title="Profile" />
-
     </group>
 </menu>
