@@ -13,6 +13,11 @@ data class UserLoginRequest(
     var password: String
 )
 
+data class UpdateUserRequest(
+    var email: String,
+    var userName: String
+)
+
 // Responses
 
 data class UserResponse(

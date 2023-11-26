@@ -17,7 +17,7 @@ data class User(
     @Id
     var email: String,
     var userName: String,
-    var password: String,
+    var password: String?,
     var createdDate: String,
     var enabled: Boolean,
     var imagePath: String?,

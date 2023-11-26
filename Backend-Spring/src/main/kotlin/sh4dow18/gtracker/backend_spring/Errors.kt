@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.client.HttpClientErrorException.BadRequest
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 import java.lang.RuntimeException
@@ -26,6 +27,7 @@ data class ApiError(
 }
 
 class ElementAlreadyExists(message: String?) : RuntimeException(message)
+class BadRequestException(message: String?) : RuntimeException(message)
 
 @ControllerAdvice
 class RestExceptionHandler : ResponseEntityExceptionHandler() {
@@ -57,6 +59,20 @@ class RestExceptionHandler : ResponseEntityExceptionHandler() {
             status = HttpStatus.CONFLICT,
         )
         apiError.addSubError(ApiSubError("CONFLICT_ELEMENT", "Conflict Element"))
+        logger.debug("Backend - G-Tracker {}", ex)
+        return buildResponseEntity(apiError)
+    }
+    @ExceptionHandler(BadRequestException::class)
+    fun badRequest(
+        ex: java.lang.Exception,
+        request: WebRequest,
+    ): ResponseEntity<Any>? {
+        val apiError = ApiError(
+            message = "Error Occurred",
+            debugMessage = ex.message,
+            status = HttpStatus.BAD_REQUEST,
+        )
+        apiError.addSubError(ApiSubError("BAD_REQUEST", "Bad Request"))
         logger.debug("Backend - G-Tracker {}", ex)
         return buildResponseEntity(apiError)
     }

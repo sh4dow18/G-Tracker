@@ -18,12 +18,22 @@ data class UserLoginRequest(
     constructor() : this("", "")
 }
 
+data class UpdateUserRequest(
+    var email: String,
+    var userName: String
+)
+
+data class CloseAccountRequest(
+    var email: String,
+    var enabled: Boolean
+)
+
 // Responses
 
 data class UserResponse(
     var email: String,
     var userName: String,
-    var password: String,
+    var password: String?,
     var createdDate: String,
     var enabled: Boolean,
     var imagePath: String?,

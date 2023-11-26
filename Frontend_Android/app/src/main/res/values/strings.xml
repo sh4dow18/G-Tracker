@@ -15,4 +15,6 @@
     <string name="title_activity_tracker">TrackerActivity</string>
     <string name="welcome">Welcome to G-Tracker</string>
     <string name="server_unavailable">Servers Unavailable. Try Again later</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

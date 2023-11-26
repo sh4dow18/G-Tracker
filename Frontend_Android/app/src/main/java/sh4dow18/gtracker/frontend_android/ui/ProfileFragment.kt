@@ -8,9 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import sh4dow18.gtracker.frontend_android.MainActivity
+import sh4dow18.gtracker.frontend_android.R
 import sh4dow18.gtracker.frontend_android.databinding.FragmentProfileBinding
 import sh4dow18.gtracker.frontend_android.utils.MyApplication
+import sh4dow18.gtracker.frontend_android.utils.UpdateUserRequest
 import sh4dow18.gtracker.frontend_android.view_models.login.LoginViewModel
 import sh4dow18.gtracker.frontend_android.view_models.login.LoginViewModelFactory
 import sh4dow18.gtracker.frontend_android.view_models.user.StateUser
@@ -48,14 +52,48 @@ class ProfileFragment : Fragment() {
                     binding.UserNameLabel.text = user.userName
                     binding.EmailValue.text = user.email
                     binding.RoleValue.text = user.role.name
+                    Glide.with(this)
+                        .load("http://192.168.0.13:8080/api/public/image/user/" +
+                                user.imagePath)
+                        .into(binding.ProfileImage)
                 }
                 else -> {}
             }
+        }
+
+        binding.UpdateProfile.setOnClickListener {
+            findNavController().navigate(R.id.nav_update_profile)
         }
         binding.LogOut.setOnClickListener {
             loginViewModel.logout()
             activity?.finish()
             startActivity(Intent(activity, MainActivity::class.java))
+        }
+        binding.CloseAccount.setOnClickListener {
+            userViewModel.closeAccount(MyApplication.sessionManager!!.getUserEmail())
+            userViewModel.state.observe(viewLifecycleOwner){ state ->
+                when (state) {
+                    StateUser.Loading -> {}
+                    is StateUser.Error -> {
+                        Toast.makeText(
+                            requireContext(),
+                            state.message,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    is StateUser.Success -> {
+                        loginViewModel.logout()
+                        activity?.finish()
+                        startActivity(Intent(activity, MainActivity::class.java))
+                        Toast.makeText(
+                            requireContext(),
+                            "Eliminación de Cuenta Exitosa",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    else -> {}
+                }
+            }
         }
         return binding.root
     }

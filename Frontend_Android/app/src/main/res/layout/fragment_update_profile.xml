@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context=".ui.SignUpFragment">
 
@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:gravity="center_horizontal"
-                android:text="Sign Up"
+                android:text="Update Profile"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -49,27 +49,34 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/EmailLabel"
+                            android:id="@+id/ImageLabel"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="E-Mail"
+                            android:text="Image"
                             android:textColor="@color/black"
                             android:textSize="20sp" />
 
-                        <EditText
-                            android:id="@+id/EmailInput"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:ems="10"
-                            android:hint="Example: example@example.com"
-                            android:inputType="textEmailAddress"
-                            android:text="ramsess.a.2001@gmail.com" />
-
-                        <TextView
-                            android:id="@+id/EmailHelper"
+                        <Button
+                            android:id="@+id/ImageSelectButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Has to be a valid e-mail"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginRight="40dp"
+                            android:layout_marginBottom="15dp"
+                            android:backgroundTint="#B4F6DB9D"
+                            android:paddingTop="20dp"
+                            android:paddingBottom="20dp"
+                            android:text="Select"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            app:cornerRadius="60dp" />
+
+                        <TextView
+                            android:id="@+id/ImageHelper"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Has to be a jpeg / jpg / png image"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -107,72 +114,6 @@
                             android:textSize="14sp" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/PasswordContainer"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="20dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/PasswordLabel"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Password"
-                            android:textColor="@color/black"
-                            android:textSize="20sp" />
-
-                        <EditText
-                            android:id="@+id/PasswordInput"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:ems="10"
-                            android:hint="Password"
-                            android:inputType="textPassword"
-                            android:text="rootroot123" />
-
-                        <TextView
-                            android:id="@+id/PasswordHelper"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Minimum 10 characters and do not allow the special characters"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ConfirmPasswordContainer"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="20dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/ConfirmPasswordLabel"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Confirm Password"
-                            android:textColor="@color/black"
-                            android:textSize="20sp" />
-
-                        <EditText
-                            android:id="@+id/ConfirmPasswordInput"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:ems="10"
-                            android:hint="Password"
-                            android:inputType="textPassword"
-                            android:text="rootroot123" />
-
-                        <TextView
-                            android:id="@+id/ConfirmPasswordHelper"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Minimum 10 characters and do not allow the special characters"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-
                     <Button
                         android:id="@+id/Submit"
                         android:layout_width="match_parent"
@@ -184,7 +125,7 @@
                         android:backgroundTint="#B4F6DB9D"
                         android:paddingTop="20dp"
                         android:paddingBottom="20dp"
-                        android:text="Sign Up"
+                        android:text="Update"
                         android:textColor="@color/black"
                         app:cornerRadius="60dp" />
 

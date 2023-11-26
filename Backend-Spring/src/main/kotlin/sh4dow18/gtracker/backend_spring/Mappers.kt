@@ -1,8 +1,11 @@
 package sh4dow18.gtracker.backend_spring
 
+import org.mapstruct.BeanMapping
 import org.mapstruct.Context
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
+import org.mapstruct.MappingTarget
+import org.mapstruct.NullValuePropertyMappingStrategy
 import org.mapstruct.ReportingPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
@@ -23,4 +26,8 @@ interface UserMapper {
     fun userToUserResponse(
         user: User
     ): UserResponse
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    fun updateUser(dto: UpdateUserRequest, @MappingTarget user: User)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    fun closeAccount(dto: CloseAccountRequest, @MappingTarget user: User)
 }

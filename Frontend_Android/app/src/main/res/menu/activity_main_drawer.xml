@@ -17,5 +17,10 @@
             android:icon="@drawable/sign_up"
             android:title="Sign Up" />
 
+        <item
+            android:id="@+id/nav_app"
+            android:icon="@drawable/logo"
+            android:title="Information" />
+
     </group>
 </menu>
