@@ -47,6 +47,20 @@ data class RoleDetails(
     var name: String
 )
 
+data class GameDetails(
+    var id: Long,
+    var name: String,
+    var description: String,
+    var rating: Int,
+    var gendersList: GenderDetails,
+    var releaseDate: String
+)
+
+data class GenderDetails(
+    var id: Long,
+    var name: String
+)
+
 // Extras
 
 data class LoginFormState(

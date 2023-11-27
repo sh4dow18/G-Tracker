@@ -19,4 +19,24 @@
         android:name="sh4dow18.gtracker.frontend_android.ui.AppFragment"
         android:label="App"
         tools:layout="@layout/fragment_app" />
+    <fragment
+        android:id="@+id/nav_games"
+        android:name="sh4dow18.gtracker.frontend_android.ui.GamesFragment"
+        android:label="Games"
+        tools:layout="@layout/fragment_games" />
+    <fragment
+        android:id="@+id/nav_game"
+        android:name="sh4dow18.gtracker.frontend_android.ui.GameFragment"
+        android:label="Game"
+        tools:layout="@layout/fragment_game" />
+    <fragment
+        android:id="@+id/nav_tracker"
+        android:name="sh4dow18.gtracker.frontend_android.ui.TrackerFragment"
+        android:label="Tracker"
+        tools:layout="@layout/fragment_tracker" />
+    <fragment
+        android:id="@+id/nav_game_log"
+        android:name="sh4dow18.gtracker.frontend_android.ui.GameLogFragment"
+        android:label="Game Log"
+        tools:layout="@layout/fragment_game_log" />
 </navigation>

@@ -52,10 +52,12 @@ class ProfileFragment : Fragment() {
                     binding.UserNameLabel.text = user.userName
                     binding.EmailValue.text = user.email
                     binding.RoleValue.text = user.role.name
-                    Glide.with(this)
-                        .load("http://192.168.0.13:8080/api/public/image/user/" +
-                                user.imagePath)
-                        .into(binding.ProfileImage)
+                    if (user.imagePath != null) {
+                        Glide.with(this)
+                            .load("http://192.168.0.13:8080/api/public/image/user/" +
+                                    user.imagePath)
+                            .into(binding.ProfileImage)
+                    }
                 }
                 else -> {}
             }
