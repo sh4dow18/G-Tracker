@@ -1,6 +1,8 @@
 package sh4dow18.gtracker.backend_spring
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 
 // Requests
 
@@ -28,6 +30,26 @@ data class CloseAccountRequest(
     var enabled: Boolean
 )
 
+data class GameRegistrationRequest(
+    var name: String,
+    var slug: String,
+    var rating: Int,
+    var releaseDate: String,
+    var gendersNamesList: List<String>,
+    var platformsNamesList: List<String>
+)
+
+data class GameLogRegistrationRequest(
+    var game: Long,
+    var user: String
+)
+
+data class GameLogUpdateRequest(
+    var id: Long,
+    var finished: Boolean,
+    var finishedAtAll: Boolean
+)
+
 // Responses
 
 data class UserResponse(
@@ -40,9 +62,50 @@ data class UserResponse(
     var role: RoleDetails,
 )
 
+data class GameResponse(
+    var id: Long,
+    var name: String,
+    var slug: String,
+    var rating: Int,
+    var releaseDate: String,
+    var gendersList: Set<GenreDetails>,
+    var platformsList: Set<PlatformDetails>
+)
+
+data class GameLogResponse(
+    var id: Long,
+    var createdDate: String,
+    var finished: Boolean,
+    var finishedAtAll: Boolean,
+    var game: GameResponse,
+    var user: UserResponse
+)
+
 // Details
 
 data class RoleDetails(
     var id: Long,
     var name: String
+)
+
+data class GenreDetails(
+    var id: Long,
+    var name: String
+)
+
+data class PlatformDetails(
+    var id: Long,
+    var name: String
+)
+
+// Extras
+
+data class GameContext(
+    val genresList: Set<Long>,
+    val platformsList: Set<Long>
+)
+
+data class GameLogContext(
+    var game: Game,
+    var user: User
 )

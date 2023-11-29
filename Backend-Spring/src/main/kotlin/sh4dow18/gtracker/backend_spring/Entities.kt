@@ -1,6 +1,9 @@
 package sh4dow18.gtracker.backend_spring
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -83,11 +86,15 @@ data class Game(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long,
     var name: String,
-    var imagePath: String,
+    var slug: String,
+    var rating: Int,
+    var releaseDate: String,
     @OneToMany(mappedBy = "game")
     var gamesLogsList: List<GameLog>,
-    @ManyToMany(mappedBy = "gamesList")
-    var platformsList: Set<Platform>
+    @ElementCollection
+    var platformGame: Set<Long>,
+    @ElementCollection
+    var genderGame: Set<Long>
 )
 
 @Entity
@@ -97,14 +104,6 @@ data class Platform(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long,
     var name: String,
-    var imagePath: String,
-    @ManyToMany
-    @JoinTable(
-        name = "game_platform",
-        joinColumns = [JoinColumn(name = "game_id", referencedColumnName = "id")],
-        inverseJoinColumns = [JoinColumn(name = "platform_id", referencedColumnName = "id")]
-    )
-    var gamesList: Set<Game>
 )
 
 @Entity
@@ -131,4 +130,13 @@ data class ActionType(
     var name: String,
     @OneToMany(mappedBy = "actionType")
     var logsList: List<Log>
+)
+
+@Entity
+@Table(name = "genders")
+data class Genre(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long,
+    var name: String,
 )

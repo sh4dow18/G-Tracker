@@ -40,23 +40,23 @@ data class UserLoginResponse(
     var enabled: Boolean,
 )
 
-// Details
-
-data class RoleDetails(
-    var id: Long,
-    var name: String
-)
-
-data class GameDetails(
+data class GameResponse(
     var id: Long,
     var name: String,
     var description: String,
     var rating: Int,
-    var gendersList: GenderDetails,
+    var gendersList: List<GenderResponse>,
     var releaseDate: String
 )
 
-data class GenderDetails(
+data class GenderResponse(
+    var id: Long,
+    var name: String
+)
+
+// Details
+
+data class RoleDetails(
     var id: Long,
     var name: String
 )

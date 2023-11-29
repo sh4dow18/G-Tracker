@@ -31,3 +31,80 @@ interface UserMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     fun closeAccount(dto: CloseAccountRequest, @MappingTarget user: User)
 }
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+interface GameMapper {
+    @Mapping(target = "gamesLogsList", expression = "java(java.util.Collections.emptyList())")
+    @Mapping(target = "platformGame", expression = "java(myContext.getPlatformsList())")
+    @Mapping(target = "genderGame", expression = "java(myContext.getGenresList())")
+    fun gameRegistrationRequestToGame(
+        gameRegistrationRequest: GameRegistrationRequest,
+        @Context myContext: GameContext
+    ): Game
+    @Mapping(target = "gendersList", expression = "java(genres)")
+    @Mapping(target = "platformsList", expression = "java(platforms)")
+    fun gameToGameResponse(
+        game: Game,
+        @Context genres: Set<GenreDetails>,
+        @Context platforms: Set<PlatformDetails>
+    ): GameResponse
+}
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+interface PlatformMapper {
+    @Mapping(target = "name", expression = "java(platformName)")
+    fun stringToPlatform(
+        platformName: String
+    ): Platform
+    fun platformToPlatformDetails(
+        platform: Platform
+    ): PlatformDetails
+    fun platformsListToPlatformsDetailsList(
+        platformsList: List<Platform>
+    ): List<PlatformDetails>
+}
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+interface GenreMapper {
+    @Mapping(target = "name", expression = "java(genreName)")
+    fun stringToGenre(
+        genreName: String
+    ): Genre
+    fun genreToGenreDetails(
+        genre: Genre
+    ): GenreDetails
+    fun genresListToGenresDetailsList(
+        genresList: List<Genre>
+    ): List<GenreDetails>
+}
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+interface GameLogMapper {
+    @Mapping(target = "createdDate", expression = "java(java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern(\"dd/MM/yyyy\")))")
+    @Mapping(target = "finished", expression = "java(false)")
+    @Mapping(target = "finishedAtAll", expression = "java(false)")
+    fun gameAndUserToGameLog(
+        gameLogContext: GameLogContext,
+    ): GameLog
+//    @Mapping(target = "game.gendersList", expression = "java(genres)")
+//    @Mapping(target = "game.platformsList", expression = "java(platforms)")
+//    fun gameLogToGameLogResponse(
+//        gameLog: GameLog,
+//        @Context genres: Set<GenreDetails>,
+//        @Context platforms: Set<PlatformDetails>
+//    ): GameLogResponse
+    @Mapping(target = "game.gendersList", expression = "java(mappingService.findAllGenresByGameId(game.getGenderGame()))")
+    @Mapping(target = "game.platformsList", expression = "java(mappingService.findAllPlatformsByGameId(game.getPlatformGame()))")
+    fun gameLogToGameLogResponse(
+        gameLog: GameLog,
+        @Context mappingService: MappingService
+    ): GameLogResponse
+    fun gameLogsListToGameLogsResponsesList(
+        gameLogsList: List<GameLog>,
+        @Context mappingService: MappingService
+    ): List<GameLogResponse> {
+        return gameLogsList.map { gameLogToGameLogResponse(it, mappingService) }
+    }
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    fun updateGameLog(dto: GameLogUpdateRequest, @MappingTarget gameLog: GameLog)
+}

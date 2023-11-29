@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import sh4dow18.gtracker.frontend_android.databinding.GameCardItemBinding
-import sh4dow18.gtracker.frontend_android.utils.GameDetails
+import sh4dow18.gtracker.frontend_android.utils.GameResponse
 
 class GamesAdapter : RecyclerView.Adapter<MainViewHolder>() {
 
-    private var gamesList = mutableListOf<GameDetails>()
+    private var gamesList = mutableListOf<GameResponse>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
         return MainViewHolder(GameCardItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -34,7 +34,7 @@ class GamesAdapter : RecyclerView.Adapter<MainViewHolder>() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setClassroomAssetList(gamesList2: List<GameDetails>){
+    fun setClassroomAssetList(gamesList2: List<GameResponse>){
         this.gamesList.clear()
         this.gamesList.addAll(gamesList2.toMutableList())
         this.notifyDataSetChanged()
