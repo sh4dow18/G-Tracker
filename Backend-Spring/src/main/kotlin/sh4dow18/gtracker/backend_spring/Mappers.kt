@@ -12,7 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 interface UserMapper {
     @Mapping(target = "password", expression = "java(passwordEncoder.encode(userRegistrationRequest.getPassword()))")
-    @Mapping(target = "createdDate", expression = "java(java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern(\"dd/MM/yyyy\")))")
+    @Mapping(target = "createdDate", expression = "java(java.time.ZonedDateTime.now(java.time.ZoneOffset.UTC))")
     @Mapping(target = "enabled", expression = "java(true)")
     @Mapping(target = "imagePath", expression = "java(null)")
     @Mapping(target = "role", expression = "java(mappingService.findRoleByIdToMapper(1))")
@@ -21,8 +21,9 @@ interface UserMapper {
     fun userRegistrationRequestToUser(
         userRegistrationRequest: UserRegistrationRequest,
         @Context mappingService: MappingService,
-        @Context passwordEncoder: BCryptPasswordEncoder
+        @Context passwordEncoder: BCryptPasswordEncoder,
     ): User
+    @Mapping(target = "createdDate", expression = "java(user.getCreatedDate().format(java.time.format.DateTimeFormatter.ofPattern(\"yyyy-MM-dd\")))")
     fun userToUserResponse(
         user: User
     ): UserResponse
@@ -41,13 +42,18 @@ interface GameMapper {
         gameRegistrationRequest: GameRegistrationRequest,
         @Context myContext: GameContext
     ): Game
-    @Mapping(target = "gendersList", expression = "java(genres)")
-    @Mapping(target = "platformsList", expression = "java(platforms)")
+    @Mapping(target = "gendersList", expression = "java(mappingService.findAllGenresByGameId(game.getGenderGame()))")
+    @Mapping(target = "platformsList", expression = "java(mappingService.findAllPlatformsByGameId(game.getPlatformGame()))")
     fun gameToGameResponse(
         game: Game,
-        @Context genres: Set<GenreDetails>,
-        @Context platforms: Set<PlatformDetails>
+        @Context mappingService: MappingService
     ): GameResponse
+    fun gamesListToGameResponsesList(
+        gamesList: List<Game>,
+        @Context mappingService: MappingService
+    ): List<GameResponse> {
+        return gamesList.map { gameToGameResponse(it, mappingService) }
+    }
 }
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -80,19 +86,13 @@ interface GenreMapper {
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 interface GameLogMapper {
-    @Mapping(target = "createdDate", expression = "java(java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern(\"dd/MM/yyyy\")))")
+    @Mapping(target = "createdDate", expression = "java(java.time.ZonedDateTime.now(java.time.ZoneOffset.UTC))")
     @Mapping(target = "finished", expression = "java(false)")
     @Mapping(target = "finishedAtAll", expression = "java(false)")
     fun gameAndUserToGameLog(
         gameLogContext: GameLogContext,
     ): GameLog
-//    @Mapping(target = "game.gendersList", expression = "java(genres)")
-//    @Mapping(target = "game.platformsList", expression = "java(platforms)")
-//    fun gameLogToGameLogResponse(
-//        gameLog: GameLog,
-//        @Context genres: Set<GenreDetails>,
-//        @Context platforms: Set<PlatformDetails>
-//    ): GameLogResponse
+    @Mapping(target = "createdDate", expression = "java(gameLog.getCreatedDate().format(java.time.format.DateTimeFormatter.ofPattern(\"yyyy-MM-dd\")))")
     @Mapping(target = "game.gendersList", expression = "java(mappingService.findAllGenresByGameId(game.getGenderGame()))")
     @Mapping(target = "game.platformsList", expression = "java(mappingService.findAllPlatformsByGameId(game.getPlatformGame()))")
     fun gameLogToGameLogResponse(
@@ -105,6 +105,4 @@ interface GameLogMapper {
     ): List<GameLogResponse> {
         return gameLogsList.map { gameLogToGameLogResponse(it, mappingService) }
     }
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    fun updateGameLog(dto: GameLogUpdateRequest, @MappingTarget gameLog: GameLog)
 }

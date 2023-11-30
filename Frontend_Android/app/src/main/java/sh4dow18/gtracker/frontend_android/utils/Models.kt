@@ -18,6 +18,17 @@ data class UpdateUserRequest(
     var userName: String
 )
 
+data class GameLogRegistrationRequest(
+    var game: Long,
+    var user: String
+)
+
+data class GameLogUpdateRequest(
+    var id: Long,
+    var finished: Boolean,
+    var finishedAtAll: Boolean
+)
+
 // Responses
 
 data class UserResponse(
@@ -43,20 +54,37 @@ data class UserLoginResponse(
 data class GameResponse(
     var id: Long,
     var name: String,
-    var description: String,
-    var rating: Int,
-    var gendersList: List<GenderResponse>,
-    var releaseDate: String
+    var slug: String,
+    var rating: Float,
+    var metacritic: Int,
+    var releaseDate: String,
+    var imageUrl: String,
+    var gendersList: Set<GenreDetails>,
+    var platformsList: Set<PlatformDetails>
 )
 
-data class GenderResponse(
+data class GameLogResponse(
     var id: Long,
-    var name: String
+    var createdDate: String,
+    var finished: Boolean,
+    var finishedAtAll: Boolean,
+    var game: GameResponse,
+    var user: UserResponse
 )
 
 // Details
 
 data class RoleDetails(
+    var id: Long,
+    var name: String
+)
+
+data class GenreDetails(
+    var id: Long,
+    var name: String
+)
+
+data class PlatformDetails(
     var id: Long,
     var name: String
 )

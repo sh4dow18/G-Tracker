@@ -112,14 +112,12 @@ class SignInFragment : Fragment() {
         }
     }
     private fun updateUiWithUser(model: LoggedInUserView) {
-        val welcome = getString(R.string.welcome)
-        val username = model.username
         activity?.finish()
         val intent = Intent(activity, TrackerActivity::class.java)
         startActivity(intent)
         Toast.makeText(
             requireContext(),
-            "$welcome $username",
+            getString(R.string.welcome),
             Toast.LENGTH_LONG
         ).show()
     }

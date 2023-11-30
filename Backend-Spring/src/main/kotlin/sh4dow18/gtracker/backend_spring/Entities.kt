@@ -1,9 +1,7 @@
 package sh4dow18.gtracker.backend_spring
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -13,6 +11,7 @@ import jakarta.persistence.ManyToMany
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import java.time.ZonedDateTime
 
 @Entity
 @Table(name = "users")
@@ -21,7 +20,7 @@ data class User(
     var email: String,
     var userName: String,
     var password: String?,
-    var createdDate: String,
+    var createdDate: ZonedDateTime,
     var enabled: Boolean,
     var imagePath: String?,
     @ManyToOne
@@ -68,7 +67,7 @@ data class GameLog(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long,
-    var createdDate: String,
+    var createdDate: ZonedDateTime,
     var finished: Boolean,
     var finishedAtAll: Boolean,
     @ManyToOne
@@ -87,8 +86,10 @@ data class Game(
     var id: Long,
     var name: String,
     var slug: String,
-    var rating: Int,
+    var rating: Float,
+    var metacritic: Int,
     var releaseDate: String,
+    var imageUrl: String,
     @OneToMany(mappedBy = "game")
     var gamesLogsList: List<GameLog>,
     @ElementCollection

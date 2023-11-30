@@ -45,11 +45,19 @@ class PublicUserController(private val userService: UserService) {
 
 @RestController
 @RequestMapping("\${url.public.image}")
-class ImageController(private val userService: UserService) {
+class ImageController(
+    private val userService: UserService,
+    private val gameService: GameService
+) {
     @GetMapping("user/{imageName}")
     @ResponseBody
     fun serveProfileImage(@PathVariable imageName: String?, response: HttpServletResponse) {
         userService.serveProfileImage(imageName, response)
+    }
+    @GetMapping("game/{imageName}")
+    @ResponseBody
+    fun serveGameImage(@PathVariable imageName: String?, response: HttpServletResponse) {
+        gameService.serveGameImage(imageName, response)
     }
 }
 
@@ -59,6 +67,10 @@ class GameController(private val gameService: GameService) {
     @GetMapping
     @ResponseBody
     fun findAllGames() = gameService.findAllGames()
+
+    @GetMapping("{id}")
+    @ResponseBody
+    fun findGameById(@PathVariable("id") id: Long) = gameService.findGameById(id)
 
     @GetMapping("first20")
     @ResponseBody
@@ -72,6 +84,12 @@ class GameController(private val gameService: GameService) {
     @ResponseBody
     fun gamesRegistration(@RequestBody gameRegistrationRequestsList: List<GameRegistrationRequest>): List<GameResponse> {
         return gameService.gamesRegistration(gameRegistrationRequestsList)
+    }
+
+    @PostMapping("images")
+    @ResponseBody
+    fun createImageFromGameUrl(): Boolean {
+        return gameService.createImagesFromGamesUrls()
     }
 }
 
@@ -110,9 +128,13 @@ class GameLogController(private val gameLogService: GameLogService) {
     @ResponseBody
     fun findAllGameLogs() = gameLogService.findAllGameLogs()
 
-    @GetMapping("{email}")
+    @GetMapping("{id}")
     @ResponseBody
-    fun findAllByUserUserName(@PathVariable("email") email: String) = gameLogService.findAllByUserEmail(email)
+    fun findGameLogById(@PathVariable("id") id: Long) = gameLogService.findGameLogById(id)
+
+    @GetMapping("user/{email}")
+    @ResponseBody
+    fun findAllByUserEmail(@PathVariable("email") email: String) = gameLogService.findAllByUserEmail(email)
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseBody
@@ -120,9 +142,15 @@ class GameLogController(private val gameLogService: GameLogService) {
         return gameLogService.gameLogRegistration(gameLogRegistrationRequest)
     }
 
-    @PutMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("finished/{id}")
     @ResponseBody
-    fun gameLogUpdate(@RequestBody gameLogUpdateRequest: GameLogUpdateRequest): GameLogResponse {
-        return gameLogService.gameLogUpdate(gameLogUpdateRequest)
+    fun gameLogUpdateFinished(@PathVariable("id") id: Long): GameLogResponse {
+        return gameLogService.gameLogUpdateFinished(id)
+    }
+
+    @PutMapping("finishedAtAll/{id}")
+    @ResponseBody
+    fun gameLogUpdateFinishedAtAll(@PathVariable("id") id: Long): GameLogResponse {
+        return gameLogService.gameLogUpdateFinishedAtAll(id)
     }
 }

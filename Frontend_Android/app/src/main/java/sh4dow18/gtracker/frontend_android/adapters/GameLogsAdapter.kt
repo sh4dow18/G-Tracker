@@ -1,24 +1,23 @@
 package sh4dow18.gtracker.frontend_android.adapters
 
 import android.annotation.SuppressLint
-import sh4dow18.gtracker.frontend_android.R
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import sh4dow18.gtracker.frontend_android.R
 import sh4dow18.gtracker.frontend_android.databinding.GameCardItemBinding
-import sh4dow18.gtracker.frontend_android.utils.GameResponse
+import sh4dow18.gtracker.frontend_android.utils.GameLogResponse
 
-class GamesAdapter : RecyclerView.Adapter<MainViewHolder>() {
-
-    private var gamesList = mutableListOf<GameResponse>()
+class GameLogsAdapter : RecyclerView.Adapter<MainViewHolder>() {
+    private var gamesLogsList = mutableListOf<GameLogResponse>()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setGamesList(newGamesList: List<GameResponse>){
-        this.gamesList.clear()
-        this.gamesList.addAll(newGamesList.toMutableList())
+    fun setGamesList(newGamesList: List<GameLogResponse>){
+        this.gamesLogsList.clear()
+        this.gamesLogsList.addAll(newGamesList.toMutableList())
         this.notifyDataSetChanged()
     }
 
@@ -29,26 +28,27 @@ class GamesAdapter : RecyclerView.Adapter<MainViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return gamesList.size
+        return gamesLogsList.size
     }
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-        val game = gamesList[position]
+        val gameLog = gamesLogsList[position]
+        val game = gameLog.game
         Glide.with(holder.itemView.context)
             .load("http://192.168.0.13:8080/api/public/image/game/${game.id}.png")
             .into(holder.binding.GameImage)
-        val gameMetacritic = "Rating(Metacritic): " + game.metacritic + " / 100"
-        val gameRating = "Rating(Users): " + game.rating + " / 5"
+        var finished = "No"
+        if (gameLog.finished) {
+            finished = "Yes"
+        }
+        val gameCreatedDate = "Created Date: " + gameLog.createdDate
+        val gameFinished = "Finished: $finished"
         holder.binding.GameName.text = game.name
-        holder.binding.Metacritic.text = gameMetacritic
-        holder.binding.Genders.text = gameRating
+        holder.binding.Metacritic.text = gameCreatedDate
+        holder.binding.Genders.text = gameFinished
         holder.binding.GameItemContainer.setOnClickListener {
-            val bundle = bundleOf("game_id" to gamesList[position].id)
-            holder.itemView.findNavController().navigate(R.id.nav_game, bundle)
+            val bundle = bundleOf("game_log_id" to gamesLogsList[position].id)
+            holder.itemView.findNavController().navigate(R.id.nav_game_log, bundle)
         }
     }
 }
-
-class MainViewHolder(
-    val binding : GameCardItemBinding
-): RecyclerView.ViewHolder(binding.root)

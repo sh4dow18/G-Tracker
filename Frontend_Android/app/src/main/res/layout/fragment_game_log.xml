@@ -28,29 +28,30 @@
                 android:textStyle="bold" />
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/GameItemContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="3dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="40dp"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="20dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="86dp"
+                    android:layout_height="95dp"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/GameImage"
-                        android:layout_width="173dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_width="94dp"
+                        android:layout_height="match_parent"
                         android:src="@drawable/icon" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="86dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginTop="5dp"
                         android:layout_weight="1"
@@ -59,17 +60,19 @@
                         <TextView
                             android:id="@+id/GameName"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Game Name"
-                            android:textColor="@color/black"
-                            android:textSize="20sp"
+                            android:layout_height="41dp"
+                            android:layout_marginRight="20dp"
+                            android:text="The Legend of Zelda: Ocarina of Time"
+                            android:textColor="#A37835"
+                            android:textSize="16sp"
                             android:textStyle="bold|italic" />
 
                         <TextView
                             android:id="@+id/Metacritic"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Rating (Metacritic): 92"
+                            android:layout_marginRight="20dp"
+                            android:text="Rating (Metacritic): 92 / 100"
                             android:textColor="@color/black"
                             android:textSize="16sp"
                             android:textStyle="bold|italic" />
@@ -78,54 +81,15 @@
                             android:id="@+id/Genders"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Genders: Action / Adventure"
+                            android:layout_marginRight="20dp"
+                            android:text="Rating (Users): 4.75 / 5"
                             android:textColor="@color/black"
                             android:textSize="16sp"
                             android:textStyle="bold|italic" />
 
                     </LinearLayout>
                 </LinearLayout>
-
             </androidx.cardview.widget.CardView>
-
-            <LinearLayout
-                android:id="@+id/GameDescriptionContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/GameDescriptionTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:gravity="center_horizontal"
-                    android:text="Game Description"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/GameDescriptionDescriptionContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="30dp"
-                    app:cardCornerRadius="30dp"
-                    app:cardElevation="20dp">
-
-                    <TextView
-                        android:id="@+id/GameDescriptionDescription"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="15dp"
-                        android:gravity="center_horizontal"
-                        android:text="Description"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/GameReleaseContainer"
@@ -150,7 +114,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginBottom="30dp"
+                    android:layout_marginBottom="40dp"
                     app:cardCornerRadius="30dp"
                     app:cardElevation="20dp">
 
@@ -168,42 +132,80 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/GameGameplayContainer"
+                android:id="@+id/GameGenresContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/GameGameplayTitle"
+                    android:id="@+id/GameGenresTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
                     android:gravity="center_horizontal"
-                    android:text="Gameplay"
+                    android:text="Genres"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/GameGameplayDescriptionContainer"
+                    android:id="@+id/GameGenresDescriptionContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginBottom="30dp"
+                    android:layout_marginBottom="40dp"
                     app:cardCornerRadius="30dp"
                     app:cardElevation="20dp">
 
                     <TextView
-                        android:id="@+id/GameGameplayDescription"
+                        android:id="@+id/GameGenresDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="15dp"
                         android:gravity="center_horizontal"
-                        android:text="Click Here to Watch in YouTube"
+                        android:text="Genres"
                         android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:textStyle="bold|italic" />
+                        android:textSize="16sp" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/GamePlatformContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/GamePlatformTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center_horizontal"
+                    android:text="Platfoms"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/GamePlatformDescriptionContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="40dp"
+                    app:cardCornerRadius="30dp"
+                    app:cardElevation="20dp">
+
+                    <TextView
+                        android:id="@+id/GamePlatformDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="15dp"
+                        android:gravity="center_horizontal"
+                        android:text="Platfoms"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>

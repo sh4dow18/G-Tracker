@@ -20,6 +20,10 @@
         android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/GamesRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="1181dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:context="sh4dow18.gtracker.frontend_android.ui.TrackerFragment"
+        tools:listitem="@layout/game_card_item" />
 </LinearLayout>

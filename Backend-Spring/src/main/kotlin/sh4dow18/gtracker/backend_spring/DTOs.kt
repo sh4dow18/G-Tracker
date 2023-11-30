@@ -33,8 +33,10 @@ data class CloseAccountRequest(
 data class GameRegistrationRequest(
     var name: String,
     var slug: String,
-    var rating: Int,
+    var rating: Float,
+    var metacritic: Int,
     var releaseDate: String,
+    var imageUrl: String,
     var gendersNamesList: List<String>,
     var platformsNamesList: List<String>
 )
@@ -42,12 +44,6 @@ data class GameRegistrationRequest(
 data class GameLogRegistrationRequest(
     var game: Long,
     var user: String
-)
-
-data class GameLogUpdateRequest(
-    var id: Long,
-    var finished: Boolean,
-    var finishedAtAll: Boolean
 )
 
 // Responses
@@ -66,8 +62,10 @@ data class GameResponse(
     var id: Long,
     var name: String,
     var slug: String,
-    var rating: Int,
+    var rating: Float,
+    var metacritic: Int,
     var releaseDate: String,
+    var imageUrl: String,
     var gendersList: Set<GenreDetails>,
     var platformsList: Set<PlatformDetails>
 )

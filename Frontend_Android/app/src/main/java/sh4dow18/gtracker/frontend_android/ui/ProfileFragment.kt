@@ -14,7 +14,6 @@ import sh4dow18.gtracker.frontend_android.MainActivity
 import sh4dow18.gtracker.frontend_android.R
 import sh4dow18.gtracker.frontend_android.databinding.FragmentProfileBinding
 import sh4dow18.gtracker.frontend_android.utils.MyApplication
-import sh4dow18.gtracker.frontend_android.utils.UpdateUserRequest
 import sh4dow18.gtracker.frontend_android.view_models.login.LoginViewModel
 import sh4dow18.gtracker.frontend_android.view_models.login.LoginViewModelFactory
 import sh4dow18.gtracker.frontend_android.view_models.user.StateUser

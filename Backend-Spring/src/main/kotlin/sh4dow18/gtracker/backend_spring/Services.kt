@@ -17,6 +17,7 @@ import java.awt.image.BufferedImage
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
+import java.net.URL
 import java.nio.file.Paths
 import javax.imageio.ImageIO
 
@@ -102,9 +103,14 @@ class AbstractUserService(
     }
     @Throws(IOException::class, NoSuchElementException::class)
     override fun serveProfileImage(imageName: String?, response: HttpServletResponse) {
-        val imagePath = Paths.get("$uploadPath/users/", imageName).toAbsolutePath().toString()
-        response.contentType = "image/png"
-        FileInputStream(imagePath).use { imageStream -> FileCopyUtils.copy(imageStream, response.outputStream) }
+        try {
+            val imagePath = Paths.get("$uploadPath/users/", imageName).toAbsolutePath().toString()
+            response.contentType = "image/png"
+            FileInputStream(imagePath).use { imageStream -> FileCopyUtils.copy(imageStream, response.outputStream) }
+        }
+        catch (e: Exception) {
+            throw NoSuchElementException(String.format("The User Image %s do not exists", imageName))
+        }
     }
 }
 
@@ -112,8 +118,12 @@ interface GameService {
     fun findAllGames(): List<GameResponse>
     fun findFirst20ByOrderByRatingDesc(): List<GameResponse>
     fun findByNameContainingIgnoreCase(name: String): List<GameResponse>
+    fun findGameById(id: Long): GameResponse
     fun gameRegistration(gameRegistrationRequest: GameRegistrationRequest): GameResponse
     fun gamesRegistration(gameRegistrationRequests: List<GameRegistrationRequest>): List<GameResponse>
+    fun createImageFromGameUrl(id: Long): Boolean
+    fun createImagesFromGamesUrls(): Boolean
+    fun serveGameImage(imageName: String?, response: HttpServletResponse)
 }
 @Service
 class AbstractGameService(
@@ -124,33 +134,28 @@ class AbstractGameService(
     @Autowired
     val platformRepository: PlatformRepository,
     @Autowired
-    val platformMapper: PlatformMapper,
-    @Autowired
     val genreRepository: GenreRepository,
     @Autowired
-    val genreMapper: GenreMapper
+    val mappingService: MappingService,
+    @Value("\${upload.path}")
+    val uploadPath: String
 ): GameService {
-    fun findAllGamesResponsesFromList(list: List<Game>): List<GameResponse> {
-        val gameResponsesList: MutableList<GameResponse> = mutableListOf()
-        list.forEach { game ->
-            val genresList: List<Genre> = genreRepository.findAllById(game.genderGame)
-            val platformsList: List<Platform> = platformRepository.findAllById(game.platformGame)
-            gameResponsesList.add(gameMapper.gameToGameResponse(gameRepository.save(game),
-                genreMapper.genresListToGenresDetailsList(genresList).toSet(),
-                platformMapper.platformsListToPlatformsDetailsList(platformsList).toSet()))
-        }
-        return gameResponsesList
-    }
     override fun findAllGames(): List<GameResponse> {
-        return findAllGamesResponsesFromList(gameRepository.findAll())
+        return gameMapper.gamesListToGameResponsesList(gameRepository.findAll(), mappingService)
     }
     override fun findFirst20ByOrderByRatingDesc(): List<GameResponse> {
-        return findAllGamesResponsesFromList(gameRepository.findFirst20ByOrderByRatingDesc())
+        return gameMapper.gamesListToGameResponsesList(gameRepository.findFirst20ByOrderByMetacriticDesc(), mappingService)
     }
     override fun findByNameContainingIgnoreCase(name: String): List<GameResponse> {
-        return findAllGamesResponsesFromList(gameRepository.findByNameContainingIgnoreCase(name))
+        return gameMapper.gamesListToGameResponsesList(gameRepository.findByNameContainingIgnoreCase(name), mappingService)
     }
-
+    @Throws(NoSuchElementException::class)
+    override fun findGameById(id: Long): GameResponse {
+        val game: Game = gameRepository.findById(id).orElseThrow {
+            NoSuchElementException(String.format("The Game with the Id %d do not exists", id))
+        }
+        return gameMapper.gameToGameResponse(game, mappingService)
+    }
     @Throws(NoSuchElementException::class)
     override fun gameRegistration(gameRegistrationRequest: GameRegistrationRequest): GameResponse {
         val genresList: List<Genre> = genreRepository.findAllByNameIn(gameRegistrationRequest.gendersNamesList)
@@ -164,9 +169,7 @@ class AbstractGameService(
         val platformIdsSet: Set<Long> = platformsList.map { it.id }.toSet()
         val genreIdsSet: Set<Long> = genresList.map { it.id }.toSet()
         val game = gameMapper.gameRegistrationRequestToGame(gameRegistrationRequest, GameContext(genreIdsSet, platformIdsSet))
-        return gameMapper.gameToGameResponse(gameRepository.save(game),
-            genreMapper.genresListToGenresDetailsList(genresList).toSet(),
-            platformMapper.platformsListToPlatformsDetailsList(platformsList).toSet())
+        return gameMapper.gameToGameResponse(gameRepository.save(game), mappingService)
     }
 
     override fun gamesRegistration(gameRegistrationRequests: List<GameRegistrationRequest>): List<GameResponse> {
@@ -175,6 +178,49 @@ class AbstractGameService(
             gamesResponsesList.add(gameRegistration(game))
         }
         return gamesResponsesList
+    }
+    @Throws(NoSuchElementException::class)
+    override fun createImageFromGameUrl(id: Long): Boolean {
+        val game: Game = gameRepository.findById(id).orElseThrow {
+            NoSuchElementException(String.format("The Game with the id %d does not exists", id))
+        }
+        if (game.imageUrl != "") {
+            val originalImage = ImageIO.read(URL(game.imageUrl))
+                ?: throw NoSuchElementException(String.format("The Image with the URL %s was not found", game.imageUrl))
+            val targetWidth = 95
+            val targetHeight = 95
+            val xScale = targetWidth.toDouble() / originalImage.width
+            val yScale = targetHeight.toDouble() / originalImage.height
+            val scale = if (xScale > yScale) xScale else yScale
+            val newWidth = (originalImage.width * scale).toInt()
+            val newHeight = (originalImage.height * scale).toInt()
+            val resizedImage = BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB)
+            val graphics = resizedImage.createGraphics()
+            graphics.drawImage(originalImage, (targetWidth - newWidth) / 2, (targetHeight - newHeight) / 2, newWidth, newHeight, null)
+            graphics.dispose()
+            val uniqueFileName = "${game.id}.png"
+            // Renders the image as "jpg" and save it in the path "uploadPath"
+            ImageIO.write(resizedImage, "png", File("$uploadPath/games/$uniqueFileName"))
+        }
+        return true
+    }
+    @Throws(NoSuchElementException::class)
+    override fun createImagesFromGamesUrls(): Boolean {
+        gameRepository.findAll().forEach { game ->
+            createImageFromGameUrl(game.id)
+        }
+        return true
+    }
+    @Throws(IOException::class, NoSuchElementException::class)
+    override fun serveGameImage(imageName: String?, response: HttpServletResponse) {
+        try {
+            val imagePath = Paths.get("$uploadPath/games/", imageName).toAbsolutePath().toString()
+            response.contentType = "image/png"
+            FileInputStream(imagePath).use { imageStream -> FileCopyUtils.copy(imageStream, response.outputStream) }
+        }
+        catch (e: Exception) {
+            throw NoSuchElementException(String.format("The Game Image %s do not exists", imageName))
+        }
     }
 }
 
@@ -238,8 +284,10 @@ class AbstractGenreService(
 interface GameLogService {
     fun findAllGameLogs(): List<GameLogResponse>
     fun findAllByUserEmail(email: String): List<GameLogResponse>
+    fun findGameLogById(id: Long): GameLogResponse
     fun gameLogRegistration(gameLogRegistrationRequest: GameLogRegistrationRequest): GameLogResponse
-    fun gameLogUpdate(gameLogUpdateRequest: GameLogUpdateRequest): GameLogResponse
+    fun gameLogUpdateFinished(id: Long): GameLogResponse
+    fun gameLogUpdateFinishedAtAll(id: Long): GameLogResponse
 }
 @Service
 class AbstractGameLogService(
@@ -252,23 +300,22 @@ class AbstractGameLogService(
     @Autowired
     val userRepository: UserRepository,
     @Autowired
-    val genreRepository: GenreRepository,
-    @Autowired
-    val genreMapper: GenreMapper,
-    @Autowired
-    val platformRepository: PlatformRepository,
-    @Autowired
-    val platformMapper: PlatformMapper,
-    @Autowired
     val mappingService: MappingService
 ): GameLogService {
     override fun findAllGameLogs(): List<GameLogResponse> {
         return gameLogMapper.gameLogsListToGameLogsResponsesList(gameLogRepository.findAll(), mappingService)
     }
     override fun findAllByUserEmail(email: String): List<GameLogResponse> {
-        return gameLogMapper.gameLogsListToGameLogsResponsesList(gameLogRepository.findAllByUserEmail(email), mappingService)
+        return gameLogMapper.gameLogsListToGameLogsResponsesList(gameLogRepository.findAllByUserEmailOrderByCreatedDateDesc(email), mappingService)
     }
     @Throws(NoSuchElementException::class)
+    override fun findGameLogById(id: Long): GameLogResponse {
+        val gameLog: GameLog = gameLogRepository.findById(id).orElseThrow {
+            NoSuchElementException(String.format("The Game Log with the id %d do not exists", id))
+        }
+        return gameLogMapper.gameLogToGameLogResponse(gameLog, mappingService)
+    }
+    @Throws(NoSuchElementException::class, ElementAlreadyExists::class)
     override fun gameLogRegistration(gameLogRegistrationRequest: GameLogRegistrationRequest): GameLogResponse {
         val game: Game = gameRepository.findById(gameLogRegistrationRequest.game).orElse(null)
             ?: throw NoSuchElementException(String.format("The Game with the id %d do not found",
@@ -276,15 +323,25 @@ class AbstractGameLogService(
         val user: User = userRepository.findById(gameLogRegistrationRequest.user).orElse(null)
             ?: throw NoSuchElementException(String.format("The User with the email %s do not found",
                 gameLogRegistrationRequest.user))
+        val gameLog: GameLog? = gameLogRepository.findByGameAndUser(game, user).orElse(null)
+        if (gameLog != null) {
+            ElementAlreadyExists(String.format("The Game Log with game %s and user %s already exists", game.name, user.userName))
+        }
         val newGameLog: GameLog = gameLogMapper.gameAndUserToGameLog(GameLogContext(game, user))
         return gameLogMapper.gameLogToGameLogResponse(gameLogRepository.save(newGameLog), mappingService)
     }
     @Throws(NoSuchElementException::class)
-    override fun gameLogUpdate(gameLogUpdateRequest: GameLogUpdateRequest): GameLogResponse {
-        val gameLog: GameLog = gameLogRepository.findById(gameLogUpdateRequest.id).orElse(null)
-            ?: throw NoSuchElementException(String.format("The Game Log with the id %d do not found",
-                gameLogUpdateRequest.id))
-        gameLogMapper.updateGameLog(gameLogUpdateRequest, gameLog)
+    override fun gameLogUpdateFinished(id: Long): GameLogResponse {
+        val gameLog: GameLog = gameLogRepository.findById(id).orElse(null)
+            ?: throw NoSuchElementException(String.format("The Game Log with the id %d do not found", id))
+        gameLog.finished = !gameLog.finished
+        return gameLogMapper.gameLogToGameLogResponse(gameLogRepository.save(gameLog), mappingService)
+    }
+    @Throws(NoSuchElementException::class)
+    override fun gameLogUpdateFinishedAtAll(id: Long): GameLogResponse {
+        val gameLog: GameLog = gameLogRepository.findById(id).orElse(null)
+            ?: throw NoSuchElementException(String.format("The Game Log with the id %d do not found", id))
+        gameLog.finishedAtAll = !gameLog.finishedAtAll
         return gameLogMapper.gameLogToGameLogResponse(gameLogRepository.save(gameLog), mappingService)
     }
 }
@@ -337,7 +394,7 @@ class AppUserDetailsService(
         // returns a Spring Security User
         val user: User = userRepository.findById(email).orElse(null)
             ?: return org.springframework.security.core.userdetails.User(
-                "", "", true, true, true, true,
+                "Error", "Error", true, true, true, true,
                 emptyList()
             )
         var password: String? = ""
