@@ -90,6 +90,7 @@
                                 android:layout_height="match_parent"
                                 android:gravity="center"
                                 android:text="example@example.com"
+                                android:textColor="@color/black"
                                 android:textSize="16sp" />
                         </androidx.cardview.widget.CardView>
 
@@ -124,8 +125,168 @@
                                 android:layout_height="match_parent"
                                 android:gravity="center"
                                 android:text="Role"
+                                android:textColor="@color/black"
                                 android:textSize="16sp" />
                         </androidx.cardview.widget.CardView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:id="@+id/TotalGamesContainer"
+                                android:layout_width="127dp"
+                                android:layout_height="97dp"
+                                android:layout_margin="20dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/TotalGamesLabel"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_horizontal"
+                                    android:text="Total Games"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp" />
+
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/TotalGamesValueContainer"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="44dp"
+                                    android:layout_margin="8dp"
+                                    app:cardCornerRadius="20dp"
+                                    app:cardElevation="6dp">
+
+                                    <TextView
+                                        android:id="@+id/TotalGamesValue"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:text="100"
+                                        android:textColor="@color/black"
+                                        android:textSize="16sp" />
+                                </androidx.cardview.widget.CardView>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/NotFinishedGamesContainer"
+                                android:layout_width="match_parent"
+                                android:layout_height="97dp"
+                                android:layout_margin="20dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/NotFinishedGamesLabel"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_horizontal"
+                                    android:text="Not Finished"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp" />
+
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/NotFinishedGamesValueContainer"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="44dp"
+                                    android:layout_margin="8dp"
+                                    app:cardCornerRadius="20dp"
+                                    app:cardElevation="6dp">
+
+                                    <TextView
+                                        android:id="@+id/NotFinishedGamesValue"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:text="100"
+                                        android:textColor="@color/black"
+                                        android:textSize="16sp" />
+                                </androidx.cardview.widget.CardView>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:id="@+id/FinishedGamesContainer"
+                                android:layout_width="127dp"
+                                android:layout_height="97dp"
+                                android:layout_margin="20dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/FinishedGamesLabel"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_horizontal"
+                                    android:text="Finished"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp" />
+
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/FinishedGamesValueContainer"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="44dp"
+                                    android:layout_margin="8dp"
+                                    app:cardCornerRadius="20dp"
+                                    app:cardElevation="6dp">
+
+                                    <TextView
+                                        android:id="@+id/FinishedGamesValue"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:text="100"
+                                        android:textColor="@color/black"
+                                        android:textSize="16sp" />
+                                </androidx.cardview.widget.CardView>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/FinishedAtAllGamesContainer"
+                                android:layout_width="match_parent"
+                                android:layout_height="97dp"
+                                android:layout_margin="20dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/FinishedAtAllGamesLabel"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_horizontal"
+                                    android:text="100%"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp" />
+
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/FinishedAtAllGamesValueContainer"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="44dp"
+                                    android:layout_margin="8dp"
+                                    app:cardCornerRadius="20dp"
+                                    app:cardElevation="6dp">
+
+                                    <TextView
+                                        android:id="@+id/FinishedAtAllGamesValue"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:text="100"
+                                        android:textColor="@color/black"
+                                        android:textSize="16sp" />
+                                </androidx.cardview.widget.CardView>
+                            </LinearLayout>
+                        </LinearLayout>
 
                     </LinearLayout>
 

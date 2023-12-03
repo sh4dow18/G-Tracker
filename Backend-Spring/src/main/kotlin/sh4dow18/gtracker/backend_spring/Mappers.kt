@@ -12,9 +12,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 interface UserMapper {
     @Mapping(target = "password", expression = "java(passwordEncoder.encode(userRegistrationRequest.getPassword()))")
-    @Mapping(target = "createdDate", expression = "java(java.time.ZonedDateTime.now(java.time.ZoneOffset.UTC))")
+    @Mapping(target = "createdDate", expression = "java(java.time.ZonedDateTime.now())")
     @Mapping(target = "enabled", expression = "java(true)")
-    @Mapping(target = "imagePath", expression = "java(null)")
+    @Mapping(target = "image", expression = "java(false)")
     @Mapping(target = "role", expression = "java(mappingService.findRoleByIdToMapper(1))")
     @Mapping(target = "gamesLogsList", expression = "java(java.util.Collections.emptyList())")
     @Mapping(target = "logsList", expression = "java(java.util.Collections.emptyList())")
@@ -24,8 +24,10 @@ interface UserMapper {
         @Context passwordEncoder: BCryptPasswordEncoder,
     ): User
     @Mapping(target = "createdDate", expression = "java(user.getCreatedDate().format(java.time.format.DateTimeFormatter.ofPattern(\"yyyy-MM-dd\")))")
+    @Mapping(target = "gameLogs", expression = "java(mappingService.findAllGameLogsByUser(user.getEmail()))")
     fun userToUserResponse(
-        user: User
+        user: User,
+        @Context mappingService: MappingService
     ): UserResponse
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     fun updateUser(dto: UpdateUserRequest, @MappingTarget user: User)
@@ -95,6 +97,7 @@ interface GameLogMapper {
     @Mapping(target = "createdDate", expression = "java(gameLog.getCreatedDate().format(java.time.format.DateTimeFormatter.ofPattern(\"yyyy-MM-dd\")))")
     @Mapping(target = "game.gendersList", expression = "java(mappingService.findAllGenresByGameId(game.getGenderGame()))")
     @Mapping(target = "game.platformsList", expression = "java(mappingService.findAllPlatformsByGameId(game.getPlatformGame()))")
+    @Mapping(target = "user.gameLogs", expression = "java(mappingService.findAllGameLogsByUser(user.getEmail()))")
     fun gameLogToGameLogResponse(
         gameLog: GameLog,
         @Context mappingService: MappingService

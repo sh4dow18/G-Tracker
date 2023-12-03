@@ -41,11 +41,17 @@ class GameLogsAdapter : RecyclerView.Adapter<MainViewHolder>() {
         if (gameLog.finished) {
             finished = "Yes"
         }
-        val gameCreatedDate = "Created Date: " + gameLog.createdDate
+        var finishedAtAll = "No"
+        if (gameLog.finishedAtAll) {
+            finishedAtAll = "Yes"
+        }
+        var gameRating = "Rating(Users): ${game.rating} / 5"
         val gameFinished = "Finished: $finished"
+        val gameFinishedAtAll = "100%: $finishedAtAll"
+        val gameTracker = "$gameFinished / $gameFinishedAtAll"
         holder.binding.GameName.text = game.name
-        holder.binding.Metacritic.text = gameCreatedDate
-        holder.binding.Genders.text = gameFinished
+        holder.binding.Metacritic.text = gameRating
+        holder.binding.Genders.text = gameTracker
         holder.binding.GameItemContainer.setOnClickListener {
             val bundle = bundleOf("game_log_id" to gamesLogsList[position].id)
             holder.itemView.findNavController().navigate(R.id.nav_game_log, bundle)

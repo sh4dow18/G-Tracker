@@ -42,7 +42,14 @@ class GameViewModel constructor(
             withContext(Dispatchers.Main) {
                 _state.postValue(
                     if (response.isSuccessful) StateGame.SuccessList(response.body())
-                    else StateGame.Error("Error : ${response.message()} ")
+                    else {
+                        if (response.code() == 403) {
+                            StateGame.Error("Your Session Expired, please sign in again")
+                        }
+                        else {
+                            StateGame.Error("Server Unavailable")
+                        }
+                    }
                 )
             }
         }
@@ -56,7 +63,14 @@ class GameViewModel constructor(
             withContext(Dispatchers.Main) {
                 _state.postValue(
                     if (response.isSuccessful) StateGame.SuccessList(response.body())
-                    else StateGame.Error("Error : ${response.message()} ")
+                    else {
+                        if (response.code() == 403) {
+                            StateGame.Error("Your Session Expired, please sign in again")
+                        }
+                        else {
+                            StateGame.Error("Server Unavailable")
+                        }
+                    }
                 )
             }
         }
@@ -70,7 +84,14 @@ class GameViewModel constructor(
             withContext(Dispatchers.Main) {
                 _state.postValue(
                     if (response.isSuccessful) StateGame.Success(response.body())
-                    else StateGame.Error("Error : ${response.message()} ")
+                    else {
+                        if (response.code() == 403) {
+                            StateGame.Error("Your Session Expired, please sign in again")
+                        }
+                        else {
+                            StateGame.Error("Server Unavailable")
+                        }
+                    }
                 )
             }
         }

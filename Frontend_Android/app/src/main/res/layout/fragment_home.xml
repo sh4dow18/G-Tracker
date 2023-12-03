@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- res/layout/activity_main.xml -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <ScrollView
@@ -21,7 +21,7 @@
             <LinearLayout
                 android:id="@+id/WelcomeContainer"
                 android:layout_width="match_parent"
-                android:layout_height="149dp"
+                android:layout_height="178dp"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
@@ -29,8 +29,10 @@
                     android:id="@+id/WelcomeTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:layout_marginBottom="16dp"
                     android:text="¡Welcome to G-Tracker!"
+                    android:textColor="@color/black"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -38,8 +40,8 @@
                     android:id="@+id/WelcomeDescriptionContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="6dp">
@@ -50,7 +52,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="Welcome to G-Tracker, your ultimate companion for tracking your gaming achievements! We're thrilled to have you on board for a hassle-free gaming tracking experience." />
+                        android:text="Welcome to G-Tracker, your ultimate companion for tracking your gaming achievements! We're thrilled to have you on board for a hassle-free gaming tracking experience."
+                        android:textColor="@color/black" />
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
@@ -67,6 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:text="What is G-Tracker?"
+                    android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -74,8 +78,8 @@
                     android:id="@+id/WhatIsDescriptionContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="6dp">
@@ -86,7 +90,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="G-Tracker is your personalized tool to track and organize your gaming experiences. Wondering what games you've played recently? Want to recall how many games you've completed 100%? Look no further! G-Tracker is here to make tracking your games easy and fun." />
+                        android:text="G-Tracker is your personalized tool to track and organize your gaming experiences. Wondering what games you've played recently? Want to recall how many games you've completed 100%? Look no further! G-Tracker is here to make tracking your games easy and fun."
+                        android:textColor="@color/black" />
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
@@ -103,6 +108,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:text="Key Features"
+                    android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -110,8 +116,8 @@
                     android:id="@+id/KeyFeaturesDescriptionContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="6dp">
@@ -122,7 +128,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="- Simple Registration: Begin your journey on G-Tracker with a quick and easy registration. Your personal account awaits!\n\n- Game Library: Explore our extensive game library and add your favorites to your watchlist with just a tap.\n\n- Complete History: Discover your gaming history at a glance. When did you last play? Have you reached 100% in that challenging game? G-Tracker has you covered." />
+                        android:text="- Simple Registration: Begin your journey on G-Tracker with a quick and easy registration. Your personal account awaits!\n\n- Game Library: Explore our extensive game library and add your favorites to your watchlist with just a tap.\n\n- Complete History: Discover your gaming history at a glance. When did you last play? Have you reached 100% in that challenging game? G-Tracker has you covered."
+                        android:textColor="@color/black" />
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
@@ -139,6 +146,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:text="Why do you will love G-Tracker?"
+                    android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -146,8 +154,8 @@
                     android:id="@+id/LoveDescriptionContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="6dp">
@@ -158,14 +166,15 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="- 🎮 Effortless Organization: Keep your games in order and never forget an epic victory.\n\n- 🏆 Highlighted Achievements: Celebrate your accomplishments by reaching 100% in those games you love.\n\n- 🕹️ Endless Exploration: Discover new exciting titles in our extensive game library." />
+                        android:text="- 🎮 Effortless Organization: Keep your games in order and never forget an epic victory.\n\n- 🏆 Highlighted Achievements: Celebrate your accomplishments by reaching 100% in those games you love.\n\n- 🕹️ Endless Exploration: Discover new exciting titles in our extensive game library."
+                        android:textColor="@color/black" />
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/SignUpContainer"
                 android:layout_width="match_parent"
-                android:layout_height="159dp"
+                android:layout_height="180dp"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
@@ -176,29 +185,32 @@
                     android:layout_marginBottom="16dp"
                     android:gravity="center_horizontal"
                     android:text="Sign Up Now and Elevate Your Gaming Experience to the Next Level"
+                    android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/SignUpDescriptionContainer"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_height="90dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginBottom="30dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="6dp">
 
                     <TextView
                         android:id="@+id/SignUpDescription"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="Get ready for a more organized and memorable gaming experience with G-Tracker! Sign up now to start your journey to hassle-free game tracking." />
+                        android:text="Get ready for a more organized and memorable gaming experience with G-Tracker! Sign up now to start your journey to hassle-free game tracking."
+                        android:textColor="@color/black" />
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
-</RelativeLayout>
+</LinearLayout>

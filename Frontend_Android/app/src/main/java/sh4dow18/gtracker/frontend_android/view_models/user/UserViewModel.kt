@@ -2,6 +2,7 @@ package sh4dow18.gtracker.frontend_android.view_models.user
 
 import android.app.Application
 import android.content.ContentResolver
+import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
 import androidx.lifecycle.AndroidViewModel
@@ -22,6 +23,7 @@ import sh4dow18.gtracker.frontend_android.repositories.UserRepository
 import sh4dow18.gtracker.frontend_android.utils.UpdateUserRequest
 import sh4dow18.gtracker.frontend_android.utils.UserRegistrationRequest
 import sh4dow18.gtracker.frontend_android.utils.UserResponse
+import sh4dow18.gtracker.frontend_android.view_models.game.StateGame
 import java.io.File
 import java.io.IOException
 
@@ -54,7 +56,14 @@ class UserViewModel constructor(
                 withContext(Dispatchers.Main) {
                     _state.postValue(
                         if (response.isSuccessful) StateUser.Success(response.body())
-                        else StateUser.Error("Error : ${response.message()} ")
+                        else {
+                            if (response.code() == 403) {
+                                StateUser.Error("Your Session Expired, please sign in again")
+                            }
+                            else {
+                                StateUser.Error("Server Unavailable")
+                            }
+                        }
                     )
                 }
             } catch (e: Exception) {
@@ -74,7 +83,14 @@ class UserViewModel constructor(
                 withContext(Dispatchers.Main) {
                     _state.postValue(
                         if (response.isSuccessful) StateUser.Success(response.body())
-                        else StateUser.Error("Error : ${response.message()} ")
+                        else {
+                            if (response.code() == 403) {
+                                StateUser.Error("Your Session Expired, please sign in again")
+                            }
+                            else {
+                                StateUser.Error("Server Unavailable")
+                            }
+                        }
                     )
                 }
             } catch (e: Exception) {
@@ -85,21 +101,28 @@ class UserViewModel constructor(
         }
     }
 
-    fun updateUser(image: Uri, updateUserRequest: UpdateUserRequest) {
+    fun updateUser(image: File?, updateUserRequest: UpdateUserRequest) {
         _state.value = StateUser.Loading
-        val contentResolver = getApplication<Application>().contentResolver
-        val file = File(getRealPathFromURI(contentResolver, image))
-        val requestFile = file.asRequestBody("multipart/form-data".toMediaType())
-        val imagePart = MultipartBody.Part.createFormData("image", file.name, requestFile)
+        var imagePart: MultipartBody.Part? = null
+        if (image != null) {
+            val requestFile = image.asRequestBody("multipart/form-data".toMediaType())
+            imagePart = MultipartBody.Part.createFormData("image", image.name, requestFile)
+        }
         val gson = Gson()
         val userJson = gson.toJson(updateUserRequest)
         val userRequestBody = userJson.toRequestBody("application/json".toMediaType())
         val userPart = MultipartBody.Part.createFormData("user", null, userRequestBody)
-        val formData = MultipartBody.Builder()
+        var formData = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
-            .addPart(imagePart)
             .addPart(userPart)
             .build()
+        if (imagePart != null) {
+            formData = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addPart(imagePart)
+                .addPart(userPart)
+                .build()
+        }
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             loading.postValue(true)
             try {
@@ -107,7 +130,14 @@ class UserViewModel constructor(
                 withContext(Dispatchers.Main) {
                     _state.postValue(
                         if (response.isSuccessful) StateUser.Success(response.body())
-                        else StateUser.Error("Error : ${response.message()} ")
+                        else {
+                            if (response.code() == 403) {
+                                StateUser.Error("Your Session Expired, please sign in again")
+                            }
+                            else {
+                                StateUser.Error("Server Unavailable")
+                            }
+                        }
                     )
                 }
             } catch (e: Exception) {
@@ -146,23 +176,5 @@ class UserViewModel constructor(
     override fun onCleared() {
         super.onCleared()
         job?.cancel()
-    }
-    fun isValidImage(uri: Uri): Boolean {
-        return try {
-            val type: String? = getApplication<Application>().contentResolver.getType(uri)
-            type != null && (type == "image/jpeg" || type == "image/png")
-        } catch (e: IOException) {
-            e.printStackTrace()
-            false
-        }
-    }
-
-    private fun getRealPathFromURI(contentResolver: ContentResolver, contentUri: Uri): String {
-        val cursor = contentResolver.query(contentUri, null, null, null, null)
-        cursor.use {
-            it?.moveToFirst()
-            val columnIndex = it?.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-            return it?.getString(columnIndex!!) ?: ""
-        }
     }
 }

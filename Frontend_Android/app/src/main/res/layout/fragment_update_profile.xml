@@ -102,8 +102,7 @@
                             android:layout_height="50dp"
                             android:ems="10"
                             android:hint="Example: Sh4dow18"
-                            android:inputType="text"
-                            android:text="ElMagoPepe" />
+                            android:inputType="text" />
 
                         <TextView
                             android:id="@+id/UserNameHelper"

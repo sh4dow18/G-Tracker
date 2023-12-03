@@ -6,7 +6,9 @@ import org.springframework.stereotype.Repository
 import java.util.Optional
 
 @Repository
-interface UserRepository: JpaRepository<User, String>
+interface UserRepository: JpaRepository<User, String> {
+    fun findByUserName(@Param("userName") userName: String): Optional<User>
+}
 
 @Repository
 interface RoleRepository: JpaRepository<Role, Long>
@@ -15,6 +17,7 @@ interface RoleRepository: JpaRepository<Role, Long>
 interface GameRepository: JpaRepository<Game, Long> {
     fun findFirst20ByOrderByMetacriticDesc(): List<Game>
     fun findByNameContainingIgnoreCase(@Param("name") name: String): List<Game>
+    fun findBySlug(@Param("slug") slug: String): Optional<Game>
 }
 
 @Repository

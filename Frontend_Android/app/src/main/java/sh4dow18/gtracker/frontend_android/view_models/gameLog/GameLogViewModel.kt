@@ -14,6 +14,7 @@ import sh4dow18.gtracker.frontend_android.repositories.GameLogRepository
 import sh4dow18.gtracker.frontend_android.utils.GameLogRegistrationRequest
 import sh4dow18.gtracker.frontend_android.utils.GameLogResponse
 import sh4dow18.gtracker.frontend_android.utils.GameLogUpdateRequest
+import sh4dow18.gtracker.frontend_android.view_models.game.StateGame
 
 
 sealed class StateGameLog {
@@ -44,7 +45,14 @@ class GameLogViewModel constructor(
             withContext(Dispatchers.Main) {
                 _state.postValue(
                     if (response.isSuccessful) StateGameLog.SuccessList(response.body())
-                    else StateGameLog.Error("Error : ${response.message()} ")
+                    else {
+                        if (response.code() == 403) {
+                            StateGameLog.Error("Your Session Expired, please sign in again")
+                        }
+                        else {
+                            StateGameLog.Error("Server Unavailable")
+                        }
+                    }
                 )
             }
         }
@@ -58,7 +66,14 @@ class GameLogViewModel constructor(
             withContext(Dispatchers.Main) {
                 _state.postValue(
                     if (response.isSuccessful) StateGameLog.Success(response.body())
-                    else StateGameLog.Error("Error : ${response.message()} ")
+                    else {
+                        if (response.code() == 403) {
+                            StateGameLog.Error("Your Session Expired, please sign in again")
+                        }
+                        else {
+                            StateGameLog.Error("Server Unavailable")
+                        }
+                    }
                 )
             }
         }
@@ -72,7 +87,14 @@ class GameLogViewModel constructor(
             withContext(Dispatchers.Main) {
                 _state.postValue(
                     if (response.isSuccessful) StateGameLog.Success(response.body())
-                    else StateGameLog.Error("Error : ${response.message()} ")
+                    else {
+                        if (response.code() == 403) {
+                            StateGameLog.Error("Your Session Expired, please sign in again")
+                        }
+                        else {
+                            StateGameLog.Error("Server Unavailable")
+                        }
+                    }
                 )
             }
         }
@@ -86,7 +108,14 @@ class GameLogViewModel constructor(
             withContext(Dispatchers.Main) {
                 _state.postValue(
                     if (response.isSuccessful) StateGameLog.Success(response.body())
-                    else StateGameLog.Error("Error : ${response.message()} ")
+                    else {
+                        if (response.code() == 403) {
+                            StateGameLog.Error("Your Session Expired, please sign in again")
+                        }
+                        else {
+                            StateGameLog.Error("Server Unavailable")
+                        }
+                    }
                 )
             }
         }
@@ -100,7 +129,14 @@ class GameLogViewModel constructor(
             withContext(Dispatchers.Main) {
                 _state.postValue(
                     if (response.isSuccessful) StateGameLog.Success(response.body())
-                    else StateGameLog.Error("Error : ${response.message()} ")
+                    else {
+                        if (response.code() == 403) {
+                            StateGameLog.Error("Your Session Expired, please sign in again")
+                        }
+                        else {
+                            StateGameLog.Error("Server Unavailable")
+                        }
+                    }
                 )
             }
         }

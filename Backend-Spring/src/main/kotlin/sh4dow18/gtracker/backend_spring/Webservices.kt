@@ -86,10 +86,22 @@ class GameController(private val gameService: GameService) {
         return gameService.gamesRegistration(gameRegistrationRequestsList)
     }
 
+    @PostMapping("one", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @ResponseBody
+    fun gameRegistration(@RequestBody gameRegistrationRequest: GameRegistrationRequest): GameResponse {
+        return gameService.gameRegistration(gameRegistrationRequest)
+    }
+
     @PostMapping("images")
     @ResponseBody
-    fun createImageFromGameUrl(): Boolean {
+    fun createImageFromGameUrls(): Boolean {
         return gameService.createImagesFromGamesUrls()
+    }
+
+    @PostMapping("images/one/{id}")
+    @ResponseBody
+    fun createImageFromGameUrl(@PathVariable("id") id: Long): Boolean {
+        return gameService.createImageFromGameUrl(id)
     }
 }
 

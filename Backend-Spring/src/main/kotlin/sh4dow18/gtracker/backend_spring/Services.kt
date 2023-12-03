@@ -32,7 +32,6 @@ interface UserService {
     fun updateUser(updateUserRequest: UpdateUserRequest, image: MultipartFile?): UserResponse
     fun closeAccount(email: String): UserResponse
     fun serveProfileImage(imageName: String?, response: HttpServletResponse)
-
 }
 @Service
 class AbstractUserService(
@@ -47,9 +46,10 @@ class AbstractUserService(
 ): UserService {
     @Throws(NoSuchElementException::class)
     override fun findUserById(email: String): UserResponse {
-        val user: User = userRepository.findById(email).orElse(null)
-            ?: throw NoSuchElementException(String.format("The User with the email %s does not exists", email))
-        return userMapper.userToUserResponse(user)
+        val user: User = userRepository.findById(email).orElseThrow {
+            NoSuchElementException(String.format("The User with the email %s does not exists", email))
+        }
+        return userMapper.userToUserResponse(user, mappingService)
     }
     @Throws(ElementAlreadyExists::class)
     override fun userRegistration(userRegistrationRequest: UserRegistrationRequest): UserResponse {
@@ -58,13 +58,20 @@ class AbstractUserService(
             throw ElementAlreadyExists(String.format("The User with the email %s already exists", userRegistrationRequest.email))
         }
         val newUser = userMapper.userRegistrationRequestToUser(userRegistrationRequest, mappingService, passwordEncoder())
-        return userMapper.userToUserResponse(userRepository.save(newUser))
+        return userMapper.userToUserResponse(userRepository.save(newUser), mappingService)
     }
-    @Throws(NoSuchElementException::class, BadRequestException::class)
+    @Throws(NoSuchElementException::class, BadRequestException::class, ElementAlreadyExists::class)
     override fun updateUser(updateUserRequest: UpdateUserRequest, image: MultipartFile?): UserResponse {
-        val user: User = userRepository.findById(updateUserRequest.email).orElse(null)
-            ?: throw NoSuchElementException(String.format("The User with the email %s does not exists", updateUserRequest.email))
-        userMapper.updateUser(updateUserRequest, user)
+        val user: User = userRepository.findById(updateUserRequest.email).orElseThrow {
+            NoSuchElementException(String.format("The User with the email %s does not exists", updateUserRequest.email))
+        }
+        val anotherUser: User? = userRepository.findByUserName(updateUserRequest.userName).orElse(null)
+        if (anotherUser != null) {
+            throw ElementAlreadyExists(String.format("Already exists the user %s", updateUserRequest.userName))
+        }
+        if (updateUserRequest.userName != "") {
+            userMapper.updateUser(updateUserRequest, user)
+        }
         if (image != null) {
             // Verifies if the image file is really an Image
             if (ImageIO.read(image.inputStream) == null) {
@@ -88,18 +95,18 @@ class AbstractUserService(
             val uniqueFileName = updateUserRequest.email + ".png"
             // Renders the image as "jpg" and save it in the path "uploadPath"
             ImageIO.write(resizedImage, "png", File("$uploadPath/users/$uniqueFileName"))
-            // Update the imagePath
-            user.imagePath = uniqueFileName
+            user.image = true
         }
-        return userMapper.userToUserResponse(userRepository.save(user))
+        return userMapper.userToUserResponse(userRepository.save(user), mappingService)
     }
     @Throws(NoSuchElementException::class)
     override fun closeAccount(email: String): UserResponse {
-        val user: User = userRepository.findById(email).orElse(null)
-            ?: throw NoSuchElementException(String.format("The User with the email %s does not exists", email))
+        val user: User = userRepository.findById(email).orElseThrow {
+            NoSuchElementException(String.format("The User with the email %s does not exists", email))
+        }
         user.password = null
         user.enabled = false
-        return userMapper.userToUserResponse(userRepository.save(user))
+        return userMapper.userToUserResponse(userRepository.save(user), mappingService)
     }
     @Throws(IOException::class, NoSuchElementException::class)
     override fun serveProfileImage(imageName: String?, response: HttpServletResponse) {
@@ -156,8 +163,12 @@ class AbstractGameService(
         }
         return gameMapper.gameToGameResponse(game, mappingService)
     }
-    @Throws(NoSuchElementException::class)
+    @Throws(NoSuchElementException::class, ElementAlreadyExists::class)
     override fun gameRegistration(gameRegistrationRequest: GameRegistrationRequest): GameResponse {
+        val game: Game? = gameRepository.findBySlug(gameRegistrationRequest.slug).orElse(null)
+        if (game != null) {
+            throw ElementAlreadyExists(String.format("The Game '%s' already exists", game.name))
+        }
         val genresList: List<Genre> = genreRepository.findAllByNameIn(gameRegistrationRequest.gendersNamesList)
         if (genresList.size != gameRegistrationRequest.gendersNamesList.size) {
             throw NoSuchElementException("Not all genders were found")
@@ -168,8 +179,8 @@ class AbstractGameService(
         }
         val platformIdsSet: Set<Long> = platformsList.map { it.id }.toSet()
         val genreIdsSet: Set<Long> = genresList.map { it.id }.toSet()
-        val game = gameMapper.gameRegistrationRequestToGame(gameRegistrationRequest, GameContext(genreIdsSet, platformIdsSet))
-        return gameMapper.gameToGameResponse(gameRepository.save(game), mappingService)
+        val newGame = gameMapper.gameRegistrationRequestToGame(gameRegistrationRequest, GameContext(genreIdsSet, platformIdsSet))
+        return gameMapper.gameToGameResponse(gameRepository.save(newGame), mappingService)
     }
 
     override fun gamesRegistration(gameRegistrationRequests: List<GameRegistrationRequest>): List<GameResponse> {
@@ -317,30 +328,34 @@ class AbstractGameLogService(
     }
     @Throws(NoSuchElementException::class, ElementAlreadyExists::class)
     override fun gameLogRegistration(gameLogRegistrationRequest: GameLogRegistrationRequest): GameLogResponse {
-        val game: Game = gameRepository.findById(gameLogRegistrationRequest.game).orElse(null)
-            ?: throw NoSuchElementException(String.format("The Game with the id %d do not found",
+        val game: Game = gameRepository.findById(gameLogRegistrationRequest.game).orElseThrow {
+            NoSuchElementException(String.format("The Game with the id %d do not found",
                 gameLogRegistrationRequest.game))
-        val user: User = userRepository.findById(gameLogRegistrationRequest.user).orElse(null)
-            ?: throw NoSuchElementException(String.format("The User with the email %s do not found",
+        }
+        val user: User = userRepository.findById(gameLogRegistrationRequest.user).orElseThrow {
+            NoSuchElementException(String.format("The User with the email %s do not found",
                 gameLogRegistrationRequest.user))
+        }
         val gameLog: GameLog? = gameLogRepository.findByGameAndUser(game, user).orElse(null)
         if (gameLog != null) {
-            ElementAlreadyExists(String.format("The Game Log with game %s and user %s already exists", game.name, user.userName))
+            throw ElementAlreadyExists("The Game Log Already Exists")
         }
         val newGameLog: GameLog = gameLogMapper.gameAndUserToGameLog(GameLogContext(game, user))
         return gameLogMapper.gameLogToGameLogResponse(gameLogRepository.save(newGameLog), mappingService)
     }
     @Throws(NoSuchElementException::class)
     override fun gameLogUpdateFinished(id: Long): GameLogResponse {
-        val gameLog: GameLog = gameLogRepository.findById(id).orElse(null)
-            ?: throw NoSuchElementException(String.format("The Game Log with the id %d do not found", id))
+        val gameLog: GameLog = gameLogRepository.findById(id).orElseThrow {
+            NoSuchElementException(String.format("The Game Log with the id %d do not found", id))
+        }
         gameLog.finished = !gameLog.finished
         return gameLogMapper.gameLogToGameLogResponse(gameLogRepository.save(gameLog), mappingService)
     }
     @Throws(NoSuchElementException::class)
     override fun gameLogUpdateFinishedAtAll(id: Long): GameLogResponse {
-        val gameLog: GameLog = gameLogRepository.findById(id).orElse(null)
-            ?: throw NoSuchElementException(String.format("The Game Log with the id %d do not found", id))
+        val gameLog: GameLog = gameLogRepository.findById(id).orElseThrow {
+            NoSuchElementException(String.format("The Game Log with the id %d do not found", id))
+        }
         gameLog.finishedAtAll = !gameLog.finishedAtAll
         return gameLogMapper.gameLogToGameLogResponse(gameLogRepository.save(gameLog), mappingService)
     }
@@ -350,6 +365,7 @@ interface MappingService {
     fun findRoleByIdToMapper(id: Long): Role
     fun findAllGenresByGameId(list: Set<Long>): Set<GenreDetails>
     fun findAllPlatformsByGameId(list: Set<Long>): Set<PlatformDetails>
+    fun findAllGameLogsByUser(email: String): UserGamesLogsResponse
 }
 @Service
 class AbstractMappingService(
@@ -362,7 +378,9 @@ class AbstractMappingService(
     @Autowired
     val platformRepository: PlatformRepository,
     @Autowired
-    val platformMapper: PlatformMapper
+    val platformMapper: PlatformMapper,
+    @Autowired
+    val userRepository: UserRepository
 ) : MappingService {
     override fun findRoleByIdToMapper(id: Long): Role {
         return roleRepository.findById(id).orElse(null)
@@ -372,6 +390,24 @@ class AbstractMappingService(
     }
     override fun findAllPlatformsByGameId(list: Set<Long>): Set<PlatformDetails> {
         return platformMapper.platformsListToPlatformsDetailsList(platformRepository.findAllById(list)).toSet()
+    }
+    @Throws(NoSuchElementException::class)
+    override fun findAllGameLogsByUser(email: String): UserGamesLogsResponse {
+        var finished = 0
+        var finishedAtAll = 0
+        val user: User = userRepository.findById(email).orElseThrow {
+            NoSuchElementException(String.format("The User with the email %s does not exists", email))
+        }
+        val totalGames = user.gamesLogsList.size
+        user.gamesLogsList.forEach { gameLog ->
+            if (gameLog.finished) {
+                finished++
+                if (gameLog.finishedAtAll) {
+                    finishedAtAll++
+                }
+            }
+        }
+        return UserGamesLogsResponse(totalGames, totalGames - finished, finished, finishedAtAll)
     }
 }
 

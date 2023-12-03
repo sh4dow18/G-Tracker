@@ -1,4 +1,5 @@
 static/
+release/
 ### Android ###
 # Gradle files
 .gradle/

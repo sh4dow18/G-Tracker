@@ -54,8 +54,9 @@ data class UserResponse(
     var password: String?,
     var createdDate: String,
     var enabled: Boolean,
-    var imagePath: String?,
+    var image: Boolean,
     var role: RoleDetails,
+    var gameLogs: UserGamesLogsResponse
 )
 
 data class GameResponse(
@@ -77,6 +78,13 @@ data class GameLogResponse(
     var finishedAtAll: Boolean,
     var game: GameResponse,
     var user: UserResponse
+)
+
+data class UserGamesLogsResponse(
+    var total: Int,
+    var notFinished: Int,
+    var finished: Int,
+    var finishedAtAll: Int
 )
 
 // Details

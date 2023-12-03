@@ -1,5 +1,6 @@
 package sh4dow18.gtracker.frontend_android.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import sh4dow18.gtracker.frontend_android.MainActivity
 import sh4dow18.gtracker.frontend_android.R
 import sh4dow18.gtracker.frontend_android.databinding.FragmentGameBinding
 import sh4dow18.gtracker.frontend_android.utils.GameLogRegistrationRequest

@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import sh4dow18.gtracker.frontend_android.MainActivity
 import sh4dow18.gtracker.frontend_android.R
 import sh4dow18.gtracker.frontend_android.databinding.FragmentProfileBinding
@@ -51,16 +52,23 @@ class ProfileFragment : Fragment() {
                     binding.UserNameLabel.text = user.userName
                     binding.EmailValue.text = user.email
                     binding.RoleValue.text = user.role.name
-                    if (user.imagePath != null) {
+                    if (user.image) {
                         Glide.with(this)
                             .load("http://192.168.0.13:8080/api/public/image/user/" +
-                                    user.imagePath)
+                                    user.email + ".png")
+                            .skipMemoryCache(true)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .into(binding.ProfileImage)
                     }
+                    binding.TotalGamesValue.text = user.gameLogs.total.toString()
+                    binding.NotFinishedGamesValue.text = user.gameLogs.notFinished.toString()
+                    binding.FinishedGamesValue.text = user.gameLogs.finished.toString()
+                    binding.FinishedAtAllGamesValue.text = user.gameLogs.finishedAtAll.toString()
                 }
                 else -> {}
             }
         }
+
 
         binding.UpdateProfile.setOnClickListener {
             findNavController().navigate(R.id.nav_update_profile)

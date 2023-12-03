@@ -22,7 +22,7 @@ data class User(
     var password: String?,
     var createdDate: ZonedDateTime,
     var enabled: Boolean,
-    var imagePath: String?,
+    var image: Boolean,
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false, referencedColumnName = "id")
     var role: Role,

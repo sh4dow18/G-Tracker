@@ -62,8 +62,7 @@
                             android:layout_height="50dp"
                             android:ems="10"
                             android:hint="Example: example@example.com"
-                            android:inputType="textEmailAddress"
-                            android:text="ramsess.a.2001@gmail.com" />
+                            android:inputType="textEmailAddress" />
 
                         <TextView
                             android:id="@+id/EmailHelper"
@@ -95,8 +94,7 @@
                             android:layout_height="50dp"
                             android:ems="10"
                             android:hint="Example: Sh4dow18"
-                            android:inputType="text"
-                            android:text="ElMagoPepe" />
+                            android:inputType="text" />
 
                         <TextView
                             android:id="@+id/UserNameHelper"
@@ -128,8 +126,7 @@
                             android:layout_height="50dp"
                             android:ems="10"
                             android:hint="Password"
-                            android:inputType="textPassword"
-                            android:text="rootroot123" />
+                            android:inputType="textPassword" />
 
                         <TextView
                             android:id="@+id/PasswordHelper"
@@ -161,8 +158,7 @@
                             android:layout_height="50dp"
                             android:ems="10"
                             android:hint="Password"
-                            android:inputType="textPassword"
-                            android:text="rootroot123" />
+                            android:inputType="textPassword" />
 
                         <TextView
                             android:id="@+id/ConfirmPasswordHelper"

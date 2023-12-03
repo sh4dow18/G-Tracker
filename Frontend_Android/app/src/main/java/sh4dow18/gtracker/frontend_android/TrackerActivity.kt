@@ -31,10 +31,6 @@ class TrackerActivity : AppCompatActivity() {
         binding = ActivityTrackerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.appBarTracker.toolbar)
-        binding.appBarTracker.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_tracker) as NavHostFragment

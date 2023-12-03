@@ -5,25 +5,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="20dp"
     tools:context=".ui.GamesFragment">
 
-    <TextView
-        android:id="@+id/TrackerTitle"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:gravity="center_horizontal"
-        android:text=" Game Tracker"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/GamesRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="1181dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:context="sh4dow18.gtracker.frontend_android.ui.TrackerFragment"
-        tools:listitem="@layout/game_card_item" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/TrackerTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:gravity="center_horizontal"
+                android:text=" Game Tracker"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/GamesRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="1371dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:context="sh4dow18.gtracker.frontend_android.ui.TrackerFragment"
+                tools:listitem="@layout/game_card_item" />
+        </LinearLayout>
+    </ScrollView>
+
 </LinearLayout>

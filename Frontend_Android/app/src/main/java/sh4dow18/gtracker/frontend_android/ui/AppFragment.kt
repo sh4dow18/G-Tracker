@@ -32,6 +32,9 @@ class AppFragment : Fragment() {
         binding.CreatorCompanyFacebookDescription.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://facebook.com/Sh4dowtech")))
         }
+        binding.HelperCompanyDescription.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://rawg.io/apidocs")))
+        }
         return binding.root
     }
 }

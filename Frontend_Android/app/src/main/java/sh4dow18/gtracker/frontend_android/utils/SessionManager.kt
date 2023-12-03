@@ -2,6 +2,9 @@ package sh4dow18.gtracker.frontend_android.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.lifecycle.ViewModelProvider
+import sh4dow18.gtracker.frontend_android.view_models.login.LoginViewModel
+import sh4dow18.gtracker.frontend_android.view_models.login.LoginViewModelFactory
 
 class SessionManager (context: Context) {
     private var prefs: SharedPreferences = context.getSharedPreferences(

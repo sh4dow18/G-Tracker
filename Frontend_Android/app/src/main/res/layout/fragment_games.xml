@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="20dp"
     tools:context=".ui.GamesFragment">
 
     <ScrollView
@@ -21,6 +20,7 @@
                 android:id="@+id/TrackerTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:gravity="center_horizontal"
                 android:text="Games Available"
                 android:textColor="@color/black"
@@ -71,6 +71,8 @@
                 android:id="@+id/GamesRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="1181dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:context="sh4dow18.gtracker.frontend_android.ui.GamesFragment"
                 tools:listitem="@layout/game_card_item" />

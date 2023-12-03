@@ -4,7 +4,7 @@
     android:id="@+id/tracker_header_menu"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="#B4F6DB9D"
+    android:background="#E1BA7D"
     android:gravity="bottom"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
