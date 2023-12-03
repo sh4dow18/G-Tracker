@@ -1,5 +1,5 @@
 # Usa una imagen base con JDK 17
-FROM adoptopenjdk:17-jdk-hotspot
+FROM eclipse-temurin:17-jdk-hotspot
 
 # Define el directorio de trabajo en el contenedor
 WORKDIR /app
