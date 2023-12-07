@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,6 +8,7 @@
     tools:context=".ui.ProfileFragment">
 
     <ScrollView
+        android:id="@+id/FragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -339,4 +340,17 @@
             </androidx.cardview.widget.CardView>
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/FragmentLoading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/primary"
+        android:foregroundTint="@color/primary"
+        android:indeterminateTint="@color/primary"
+        android:progressBackgroundTint="@color/primary"
+        android:progressTint="@color/primary"
+        android:secondaryProgressTint="@color/primary"
+        android:visibility="gone" />
+</FrameLayout>

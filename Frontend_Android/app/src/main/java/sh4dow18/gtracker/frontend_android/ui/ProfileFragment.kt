@@ -39,13 +39,18 @@ class ProfileFragment : Fragment() {
         userViewModel.findUserById(MyApplication.sessionManager!!.getUserEmail())
         userViewModel.state.observe(viewLifecycleOwner){ state ->
             when (state) {
-                StateUser.Loading -> {}
+                StateUser.Loading -> {
+                    binding.FragmentLoading.visibility = View.VISIBLE
+                    binding.FragmentContainer.visibility = View.GONE
+                }
                 is StateUser.Error -> {
                     Toast.makeText(
                         requireContext(),
                         state.message,
                         Toast.LENGTH_LONG
                     ).show()
+                    binding.FragmentLoading.visibility = View.GONE
+                    binding.FragmentContainer.visibility = View.VISIBLE
                 }
                 is StateUser.Success -> {
                     val user = state.user!!
@@ -54,7 +59,7 @@ class ProfileFragment : Fragment() {
                     binding.RoleValue.text = user.role.name
                     if (user.image) {
                         Glide.with(this)
-                            .load("http://192.168.0.13:8080/api/public/image/user/" +
+                            .load("https://g-tracker.onrender.com/api/public/image/user/" +
                                     user.email + ".png")
                             .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -64,6 +69,8 @@ class ProfileFragment : Fragment() {
                     binding.NotFinishedGamesValue.text = user.gameLogs.notFinished.toString()
                     binding.FinishedGamesValue.text = user.gameLogs.finished.toString()
                     binding.FinishedAtAllGamesValue.text = user.gameLogs.finishedAtAll.toString()
+                    binding.FragmentLoading.visibility = View.GONE
+                    binding.FragmentContainer.visibility = View.VISIBLE
                 }
                 else -> {}
             }

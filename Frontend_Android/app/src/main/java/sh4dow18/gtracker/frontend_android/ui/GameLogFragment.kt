@@ -34,13 +34,18 @@ class GameLogFragment : Fragment() {
         gameLogViewModel.findGameLogById(arguments?.getLong("game_log_id")!!)
         gameLogViewModel.state.observe(viewLifecycleOwner){ state ->
             when (state) {
-                StateGameLog.Loading -> {}
+                StateGameLog.Loading -> {
+                    binding.FragmentLoading.visibility = View.VISIBLE
+                    binding.FragmentContainer.visibility = View.GONE
+                }
                 is StateGameLog.Error -> {
                     Toast.makeText(
                         requireContext(),
                         state.message,
                         Toast.LENGTH_LONG
                     ).show()
+                    binding.FragmentLoading.visibility = View.GONE
+                    binding.FragmentContainer.visibility = View.VISIBLE
                 }
                 is StateGameLog.Success -> {
                     val game = state.gameLog!!.game
@@ -68,13 +73,16 @@ class GameLogFragment : Fragment() {
                         gameLogViewModel.gameLogUpdateFinished(state.gameLog.id)
                         gameLogViewModel.state.observe(viewLifecycleOwner){ state ->
                             when (state) {
-                                StateGameLog.Loading -> {}
+                                StateGameLog.Loading -> {
+                                    binding.FragmentLoading.visibility = View.VISIBLE
+                                }
                                 is StateGameLog.Error -> {
                                     Toast.makeText(
                                         requireContext(),
                                         state.message,
                                         Toast.LENGTH_LONG
                                     ).show()
+                                    binding.FragmentLoading.visibility = View.GONE
                                 }
                                 is StateGameLog.Success -> {
                                     Toast.makeText(
@@ -82,6 +90,7 @@ class GameLogFragment : Fragment() {
                                         "Successful Update",
                                         Toast.LENGTH_LONG
                                     ).show()
+                                    binding.FragmentLoading.visibility = View.GONE
                                 }
                                 else -> {}
                             }
@@ -91,13 +100,16 @@ class GameLogFragment : Fragment() {
                         gameLogViewModel.gameLogUpdateFinishedAtAll(state.gameLog.id)
                         gameLogViewModel.state.observe(viewLifecycleOwner){ state ->
                             when (state) {
-                                StateGameLog.Loading -> {}
+                                StateGameLog.Loading -> {
+                                    binding.FragmentLoading.visibility = View.VISIBLE
+                                }
                                 is StateGameLog.Error -> {
                                     Toast.makeText(
                                         requireContext(),
                                         state.message,
                                         Toast.LENGTH_LONG
                                     ).show()
+                                    binding.FragmentLoading.visibility = View.GONE
                                 }
                                 is StateGameLog.Success -> {
                                     Toast.makeText(
@@ -105,11 +117,14 @@ class GameLogFragment : Fragment() {
                                         "Successful Update",
                                         Toast.LENGTH_LONG
                                     ).show()
+                                    binding.FragmentLoading.visibility = View.GONE
                                 }
                                 else -> {}
                             }
                         }
                     }
+                    binding.FragmentLoading.visibility = View.GONE
+                    binding.FragmentContainer.visibility = View.VISIBLE
                 }
                 else -> {}
             }
@@ -117,7 +132,7 @@ class GameLogFragment : Fragment() {
         return binding.root
     }
 
-    fun booleanToString(boolean: Boolean): String {
+    private fun booleanToString(boolean: Boolean): String {
         if (boolean) {
             return "Yes"
         }

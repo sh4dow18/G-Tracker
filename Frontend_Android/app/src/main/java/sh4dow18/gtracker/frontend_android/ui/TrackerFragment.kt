@@ -33,16 +33,22 @@ class TrackerFragment : Fragment() {
         gameLogViewModel.findAllByUserEmail(MyApplication.sessionManager!!.getUserEmail())
         gameLogViewModel.state.observe(viewLifecycleOwner){ state ->
             when (state) {
-                StateGameLog.Loading -> {}
+                StateGameLog.Loading -> {
+                    binding.GamesRecyclerViewLoading.visibility = View.VISIBLE
+                    binding.GamesRecyclerView.visibility = View.GONE
+                }
                 is StateGameLog.Error -> {
                     Toast.makeText(
                         requireContext(),
                         state.message,
                         Toast.LENGTH_LONG
                     ).show()
+                    binding.GamesRecyclerViewLoading.visibility = View.GONE
+                    binding.GamesRecyclerView.visibility = View.VISIBLE
                 }
                 is StateGameLog.SuccessList -> {
                     state.gameLogsList?.let { adapter.setGamesList(it) }
+                    binding.GamesRecyclerViewLoading.visibility = View.GONE
                     binding.GamesRecyclerView.visibility = View.VISIBLE
                 }
                 else -> {}

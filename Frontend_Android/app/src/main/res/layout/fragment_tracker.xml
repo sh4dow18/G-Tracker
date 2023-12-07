@@ -37,6 +37,18 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:context="sh4dow18.gtracker.frontend_android.ui.TrackerFragment"
                 tools:listitem="@layout/game_card_item" />
+            <ProgressBar
+                android:id="@+id/GamesRecyclerViewLoading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/primary"
+                android:foregroundTint="@color/primary"
+                android:indeterminateTint="@color/primary"
+                android:progressBackgroundTint="@color/primary"
+                android:progressTint="@color/primary"
+                android:secondaryProgressTint="@color/primary"
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
 

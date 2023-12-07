@@ -35,16 +35,21 @@ class GamesFragment : Fragment() {
         gameViewModel.findFirst20ByOrderByRatingDesc()
         gameViewModel.state.observe(viewLifecycleOwner){ state ->
             when (state) {
-                StateGame.Loading -> {}
+                StateGame.Loading -> {
+                    binding.GamesRecyclerViewLoading.visibility = View.VISIBLE
+                }
                 is StateGame.Error -> {
                     Toast.makeText(
                         requireContext(),
                         state.message,
                         Toast.LENGTH_LONG
                     ).show()
+                    binding.GamesRecyclerViewLoading.visibility = View.GONE
+                    binding.GamesRecyclerView.visibility = View.VISIBLE
                 }
                 is StateGame.SuccessList -> {
                     state.gamesList?.let { adapter.setGamesList(it) }
+                    binding.GamesRecyclerViewLoading.visibility = View.GONE
                     binding.GamesRecyclerView.visibility = View.VISIBLE
                 }
                 else -> {}
@@ -56,16 +61,22 @@ class GamesFragment : Fragment() {
                 gameViewModel.findByNameContainingIgnoreCase(gameName)
                 gameViewModel.state.observe(viewLifecycleOwner){ state ->
                     when (state) {
-                        StateGame.Loading -> {}
+                        StateGame.Loading -> {
+                            binding.GamesRecyclerView.visibility = View.GONE
+                            binding.GamesRecyclerViewLoading.visibility = View.VISIBLE
+                        }
                         is StateGame.Error -> {
                             Toast.makeText(
                                 requireContext(),
                                 state.message,
                                 Toast.LENGTH_LONG
                             ).show()
+                            binding.GamesRecyclerViewLoading.visibility = View.GONE
+                            binding.GamesRecyclerView.visibility = View.VISIBLE
                         }
                         is StateGame.SuccessList -> {
                             state.gamesList?.let { adapter.setGamesList(it) }
+                            binding.GamesRecyclerViewLoading.visibility = View.GONE
                             binding.GamesRecyclerView.visibility = View.VISIBLE
                         }
                         else -> {}

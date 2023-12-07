@@ -34,9 +34,12 @@ class GamesAdapter : RecyclerView.Adapter<MainViewHolder>() {
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         val game = gamesList[position]
-        Glide.with(holder.itemView.context)
-            .load("http://192.168.0.13:8080/api/public/image/game/${game.id}.png")
-            .into(holder.binding.GameImage)
+        if (game.imageUrl != "") {
+            Glide.with(holder.itemView.context)
+                .load(game.imageUrl)
+                .centerCrop()
+                .into(holder.binding.GameImage)
+        }
         val gameMetacritic = "Rating(Metacritic): " + game.metacritic + " / 100"
         val gameRating = "Rating(Users): " + game.rating + " / 5"
         holder.binding.GameName.text = game.name

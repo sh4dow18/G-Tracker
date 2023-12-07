@@ -49,7 +49,7 @@ class CloseSecurityConfiguration{
 
 }
 // Tag that establishes that this configuration would be only for "dev" spring profile
-@Profile("security")
+@Profile("!init")
 // Tag that establishes that this would be a Spring Configuration
 @Configuration
 // Tag that establishes that this would activate the Spring Web Security and this one
@@ -131,7 +131,7 @@ class JwtSecurityConfiguration {
     fun corsConfigurationSource(): CorsConfigurationSource {
         val source = UrlBasedCorsConfigurationSource()
         val config = CorsConfiguration()
-        config.allowedOrigins = listOf("http://localhost:8080", "http://localhost:3000")
+        config.allowedOrigins = listOf("https://g-tracker.onrender.com", "http://localhost:8080", "http://localhost:3000")
         config.allowedHeaders = listOf("*")
         config.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
         config.exposedHeaders = listOf("Authorization")

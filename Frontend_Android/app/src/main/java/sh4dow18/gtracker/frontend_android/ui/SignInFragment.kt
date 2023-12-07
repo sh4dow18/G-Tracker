@@ -58,7 +58,7 @@ class SignInFragment : Fragment() {
 
         loginViewModel.loginResponse.observe(viewLifecycleOwner, Observer {
             val loginResult = it ?: return@Observer
-            // binding.LoadingCircleLogin.visibility = View.GONE
+            binding.FragmentLoading.visibility = View.GONE
             if (loginResult.error != null) {
                 showLoginFailed(loginResult.error)
             }
@@ -101,7 +101,7 @@ class SignInFragment : Fragment() {
             }
 
             binding.Submit.setOnClickListener {
-                // binding.LoadingCircleLogin.visibility = View.VISIBLE
+                binding.FragmentLoading.visibility = View.VISIBLE
                 loginViewModel.login(
                     UserLoginRequest(
                         email = binding.EmailInput.text.toString(),

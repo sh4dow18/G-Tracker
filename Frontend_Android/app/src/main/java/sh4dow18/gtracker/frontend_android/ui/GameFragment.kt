@@ -40,13 +40,18 @@ class GameFragment : Fragment() {
         gameViewModel.findById(arguments?.getLong("game_id")!!)
         gameViewModel.state.observe(viewLifecycleOwner){ state ->
             when (state) {
-                StateGame.Loading -> {}
+                StateGame.Loading -> {
+                    binding.FragmentLoading.visibility = View.VISIBLE
+                    binding.FragmentContainer.visibility = View.GONE
+                }
                 is StateGame.Error -> {
                     Toast.makeText(
                         requireContext(),
                         state.message,
                         Toast.LENGTH_LONG
                     ).show()
+                    binding.FragmentLoading.visibility = View.GONE
+                    binding.FragmentContainer.visibility = View.VISIBLE
                 }
                 is StateGame.Success -> {
                     val game = state.game!!
@@ -72,15 +77,19 @@ class GameFragment : Fragment() {
                             MyApplication.sessionManager!!.getUserEmail()))
                         gameLogViewModel.state.observe(viewLifecycleOwner){ state ->
                             when (state) {
-                                StateGameLog.Loading -> {}
+                                StateGameLog.Loading -> {
+                                    binding.FragmentLoading.visibility = View.VISIBLE
+                                }
                                 is StateGameLog.Error -> {
                                     Toast.makeText(
                                         requireContext(),
                                         state.message,
                                         Toast.LENGTH_LONG
                                     ).show()
+                                    binding.FragmentLoading.visibility = View.GONE
                                 }
                                 is StateGameLog.Success -> {
+                                    binding.FragmentLoading.visibility = View.GONE
                                     findNavController().navigate(R.id.nav_tracker)
                                     Toast.makeText(
                                         requireContext(),
@@ -92,6 +101,8 @@ class GameFragment : Fragment() {
                             }
                         }
                     }
+                    binding.FragmentLoading.visibility = View.GONE
+                    binding.FragmentContainer.visibility = View.VISIBLE
                 }
                 else -> {}
             }
