@@ -2,9 +2,9 @@
 
 ## Revision History
 
-| Date | Version | Description | Author |
-| ----- | ------- | ----------- | ----- |
-| ? | 0.0.1 | Creation of this document and completion of all its parts | sh4dow18 |
+| Date | Version | Description                                               | Author   |
+| ---- | ------- | --------------------------------------------------------- | -------- |
+| 12/08/2023     | 1.0.0   | Creation of this document and filling in all its parts   | sh4dow18 |
 
 ## Index
 
@@ -30,11 +30,11 @@ This document aims to provide a comprehensive overview of the mockups generated 
 
 ### Sprint 2
 
-Not Available in this Version
+![G-Tracker-Mockups-Sprint-2](/Images/G-Tracker-Mockups-Sprint-2.png)
 
 ### Sprint 3
 
-Not Available in this Version
+![G-Tracker-Mockups-Sprint-3](/Images/G-Tracker-Mockups-Sprint-3.png)
 
 ## Conclusion
 

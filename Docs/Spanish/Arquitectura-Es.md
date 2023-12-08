@@ -4,7 +4,7 @@
 
 | Fecha | Versión | Descripción | Autor |
 | ----- | ------- | ----------- | ----- |
-| ? | 0.0.1 | Creación de este documento y rellenado de todas las partes de este | sh4dow18 |
+| 08/12/2023 | 1.0.0 | Creación de este documento y rellenado de todas las partes de este | sh4dow18 |
 
 ## Indice
 

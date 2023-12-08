@@ -4,7 +4,7 @@
 
 | Date | Version | Description | Author |
 | ----- | ------- | ----------- | ----- |
-| ? | 0.0.1 | Creation of this document and completion of all its parts | sh4dow18 |
+| 12/08/2023     | 1.0.0   | Creation of this document and filling in all its parts   | sh4dow18 |
 
 ## Index
 
@@ -26,7 +26,6 @@
 | ----------- | ------- | ------- |
 | Documentation | Every crucial section of the files must be documented in English. | See Appendix 1 |
 | Naming Variables, Attributes, and Parameters | The name, in camelCase and in English, must be explicit and clearly indicate its purpose of use. | var counter = 0 |
-| Naming Constants | The name must follow the Uppercase + SnakeCase format in English and be explicit about its utility. | val PI_NUMBER = 3.1415 |
 | Function Definition | The name must adopt the camelCase format in English and be explicit about its utility. | fun findById() |
 | Springboot Entity Definition | The name must follow the PascalCase format in English and be explicit about its utility. | User |
 | Springboot Mapper, Service, REST Controller, and Repository Definition | The name format must be PascalCase in English, and the entity name must be followed by "Mapper," "Service," "Controller," or "Repository," as appropriate. | UserMapper |

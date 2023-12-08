@@ -4,7 +4,7 @@
 
 | Fecha | Versión | Descripción | Autor |
 | ----- | ------- | ----------- | ----- |
-| ? | 0.0.1 | Creación de este documento y rellenado de todas las partes de este | sh4dow18 |
+| 08/12/2023 | 1.0.0 | Creación de este documento y rellenado de todas las partes de este | sh4dow18 |
 
 ## Indice
 
@@ -26,7 +26,6 @@
 | ----------- | ------- | ------- |
 | Documentación | Cada sección crucial de los archivos debe documentarse en inglés. | Ver Anexo 1 |
 | Asignar nombres a variables, atributos y parámetros | El nombre, en formato camelCase y en inglés, debe ser explícito y claramente indicar su propósito de uso. | var counter = 0 |
-| Asignar nombres a constantes | El nombre debe seguir el formato Uppercase + SnakeCase en inglés, y debe ser explícito en cuanto a su utilidad. | val PI_NUMBER = 3.1415 |
 | Definición de Funciones | El nombre debe adoptar el formato camelCase en inglés y ser explícito en cuanto a su utilidad. | fun findById() |
 | Definición de Entidades de Springboot | El nombre debe seguir el formato PascalCase en inglés y ser explícito en cuanto a su utilidad. | User |
 | Definición de Mapeadores, Servicios, Controladores REST y Repositorios de Springboot | El formato del nombre debe ser PascalCase en inglés, y el nombre de la entidad debe ir seguido de "Mapper", "Service", "Controller" o "Repository", según corresponda. | UserMapper |
