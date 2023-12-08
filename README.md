@@ -2,8 +2,8 @@
 
 ![G-Tracker-Logo](/Images/G-Tracker%20Documentación%20con%20Fondo.png)
 
-[![GitHub release](https://img.shields.io/github/v/release/sh4dow18/G-Tracker?style=for-the-badge)](https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/releases/latest)
-[![GPLv3 license](https://img.shields.io/github/license/sh4dow18/G-Tracker?style=for-the-badge&color=blue)](https://github.com/sh4dow18/G-Tracker/blob/dev/LICENSE)
+[![Release](https://img.shields.io/badge/Release-1.0.0-FFA500?style=for-the-badge&logo=gpl&labelColor=gray)](https://kotlinlang.org)
+[![GPLv3 license](https://img.shields.io/badge/License-GPL%203.0-0000FF?style=for-the-badge&logo=gpl&labelColor=gray)](https://kotlinlang.org)
 
 G-Tracker is built with the following Technologies:
 
