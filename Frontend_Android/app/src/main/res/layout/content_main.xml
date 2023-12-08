@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#DFC397"
+        android:background="#E1BA7D"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -23,7 +23,7 @@
             android:id="@+id/Header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#B4F6DB9D"
+            android:background="#E1BA7D"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -47,12 +47,12 @@
             android:layout_width="match_parent"
             android:layout_height="490dp"
             app:defaultNavHost="true"
-            app:navGraph="@navigation/mobile_navigation" />
+            app:navGraph="@navigation/main_navigation" />
 
         <LinearLayout
             android:id="@+id/Footer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="#000000"
             android:orientation="horizontal">
 

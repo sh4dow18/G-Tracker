@@ -4,7 +4,7 @@
 
 | Date  | Version | Description                                               | Author    |
 | ----- | ------- | --------------------------------------------------------- | --------- |
-| ?     | 0.0.1   | Creation of this document and filling in all its parts   | sh4dow18 |
+| 12/08/2023     | 1.0.0   | Creation of this document and filling in all its parts   | sh4dow18 |
 
 ## Table of Contents
 
@@ -49,24 +49,20 @@ This section includes the estimation of user story points used with Scrum Poker.
 - Home
 - Account Registration
 - Login
-- Verification of Existing Email for Password Reset
-- Automatic Notification with Code Sent for Password Reset
-- Verification of Code Sent for Password Reset
-- Password Change for Reset
+- Profile View
+- Log Out
 
 ### Sprint 2
 
-- Profile Viewing
 - Profile Update
 - Account Closure
-- Log Out
-- Application Information Viewing
+- App Information View
 - Credits
 
 ### Sprint 3
 
-- Game Viewing
+- Games View
 - Content Search
-- Adding Game Tracking Entry
+- Add Game Tracking Entry
 - Game Tracking
 - Update Game Tracking Entry

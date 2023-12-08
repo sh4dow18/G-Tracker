@@ -4,7 +4,7 @@
 
 | Fecha | Versión | Descripción | Autor |
 | ----- | ------- | ----------- | ----- |
-| ? | 0.0.1 | Creación de este documento y rellenado de todas las partes de este | sh4dow18 |
+| 08/12/2023 | 1.0.0 | Creación de este documento y rellenado de todas las partes de este | sh4dow18 |
 
 ## Índice
 
@@ -33,11 +33,11 @@ soluciones propuestas en cada etapa del proyecto.
 
 ### Sprint 2
 
-No Disponible en esta Versión
+![G-Tracker-Mockups-Sprint-2](/Images/G-Tracker-Mockups-Sprint-2.png)
 
 ### Sprint 3
 
-No Disponible en esta Versión
+![G-Tracker-Mockups-Sprint-3](/Images/G-Tracker-Mockups-Sprint-3.png)
 
 ## Conclusión
 

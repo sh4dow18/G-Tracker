@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.GamesFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/TrackerTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:text="Games Available"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    app:cardCornerRadius="30dp"
+                    app:cardElevation="20dp">
+
+                    <EditText
+                        android:id="@+id/Searcher"
+                        android:layout_width="match_parent"
+                        android:layout_height="62dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="7dp"
+                        android:ems="10"
+                        android:hint="Search Game"
+                        android:inputType="text" />
+                </androidx.cardview.widget.CardView>
+
+                <Button
+                    android:id="@+id/Search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginRight="60dp"
+                    android:layout_marginBottom="20dp"
+                    android:backgroundTint="#B4F6DB9D"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp"
+                    android:text="Search"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:cornerRadius="60dp" />
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/GamesRecyclerViewLoading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/primary"
+                android:foregroundTint="@color/primary"
+                android:indeterminateTint="@color/primary"
+                android:progressBackgroundTint="@color/primary"
+                android:progressTint="@color/primary"
+                android:secondaryProgressTint="@color/primary"
+                android:visibility="visible" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/GamesRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="1181dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:context="sh4dow18.gtracker.frontend_android.ui.GamesFragment"
+                tools:listitem="@layout/game_card_item" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -27,11 +27,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         // Set the Toolbar as App Bar
         setSupportActionBar(binding.appBarMain.toolbar)
-        // Fab Button Click Listener
-        binding.appBarMain.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
         // Get Burger Menu
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
@@ -42,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         // Set Application Bar with the Fragments Ids
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
+                R.id.nav_home, R.id.nav_sign_in, R.id.nav_sign_up, R.id.nav_profile
             ), drawerLayout
         )
         // Set the Navigation Controller with the New Application Bar Configuration
