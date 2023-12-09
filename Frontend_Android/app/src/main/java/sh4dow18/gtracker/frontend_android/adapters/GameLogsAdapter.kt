@@ -34,9 +34,12 @@ class GameLogsAdapter : RecyclerView.Adapter<MainViewHolder>() {
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         val gameLog = gamesLogsList[position]
         val game = gameLog.game
-        Glide.with(holder.itemView.context)
-            .load("http://192.168.0.13:8080/api/public/image/game/${game.id}.png")
-            .into(holder.binding.GameImage)
+        if (game.imageUrl != "") {
+            Glide.with(holder.itemView.context)
+                .load(game.imageUrl)
+                .centerCrop()
+                .into(holder.binding.GameImage)
+        }
         var finished = "No"
         if (gameLog.finished) {
             finished = "Yes"
@@ -45,7 +48,7 @@ class GameLogsAdapter : RecyclerView.Adapter<MainViewHolder>() {
         if (gameLog.finishedAtAll) {
             finishedAtAll = "Yes"
         }
-        var gameRating = "Rating(Users): ${game.rating} / 5"
+        val gameRating = "Rating(Users): ${game.rating} / 5"
         val gameFinished = "Finished: $finished"
         val gameFinishedAtAll = "100%: $finishedAtAll"
         val gameTracker = "$gameFinished / $gameFinishedAtAll"

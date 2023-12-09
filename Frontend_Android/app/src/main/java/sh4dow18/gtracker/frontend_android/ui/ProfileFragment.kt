@@ -57,14 +57,14 @@ class ProfileFragment : Fragment() {
                     binding.UserNameLabel.text = user.userName
                     binding.EmailValue.text = user.email
                     binding.RoleValue.text = user.role.name
-                    if (user.image) {
-                        Glide.with(this)
-                            .load("https://g-tracker.onrender.com/api/public/image/user/" +
-                                    user.email + ".png")
-                            .skipMemoryCache(true)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .into(binding.ProfileImage)
-                    }
+//                    if (user.image) {
+//                        Glide.with(this)
+//                            .load("https://g-tracker.onrender.com/api/public/image/user/" +
+//                                    user.email + ".png")
+//                            .skipMemoryCache(true)
+//                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                            .into(binding.ProfileImage)
+//                    }
                     binding.TotalGamesValue.text = user.gameLogs.total.toString()
                     binding.NotFinishedGamesValue.text = user.gameLogs.notFinished.toString()
                     binding.FinishedGamesValue.text = user.gameLogs.finished.toString()
