@@ -63,9 +63,12 @@ class GameFragment : Fragment() {
                     var platforms = ""
                     game.platformsList.forEach { platforms += (it.name + " / ") }
                     platforms = platforms.substring(0, platforms.length - 3)
-                    Glide.with(this)
-                        .load("http://192.168.0.13:8080/api/public/image/game/${game.id}.png")
-                        .into(binding.GameImage)
+                    if (game.imageUrl != "") {
+                        Glide.with(this)
+                            .load(game.imageUrl)
+                            .centerCrop()
+                            .into(binding.GameImage)
+                    }
                     binding.GameName.text = game.name
                     binding.Metacritic.text = gameMetacritic
                     binding.Genders.text = gameRating
