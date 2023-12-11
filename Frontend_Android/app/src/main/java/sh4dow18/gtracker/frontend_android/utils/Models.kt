@@ -23,10 +23,9 @@ data class GameLogRegistrationRequest(
     var user: String
 )
 
-data class GameLogUpdateRequest(
-    var id: Long,
-    var finished: Boolean,
-    var finishedAtAll: Boolean
+data class First5GameLogsFromUserSearchRequest(
+    var gameName: String,
+    var user: String
 )
 
 // Responses

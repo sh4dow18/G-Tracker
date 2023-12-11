@@ -7,8 +7,8 @@ import sh4dow18.gtracker.frontend_android.utils.GameResponse
 
 interface GameService {
 
-    @GET("api/games/first20")
-    suspend fun findFirst20ByOrderByRatingDesc(): Response<List<GameResponse>>
+    @GET("api/games/first10")
+    suspend fun findFirst10ByOrderByRatingDesc(): Response<List<GameResponse>>
 
     @GET("api/games/search/{name}")
     suspend fun findByNameContainingIgnoreCase(@Path("name") name: String): Response<List<GameResponse>>

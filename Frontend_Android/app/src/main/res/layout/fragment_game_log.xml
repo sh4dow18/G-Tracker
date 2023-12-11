@@ -360,6 +360,7 @@
                 android:layout_marginRight="60dp"
                 android:layout_marginBottom="20dp"
                 android:backgroundTint="#B4F6DB9D"
+                android:enabled="false"
                 android:paddingTop="15dp"
                 android:paddingBottom="15dp"
                 android:text="Finished At All"
@@ -367,6 +368,49 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:cornerRadius="20dp" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="20dp">
+
+                <TextView
+                    android:id="@+id/FinishedButtonDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center_horizontal"
+                    android:text="The Finished button is for you to register that you have finished the game in its main story or its main objectives. If you press it while &quot;Finished: No&quot; it will update to &quot;Finished: Yes&quot; and vice versa"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="20dp">
+
+                <TextView
+                    android:id="@+id/FinishedAtAllButtonDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center_horizontal"
+                    android:text="The &quot;Finished At All&quot; button is for you to register that you have finished the game 100%, discovering all its secrets and curiosities. If you press it while &quot;100%: No&quot; it will update to &quot;100%: Yes&quot; and vice versa"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
+
         </LinearLayout>
     </ScrollView>
 

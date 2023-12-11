@@ -12,7 +12,7 @@
     <fragment
         android:id="@+id/nav_update_profile"
         android:name="sh4dow18.gtracker.frontend_android.ui.UpdateProfileFragment"
-        android:label="UpdateProfile"
+        android:label="Update Profile"
         tools:layout="@layout/fragment_update_profile" />
     <fragment
         android:id="@+id/nav_app"
@@ -22,7 +22,7 @@
     <fragment
         android:id="@+id/nav_games"
         android:name="sh4dow18.gtracker.frontend_android.ui.GamesFragment"
-        android:label="Games"
+        android:label="Search Games"
         tools:layout="@layout/fragment_games" />
     <fragment
         android:id="@+id/nav_game"
@@ -39,4 +39,9 @@
         android:name="sh4dow18.gtracker.frontend_android.ui.GameLogFragment"
         android:label="Game Log"
         tools:layout="@layout/fragment_game_log" />
+    <fragment
+        android:id="@+id/nav_top_games"
+        android:name="sh4dow18.gtracker.frontend_android.ui.TopGamesFragment"
+        android:label="Top Games"
+        tools:layout="@layout/fragment_top_games" />
 </navigation>
