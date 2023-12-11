@@ -99,6 +99,7 @@ class GameLogFragment : Fragment() {
                             }
                         }
                     }
+                    binding.FinishedAtAllButton.isEnabled = state.gameLog.finished
                     binding.FinishedAtAllButton.setOnClickListener {
                         gameLogViewModel.gameLogUpdateFinishedAtAll(state.gameLog.id)
                         gameLogViewModel.state.observe(viewLifecycleOwner){ state ->

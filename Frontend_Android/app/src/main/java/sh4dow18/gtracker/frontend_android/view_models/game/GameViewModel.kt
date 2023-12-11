@@ -38,7 +38,7 @@ class GameViewModel constructor(
         _state.value = StateGame.Loading
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             loading.postValue(true)
-            val response = gameRepository.findFirst20ByOrderByRatingDesc()
+            val response = gameRepository.findFirst10ByOrderByRatingDesc()
             withContext(Dispatchers.Main) {
                 _state.postValue(
                     if (response.isSuccessful) StateGame.SuccessList(response.body())

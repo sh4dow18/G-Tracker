@@ -32,29 +32,6 @@ class GamesFragment : Fragment() {
         binding.GamesRecyclerView.adapter = adapter
         binding.GamesRecyclerView.visibility = View.GONE
         gameViewModel = ViewModelProvider(this, GameViewModelFactory())[GameViewModel::class.java]
-        gameViewModel.findFirst20ByOrderByRatingDesc()
-        gameViewModel.state.observe(viewLifecycleOwner){ state ->
-            when (state) {
-                StateGame.Loading -> {
-                    binding.GamesRecyclerViewLoading.visibility = View.VISIBLE
-                }
-                is StateGame.Error -> {
-                    Toast.makeText(
-                        requireContext(),
-                        state.message,
-                        Toast.LENGTH_LONG
-                    ).show()
-                    binding.GamesRecyclerViewLoading.visibility = View.GONE
-                    binding.GamesRecyclerView.visibility = View.VISIBLE
-                }
-                is StateGame.SuccessList -> {
-                    state.gamesList?.let { adapter.setGamesList(it) }
-                    binding.GamesRecyclerViewLoading.visibility = View.GONE
-                    binding.GamesRecyclerView.visibility = View.VISIBLE
-                }
-                else -> {}
-            }
-        }
         binding.Search.setOnClickListener {
             val gameName = binding.Searcher.text.toString()
             if (gameName != "") {
@@ -77,25 +54,6 @@ class GamesFragment : Fragment() {
                         is StateGame.SuccessList -> {
                             state.gamesList?.let { adapter.setGamesList(it) }
                             binding.GamesRecyclerViewLoading.visibility = View.GONE
-                            binding.GamesRecyclerView.visibility = View.VISIBLE
-                        }
-                        else -> {}
-                    }
-                }
-            } else {
-                gameViewModel.findFirst20ByOrderByRatingDesc()
-                gameViewModel.state.observe(viewLifecycleOwner){ state ->
-                    when (state) {
-                        StateGame.Loading -> {}
-                        is StateGame.Error -> {
-                            Toast.makeText(
-                                requireContext(),
-                                state.message,
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                        is StateGame.SuccessList -> {
-                            state.gamesList?.let { adapter.setGamesList(it) }
                             binding.GamesRecyclerView.visibility = View.VISIBLE
                         }
                         else -> {}

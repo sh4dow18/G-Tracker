@@ -80,14 +80,12 @@
                 android:progressBackgroundTint="@color/primary"
                 android:progressTint="@color/primary"
                 android:secondaryProgressTint="@color/primary"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/GamesRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="1181dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
+                android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:context="sh4dow18.gtracker.frontend_android.ui.GamesFragment"
                 tools:listitem="@layout/game_card_item" />

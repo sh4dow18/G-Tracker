@@ -11,10 +11,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import sh4dow18.gtracker.frontend_android.repositories.GameLogRepository
+import sh4dow18.gtracker.frontend_android.utils.First5GameLogsFromUserSearchRequest
 import sh4dow18.gtracker.frontend_android.utils.GameLogRegistrationRequest
 import sh4dow18.gtracker.frontend_android.utils.GameLogResponse
-import sh4dow18.gtracker.frontend_android.utils.GameLogUpdateRequest
-import sh4dow18.gtracker.frontend_android.view_models.game.StateGame
 
 
 sealed class StateGameLog {
@@ -37,11 +36,32 @@ class GameLogViewModel constructor(
         onError("Exception handled: ${throwable.localizedMessage}")
     }
 
-    fun findAllByUserEmail(email: String) {
+    fun findFirst5ByUserEmail(email: String) {
         _state.value = StateGameLog.Loading
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             loading.postValue(true)
-            val response = gameLogRepository.findAllByUserEmail(email)
+            val response = gameLogRepository.findFirst5ByUserEmail(email)
+            withContext(Dispatchers.Main) {
+                _state.postValue(
+                    if (response.isSuccessful) StateGameLog.SuccessList(response.body())
+                    else {
+                        if (response.code() == 403) {
+                            StateGameLog.Error("Your Session Expired, please sign in again")
+                        }
+                        else {
+                            StateGameLog.Error("Server Unavailable")
+                        }
+                    }
+                )
+            }
+        }
+    }
+
+    fun findTop5ByUserEmailAndGameName(userEmail: String, gameName: String) {
+        _state.value = StateGameLog.Loading
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            loading.postValue(true)
+            val response = gameLogRepository.findTop5ByUserEmailAndGameName(userEmail, gameName)
             withContext(Dispatchers.Main) {
                 _state.postValue(
                     if (response.isSuccessful) StateGameLog.SuccessList(response.body())
@@ -90,6 +110,9 @@ class GameLogViewModel constructor(
                     else {
                         if (response.code() == 403) {
                             StateGameLog.Error("Your Session Expired, please sign in again")
+                        }
+                        else if (response.code() == 409) {
+                            StateGameLog.Error("This Game already exists in your tracker")
                         }
                         else {
                             StateGameLog.Error("Server Unavailable")

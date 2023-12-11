@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import sh4dow18.gtracker.frontend_android.R
 import sh4dow18.gtracker.frontend_android.adapters.GameLogsAdapter
 import sh4dow18.gtracker.frontend_android.databinding.FragmentTrackerBinding
+import sh4dow18.gtracker.frontend_android.utils.First5GameLogsFromUserSearchRequest
 import sh4dow18.gtracker.frontend_android.utils.GameLogRegistrationRequest
 import sh4dow18.gtracker.frontend_android.utils.MyApplication
 import sh4dow18.gtracker.frontend_android.view_models.game.GameViewModelFactory
@@ -30,7 +31,7 @@ class TrackerFragment : Fragment() {
         _binding = FragmentTrackerBinding.inflate(inflater, container, false)
         binding.GamesRecyclerView.adapter = adapter
         gameLogViewModel = ViewModelProvider(this, GameLogViewModelFactory())[GameLogViewModel::class.java]
-        gameLogViewModel.findAllByUserEmail(MyApplication.sessionManager!!.getUserEmail())
+        gameLogViewModel.findFirst5ByUserEmail(MyApplication.sessionManager!!.getUserEmail())
         gameLogViewModel.state.observe(viewLifecycleOwner){ state ->
             when (state) {
                 StateGameLog.Loading -> {
@@ -53,6 +54,10 @@ class TrackerFragment : Fragment() {
                 }
                 else -> {}
             }
+        }
+        binding.Search.setOnClickListener {
+            gameLogViewModel.findTop5ByUserEmailAndGameName(MyApplication.sessionManager!!.getUserEmail(),
+                binding.Searcher.text.toString())
         }
         return binding.root
     }

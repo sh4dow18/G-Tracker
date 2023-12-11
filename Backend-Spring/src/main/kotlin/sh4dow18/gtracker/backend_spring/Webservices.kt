@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
@@ -72,13 +73,13 @@ class GameController(private val gameService: GameService) {
     @ResponseBody
     fun findGameById(@PathVariable("id") id: Long) = gameService.findGameById(id)
 
-    @GetMapping("first20")
+    @GetMapping("first10")
     @ResponseBody
-    fun findFirst20ByOrderByRatingDesc() = gameService.findFirst20ByOrderByRatingDesc()
+    fun findFirst10ByOrderByRatingDesc() = gameService.findFirst10ByOrderByRatingDesc()
 
     @GetMapping("search/{name}")
     @ResponseBody
-    fun findByNameContainingIgnoreCase(@PathVariable("name") name: String) = gameService.findByNameContainingIgnoreCase(name)
+    fun findTop10ByNameContainingIgnoreCase(@PathVariable("name") name: String) = gameService.findTop10ByNameContainingIgnoreCase(name)
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseBody
@@ -146,7 +147,16 @@ class GameLogController(private val gameLogService: GameLogService) {
 
     @GetMapping("user/{email}")
     @ResponseBody
-    fun findAllByUserEmail(@PathVariable("email") email: String) = gameLogService.findAllByUserEmail(email)
+    fun findFirst5ByUserEmailOrderByCreatedDateDesc(@PathVariable("email") email: String) =
+        gameLogService.findFirst5ByUserEmailOrderByCreatedDateDesc(email)
+
+    @GetMapping("user/search")
+    @ResponseBody
+    fun findTop5ByUserEmailAndGameNameContainingIgnoreCase(
+        @RequestParam userEmail: String,
+        @RequestParam gameName: String
+    ): List<GameLogResponse> = gameLogService.findTop5ByUserEmailAndGameNameContainingIgnoreCase(userEmail, gameName)
+
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseBody

@@ -51,6 +51,7 @@ class AbstractUserService(
         }
         return userMapper.userToUserResponse(user, mappingService)
     }
+    @Transactional(rollbackFor = [ElementAlreadyExists::class])
     @Throws(ElementAlreadyExists::class)
     override fun userRegistration(userRegistrationRequest: UserRegistrationRequest): UserResponse {
         val user: User? = userRepository.findById(userRegistrationRequest.email).orElse(null)
@@ -60,6 +61,7 @@ class AbstractUserService(
         val newUser = userMapper.userRegistrationRequestToUser(userRegistrationRequest, mappingService, passwordEncoder())
         return userMapper.userToUserResponse(userRepository.save(newUser), mappingService)
     }
+    @Transactional(rollbackFor = [NoSuchElementException::class, BadRequestException::class, ElementAlreadyExists::class])
     @Throws(NoSuchElementException::class, BadRequestException::class, ElementAlreadyExists::class)
     override fun updateUser(updateUserRequest: UpdateUserRequest, image: MultipartFile?): UserResponse {
         val user: User = userRepository.findById(updateUserRequest.email).orElseThrow {
@@ -99,6 +101,7 @@ class AbstractUserService(
         }
         return userMapper.userToUserResponse(userRepository.save(user), mappingService)
     }
+    @Transactional(rollbackFor = [NoSuchElementException::class])
     @Throws(NoSuchElementException::class)
     override fun closeAccount(email: String): UserResponse {
         val user: User = userRepository.findById(email).orElseThrow {
@@ -108,6 +111,7 @@ class AbstractUserService(
         user.enabled = false
         return userMapper.userToUserResponse(userRepository.save(user), mappingService)
     }
+    @Transactional(rollbackFor = [IOException::class, NoSuchElementException::class])
     @Throws(IOException::class, NoSuchElementException::class)
     override fun serveProfileImage(imageName: String?, response: HttpServletResponse) {
         try {
@@ -123,8 +127,8 @@ class AbstractUserService(
 
 interface GameService {
     fun findAllGames(): List<GameResponse>
-    fun findFirst20ByOrderByRatingDesc(): List<GameResponse>
-    fun findByNameContainingIgnoreCase(name: String): List<GameResponse>
+    fun findFirst10ByOrderByRatingDesc(): List<GameResponse>
+    fun findTop10ByNameContainingIgnoreCase(name: String): List<GameResponse>
     fun findGameById(id: Long): GameResponse
     fun gameRegistration(gameRegistrationRequest: GameRegistrationRequest): GameResponse
     fun gamesRegistration(gameRegistrationRequests: List<GameRegistrationRequest>): List<GameResponse>
@@ -150,11 +154,11 @@ class AbstractGameService(
     override fun findAllGames(): List<GameResponse> {
         return gameMapper.gamesListToGameResponsesList(gameRepository.findAll(), mappingService)
     }
-    override fun findFirst20ByOrderByRatingDesc(): List<GameResponse> {
-        return gameMapper.gamesListToGameResponsesList(gameRepository.findFirst20ByOrderByMetacriticDesc(), mappingService)
+    override fun findFirst10ByOrderByRatingDesc(): List<GameResponse> {
+        return gameMapper.gamesListToGameResponsesList(gameRepository.findFirst10ByOrderByMetacriticDesc(), mappingService)
     }
-    override fun findByNameContainingIgnoreCase(name: String): List<GameResponse> {
-        return gameMapper.gamesListToGameResponsesList(gameRepository.findByNameContainingIgnoreCase(name), mappingService)
+    override fun findTop10ByNameContainingIgnoreCase(name: String): List<GameResponse> {
+        return gameMapper.gamesListToGameResponsesList(gameRepository.findTop10ByNameContainingIgnoreCase(name), mappingService)
     }
     @Throws(NoSuchElementException::class)
     override fun findGameById(id: Long): GameResponse {
@@ -182,7 +186,6 @@ class AbstractGameService(
         val newGame = gameMapper.gameRegistrationRequestToGame(gameRegistrationRequest, GameContext(genreIdsSet, platformIdsSet))
         return gameMapper.gameToGameResponse(gameRepository.save(newGame), mappingService)
     }
-
     override fun gamesRegistration(gameRegistrationRequests: List<GameRegistrationRequest>): List<GameResponse> {
         val gamesResponsesList: MutableList<GameResponse> = mutableListOf()
         gameRegistrationRequests.forEach { game ->
@@ -190,6 +193,7 @@ class AbstractGameService(
         }
         return gamesResponsesList
     }
+    @Transactional(rollbackFor = [NoSuchElementException::class])
     @Throws(NoSuchElementException::class)
     override fun createImageFromGameUrl(id: Long): Boolean {
         val game: Game = gameRepository.findById(id).orElseThrow {
@@ -215,6 +219,7 @@ class AbstractGameService(
         }
         return true
     }
+    @Transactional(rollbackFor = [NoSuchElementException::class])
     @Throws(NoSuchElementException::class)
     override fun createImagesFromGamesUrls(): Boolean {
         gameRepository.findAll().forEach { game ->
@@ -250,7 +255,13 @@ class AbstractPlatformService(
     override fun findAllPlatforms(): List<PlatformDetails> {
         return platformMapper.platformsListToPlatformsDetailsList(platformRepository.findAll())
     }
+    @Transactional(rollbackFor = [ElementAlreadyExists::class])
+    @Throws(ElementAlreadyExists::class)
     override fun platformRegistration(name: String): PlatformDetails {
+        val platform: Platform? = platformRepository.findByName(name).orElse(null)
+        if (platform != null) {
+            throw ElementAlreadyExists(String.format("The Platform '%s' already exists"))
+        }
         val newPlatform = platformMapper.stringToPlatform(name)
         return platformMapper.platformToPlatformDetails(platformRepository.save(newPlatform))
     }
@@ -279,7 +290,13 @@ class AbstractGenreService(
     override fun findAllGenres(): List<GenreDetails> {
         return genreMapper.genresListToGenresDetailsList(genreRepository.findAll())
     }
+    @Transactional(rollbackFor = [ElementAlreadyExists::class])
+    @Throws(ElementAlreadyExists::class)
     override fun genreRegistration(name: String): GenreDetails {
+        val genre: Genre? = genreRepository.findByName(name).orElse(null)
+        if (genre != null) {
+            throw ElementAlreadyExists(String.format("The Genre '%s' already exists"))
+        }
         val newGenre = genreMapper.stringToGenre(name)
         return genreMapper.genreToGenreDetails(genreRepository.save(newGenre))
     }
@@ -294,7 +311,8 @@ class AbstractGenreService(
 
 interface GameLogService {
     fun findAllGameLogs(): List<GameLogResponse>
-    fun findAllByUserEmail(email: String): List<GameLogResponse>
+    fun findFirst5ByUserEmailOrderByCreatedDateDesc(email: String): List<GameLogResponse>
+    fun findTop5ByUserEmailAndGameNameContainingIgnoreCase(userEmail: String, gameName: String): List<GameLogResponse>
     fun findGameLogById(id: Long): GameLogResponse
     fun gameLogRegistration(gameLogRegistrationRequest: GameLogRegistrationRequest): GameLogResponse
     fun gameLogUpdateFinished(id: Long): GameLogResponse
@@ -316,9 +334,14 @@ class AbstractGameLogService(
     override fun findAllGameLogs(): List<GameLogResponse> {
         return gameLogMapper.gameLogsListToGameLogsResponsesList(gameLogRepository.findAll(), mappingService)
     }
-    override fun findAllByUserEmail(email: String): List<GameLogResponse> {
-        return gameLogMapper.gameLogsListToGameLogsResponsesList(gameLogRepository.findAllByUserEmailOrderByCreatedDateDesc(email), mappingService)
+    override fun findFirst5ByUserEmailOrderByCreatedDateDesc(email: String): List<GameLogResponse> {
+        return gameLogMapper.gameLogsListToGameLogsResponsesList(gameLogRepository.findFirst5ByUserEmailOrderByCreatedDateDesc(email), mappingService)
     }
+    override fun findTop5ByUserEmailAndGameNameContainingIgnoreCase(userEmail: String, gameName: String): List<GameLogResponse> {
+        return gameLogMapper.gameLogsListToGameLogsResponsesList(gameLogRepository.findTop5ByUserEmailAndGameNameContainingIgnoreCase(
+            userEmail, gameName), mappingService)
+    }
+    @Transactional(rollbackFor = [NoSuchElementException::class])
     @Throws(NoSuchElementException::class)
     override fun findGameLogById(id: Long): GameLogResponse {
         val gameLog: GameLog = gameLogRepository.findById(id).orElseThrow {
@@ -326,6 +349,7 @@ class AbstractGameLogService(
         }
         return gameLogMapper.gameLogToGameLogResponse(gameLog, mappingService)
     }
+    @Transactional(rollbackFor = [NoSuchElementException::class])
     @Throws(NoSuchElementException::class, ElementAlreadyExists::class)
     override fun gameLogRegistration(gameLogRegistrationRequest: GameLogRegistrationRequest): GameLogResponse {
         val game: Game = gameRepository.findById(gameLogRegistrationRequest.game).orElseThrow {
@@ -343,6 +367,7 @@ class AbstractGameLogService(
         val newGameLog: GameLog = gameLogMapper.gameAndUserToGameLog(GameLogContext(game, user))
         return gameLogMapper.gameLogToGameLogResponse(gameLogRepository.save(newGameLog), mappingService)
     }
+    @Transactional(rollbackFor = [NoSuchElementException::class])
     @Throws(NoSuchElementException::class)
     override fun gameLogUpdateFinished(id: Long): GameLogResponse {
         val gameLog: GameLog = gameLogRepository.findById(id).orElseThrow {
@@ -351,6 +376,7 @@ class AbstractGameLogService(
         gameLog.finished = !gameLog.finished
         return gameLogMapper.gameLogToGameLogResponse(gameLogRepository.save(gameLog), mappingService)
     }
+    @Transactional(rollbackFor = [NoSuchElementException::class])
     @Throws(NoSuchElementException::class)
     override fun gameLogUpdateFinishedAtAll(id: Long): GameLogResponse {
         val gameLog: GameLog = gameLogRepository.findById(id).orElseThrow {
