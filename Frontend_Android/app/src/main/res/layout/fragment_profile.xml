@@ -328,7 +328,7 @@
                         android:layout_marginTop="20dp"
                         android:layout_marginRight="60dp"
                         android:layout_marginBottom="20dp"
-                        android:backgroundTint="#B4F16262"
+                        android:backgroundTint="@color/red"
                         android:paddingTop="20dp"
                         android:paddingBottom="20dp"
                         android:text="Close Account"

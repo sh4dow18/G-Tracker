@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tracker_navigation"
-    app:startDestination="@id/nav_profile">
+    app:startDestination="@+id/nav_profile">
     <fragment
         android:id="@+id/nav_profile"
         android:name="sh4dow18.gtracker.frontend_android.ui.ProfileFragment"
@@ -44,4 +44,14 @@
         android:name="sh4dow18.gtracker.frontend_android.ui.TopGamesFragment"
         android:label="Top Games"
         tools:layout="@layout/fragment_top_games" />
+    <fragment
+        android:id="@+id/nav_game_log_more_options"
+        android:name="sh4dow18.gtracker.frontend_android.ui.GameLogMoreOptionsFragment"
+        android:label="Game Log More Options"
+        tools:layout="@layout/fragment_game_log_more_options" />
+    <fragment
+        android:id="@+id/nav_last_warning_close_account"
+        android:name="sh4dow18.gtracker.frontend_android.ui.LastWarningCloseAccountFragment"
+        android:label="Close Account Warning"
+        tools:layout="@layout/fragment_last_warning_close_account" />
 </navigation>

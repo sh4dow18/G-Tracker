@@ -6,14 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import sh4dow18.gtracker.frontend_android.R
 import sh4dow18.gtracker.frontend_android.databinding.FragmentGameLogBinding
-import sh4dow18.gtracker.frontend_android.utils.GameLogRegistrationRequest
-import sh4dow18.gtracker.frontend_android.utils.MyApplication
-import sh4dow18.gtracker.frontend_android.view_models.game.GameViewModelFactory
 import sh4dow18.gtracker.frontend_android.view_models.gameLog.GameLogViewModel
 import sh4dow18.gtracker.frontend_android.view_models.gameLog.GameLogViewModelFactory
 import sh4dow18.gtracker.frontend_android.view_models.gameLog.StateGameLog
@@ -49,14 +48,18 @@ class GameLogFragment : Fragment() {
                 }
                 is StateGameLog.Success -> {
                     val game = state.gameLog!!.game
-                    val gameMetacritic = "Rating(Metacritic): " + game.metacritic + " / 100"
-                    val gameRating = "Rating(Users): " + game.rating + " / 5"
-                    var genres = ""
-                    game.gendersList.forEach { genres += (it.name + " / ") }
-                    genres = genres.substring(0, genres.length - 3)
-                    var platforms = ""
-                    game.platformsList.forEach { platforms += (it.name + " / ") }
-                    platforms = platforms.substring(0, platforms.length - 3)
+                    var genres = "No Information Found"
+                    if (game.gendersList.isNotEmpty()) {
+                        genres = ""
+                        game.gendersList.forEach { genres += (it.name + " / ") }
+                        genres = genres.substring(0, genres.length - 3)
+                    }
+                    var platforms = "No Information Found"
+                    if (game.platformsList.isNotEmpty()) {
+                        platforms = ""
+                        game.platformsList.forEach { platforms += (it.name + " / ") }
+                        platforms = platforms.substring(0, platforms.length - 3)
+                    }
                     if (game.imageUrl != "") {
                         Glide.with(this)
                             .load(game.imageUrl)
@@ -64,16 +67,16 @@ class GameLogFragment : Fragment() {
                             .into(binding.GameImage)
                     }
                     binding.GameName.text = game.name
-                    binding.Metacritic.text = gameMetacritic
-                    binding.Genders.text = gameRating
+                    binding.MetacriticDescription.text = game.metacritic.toString()
+                    binding.RatingUsersDescription.text = game.rating.toString()
                     binding.GameReleaseDescription.text = game.releaseDate
                     binding.GameGenresDescription.text = genres
                     binding.GamePlatformDescription.text = platforms
                     binding.GameLogCreateDateDescription.text = state.gameLog.createdDate
-                    binding.GameLogFinishedDescription.text = booleanToString(state.gameLog.finished)
-                    binding.GameLogFinishedAtAllDescription.text = booleanToString(state.gameLog.finishedAtAll)
+                    binding.GameLogFinishedDescription.text = if (state.gameLog.finished != "") state.gameLog.finished else "No"
+                    binding.GameLogFinishedAtAllDescription.text = if (state.gameLog.finishedAtAll != "") state.gameLog.finishedAtAll else "No"
                     binding.FinishedButton.setOnClickListener {
-                        gameLogViewModel.gameLogUpdateFinished(state.gameLog.id)
+                        gameLogViewModel.updateGameLogFinished(state.gameLog.id)
                         gameLogViewModel.state.observe(viewLifecycleOwner){ state ->
                             when (state) {
                                 StateGameLog.Loading -> {
@@ -99,9 +102,9 @@ class GameLogFragment : Fragment() {
                             }
                         }
                     }
-                    binding.FinishedAtAllButton.isEnabled = state.gameLog.finished
+                    binding.FinishedAtAllButton.isEnabled = state.gameLog.finished != ""
                     binding.FinishedAtAllButton.setOnClickListener {
-                        gameLogViewModel.gameLogUpdateFinishedAtAll(state.gameLog.id)
+                        gameLogViewModel.updateGameLogFinishedAtAll(state.gameLog.id)
                         gameLogViewModel.state.observe(viewLifecycleOwner){ state ->
                             when (state) {
                                 StateGameLog.Loading -> {
@@ -126,6 +129,10 @@ class GameLogFragment : Fragment() {
                                 else -> {}
                             }
                         }
+                    }
+                    binding.MoreOptionsButton.setOnClickListener {
+                        val bundle = bundleOf("game_log_id" to state.gameLog.id)
+                        findNavController().navigate(R.id.nav_game_log_more_options, bundle)
                     }
                     binding.FragmentLoading.visibility = View.GONE
                     binding.FragmentContainer.visibility = View.VISIBLE
@@ -134,12 +141,5 @@ class GameLogFragment : Fragment() {
             }
         }
         return binding.root
-    }
-
-    private fun booleanToString(boolean: Boolean): String {
-        if (boolean) {
-            return "Yes"
-        }
-        return "No"
     }
 }

@@ -7,14 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import sh4dow18.gtracker.frontend_android.R
 import sh4dow18.gtracker.frontend_android.adapters.GameLogsAdapter
 import sh4dow18.gtracker.frontend_android.databinding.FragmentTrackerBinding
-import sh4dow18.gtracker.frontend_android.utils.First5GameLogsFromUserSearchRequest
-import sh4dow18.gtracker.frontend_android.utils.GameLogRegistrationRequest
 import sh4dow18.gtracker.frontend_android.utils.MyApplication
-import sh4dow18.gtracker.frontend_android.view_models.game.GameViewModelFactory
 import sh4dow18.gtracker.frontend_android.view_models.gameLog.GameLogViewModel
 import sh4dow18.gtracker.frontend_android.view_models.gameLog.GameLogViewModelFactory
 import sh4dow18.gtracker.frontend_android.view_models.gameLog.StateGameLog

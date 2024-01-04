@@ -8,6 +8,9 @@ import org.mapstruct.MappingTarget
 import org.mapstruct.NullValuePropertyMappingStrategy
 import org.mapstruct.ReportingPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import javax.swing.Action
+
+const val UTILS_PATH = "sh4dow18.gtracker.backend_spring.UtilsKt"
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 interface UserMapper {
@@ -23,7 +26,7 @@ interface UserMapper {
         @Context mappingService: MappingService,
         @Context passwordEncoder: BCryptPasswordEncoder,
     ): User
-    @Mapping(target = "createdDate", expression = "java(user.getCreatedDate().format(java.time.format.DateTimeFormatter.ofPattern(\"yyyy-MM-dd\")))")
+    @Mapping(target = "createdDate", expression = "java($UTILS_PATH.getDateAsString(user.getCreatedDate(), true))")
     @Mapping(target = "gameLogs", expression = "java(mappingService.findAllGameLogsByUser(user.getEmail()))")
     fun userToUserResponse(
         user: User,
@@ -88,16 +91,19 @@ interface GenreMapper {
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 interface GameLogMapper {
-    @Mapping(target = "createdDate", expression = "java(java.time.ZonedDateTime.now(java.time.ZoneOffset.UTC))")
-    @Mapping(target = "finished", expression = "java(false)")
-    @Mapping(target = "finishedAtAll", expression = "java(false)")
+    @Mapping(target = "createdDate", expression = "java(java.time.ZonedDateTime.now())")
+    @Mapping(target = "finished", expression = "java(null)")
+    @Mapping(target = "finishedAtAll", expression = "java(null)")
     fun gameAndUserToGameLog(
         gameLogContext: GameLogContext,
     ): GameLog
-    @Mapping(target = "createdDate", expression = "java(gameLog.getCreatedDate().format(java.time.format.DateTimeFormatter.ofPattern(\"yyyy-MM-dd\")))")
+    @Mapping(target = "createdDate", expression = "java($UTILS_PATH.getDateAsString(gameLog.getCreatedDate(), true))")
+    @Mapping(target = "finished", expression = "java($UTILS_PATH.getDateAsString(gameLog.getFinished(), true))")
+    @Mapping(target = "finishedAtAll", expression = "java($UTILS_PATH.getDateAsString(gameLog.getFinishedAtAll(), true))")
     @Mapping(target = "game.gendersList", expression = "java(mappingService.findAllGenresByGameId(game.getGenderGame()))")
     @Mapping(target = "game.platformsList", expression = "java(mappingService.findAllPlatformsByGameId(game.getPlatformGame()))")
     @Mapping(target = "user.gameLogs", expression = "java(mappingService.findAllGameLogsByUser(user.getEmail()))")
+    @Mapping(target = "user.createdDate", expression = "java($UTILS_PATH.getDateAsString(user.getCreatedDate(), true))")
     fun gameLogToGameLogResponse(
         gameLog: GameLog,
         @Context mappingService: MappingService
@@ -107,5 +113,27 @@ interface GameLogMapper {
         @Context mappingService: MappingService
     ): List<GameLogResponse> {
         return gameLogsList.map { gameLogToGameLogResponse(it, mappingService) }
+    }
+}
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+interface LogMapper {
+    @Mapping(target = "actionType", expression = "java(newActionType)")
+    @Mapping(target = "user", expression = "java(newUser)")
+    fun registerLogRequestToLog(
+        registerLogRequest: RegisterLogRequest,
+        newActionType: ActionType,
+        newUser: User
+    ): Log
+    @Mapping(target = "user.gameLogs", expression = "java(mappingService.findAllGameLogsByUser(user.getEmail()))")
+    fun logToLogResponse(
+        log: Log,
+        @Context mappingService: MappingService
+    ): LogResponse
+    fun logsListToLogResponsesList(
+        logsList: List<Log>,
+        @Context mappingService: MappingService
+    ): List<LogResponse> {
+        return logsList.map { logToLogResponse(it, mappingService) }
     }
 }

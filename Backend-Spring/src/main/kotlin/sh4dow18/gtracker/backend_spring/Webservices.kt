@@ -1,7 +1,9 @@
 package sh4dow18.gtracker.backend_spring
 
+import com.fasterxml.jackson.databind.node.LongNode
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
+import kotlin.math.log
 
 @RestController
 @RequestMapping("\${url.users}")
@@ -92,18 +95,6 @@ class GameController(private val gameService: GameService) {
     fun gameRegistration(@RequestBody gameRegistrationRequest: GameRegistrationRequest): GameResponse {
         return gameService.gameRegistration(gameRegistrationRequest)
     }
-
-    @PostMapping("images")
-    @ResponseBody
-    fun createImageFromGameUrls(): Boolean {
-        return gameService.createImagesFromGamesUrls()
-    }
-
-    @PostMapping("images/one/{id}")
-    @ResponseBody
-    fun createImageFromGameUrl(@PathVariable("id") id: Long): Boolean {
-        return gameService.createImageFromGameUrl(id)
-    }
 }
 
 @RestController
@@ -164,15 +155,57 @@ class GameLogController(private val gameLogService: GameLogService) {
         return gameLogService.gameLogRegistration(gameLogRegistrationRequest)
     }
 
+    @PutMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @ResponseBody
+    fun updateGameLogDates(@RequestBody updateGameLogsDatesRequest: UpdateGameLogsDatesRequest) =
+        gameLogService.updateGameLogDates(updateGameLogsDatesRequest)
+
     @PutMapping("finished/{id}")
     @ResponseBody
-    fun gameLogUpdateFinished(@PathVariable("id") id: Long): GameLogResponse {
-        return gameLogService.gameLogUpdateFinished(id)
-    }
+    fun updateGameLogFinished(@PathVariable("id") id: Long) = gameLogService.updateGameLogFinished(id)
 
     @PutMapping("finishedAtAll/{id}")
     @ResponseBody
-    fun gameLogUpdateFinishedAtAll(@PathVariable("id") id: Long): GameLogResponse {
-        return gameLogService.gameLogUpdateFinishedAtAll(id)
-    }
+    fun updateGameLogFinishedAtAll(@PathVariable("id") id: Long) = gameLogService.updateGameLogFinishedAtAll(id)
+
+    @DeleteMapping("{id}")
+    @ResponseBody
+    fun deleteGameLog(@PathVariable("id") id: Long) = gameLogService.deleteGameLog(id)
+}
+
+@RestController
+@RequestMapping("\${url.logs}")
+class LogsController(private val logService: LogService) {
+    @GetMapping
+    @ResponseBody
+    fun findAll() = logService.findAll()
+
+    @GetMapping("{id}")
+    @ResponseBody
+    fun findById(@PathVariable("id") id: Long) = logService.findById(id)
+
+    @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @ResponseBody
+    fun registerLog(@RequestBody registerLogRequest: RegisterLogRequest) = logService.registerLog(registerLogRequest)
+
+    @DeleteMapping("{id}")
+    @ResponseBody
+    fun deleteLog(@PathVariable("id") id: Long) = logService.deleteLog(id)
+}
+
+@RestController
+@RequestMapping("\${url.backup}")
+class BackupController(private val backupService: BackupService) {
+    @GetMapping("gameLogs")
+    @ResponseBody
+    fun backupGameLogs() = backupService.backupGameLogs()
+
+    @PostMapping("gameLogs", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @ResponseBody
+    fun saveGameLogs(@RequestBody backupUserGameLogsDetailsList: List<BackupUserGameLogsDetails>) =
+        backupService.saveGameLogs(backupUserGameLogsDetailsList)
+
+    @DeleteMapping("gameLogs")
+    @ResponseBody
+    fun deleteGameLogs() = backupService.deleteGameLogs()
 }

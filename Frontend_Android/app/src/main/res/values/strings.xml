@@ -15,6 +15,5 @@
     <string name="title_activity_tracker">TrackerActivity</string>
     <string name="welcome">Welcome to G-Tracker</string>
     <string name="server_unavailable">Servers Unavailable. Try Again later</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="close_account_warning">Dear User,\n\nWe want to inform you that you have initiated the process to delete your account. This action will result in the permanent loss of all your personal data and settings associated with your account.\n\nMake sure to back up any important data or information you wish to retain before confirming the deletion of your account. If you have any doubts or concerns, feel free to contact to sh4dow18. The Information related is in the Information Section.\n\nPlease be aware that by confirming the deletion, you will lose access to all services and functionalities associated with your account. If you choose to proceed, kindly confirm your choice with awareness.</string>
 </resources>

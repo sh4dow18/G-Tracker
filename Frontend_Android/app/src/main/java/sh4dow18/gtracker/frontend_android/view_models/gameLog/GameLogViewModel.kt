@@ -11,9 +11,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import sh4dow18.gtracker.frontend_android.repositories.GameLogRepository
-import sh4dow18.gtracker.frontend_android.utils.First5GameLogsFromUserSearchRequest
 import sh4dow18.gtracker.frontend_android.utils.GameLogRegistrationRequest
 import sh4dow18.gtracker.frontend_android.utils.GameLogResponse
+import sh4dow18.gtracker.frontend_android.utils.UpdateGameLogsDatesRequest
+import sh4dow18.gtracker.frontend_android.utils.getErrorMessage
 
 
 sealed class StateGameLog {
@@ -44,14 +45,7 @@ class GameLogViewModel constructor(
             withContext(Dispatchers.Main) {
                 _state.postValue(
                     if (response.isSuccessful) StateGameLog.SuccessList(response.body())
-                    else {
-                        if (response.code() == 403) {
-                            StateGameLog.Error("Your Session Expired, please sign in again")
-                        }
-                        else {
-                            StateGameLog.Error("Server Unavailable")
-                        }
-                    }
+                    else StateGameLog.Error(getErrorMessage(response.errorBody()?.string()!!))
                 )
             }
         }
@@ -65,14 +59,7 @@ class GameLogViewModel constructor(
             withContext(Dispatchers.Main) {
                 _state.postValue(
                     if (response.isSuccessful) StateGameLog.SuccessList(response.body())
-                    else {
-                        if (response.code() == 403) {
-                            StateGameLog.Error("Your Session Expired, please sign in again")
-                        }
-                        else {
-                            StateGameLog.Error("Server Unavailable")
-                        }
-                    }
+                    else StateGameLog.Error(getErrorMessage(response.errorBody()?.string()!!))
                 )
             }
         }
@@ -86,14 +73,7 @@ class GameLogViewModel constructor(
             withContext(Dispatchers.Main) {
                 _state.postValue(
                     if (response.isSuccessful) StateGameLog.Success(response.body())
-                    else {
-                        if (response.code() == 403) {
-                            StateGameLog.Error("Your Session Expired, please sign in again")
-                        }
-                        else {
-                            StateGameLog.Error("Server Unavailable")
-                        }
-                    }
+                    else StateGameLog.Error(getErrorMessage(response.errorBody()?.string()!!))
                 )
             }
         }
@@ -107,59 +87,63 @@ class GameLogViewModel constructor(
             withContext(Dispatchers.Main) {
                 _state.postValue(
                     if (response.isSuccessful) StateGameLog.Success(response.body())
-                    else {
-                        if (response.code() == 403) {
-                            StateGameLog.Error("Your Session Expired, please sign in again")
-                        }
-                        else if (response.code() == 409) {
-                            StateGameLog.Error("This Game already exists in your tracker")
-                        }
-                        else {
-                            StateGameLog.Error("Server Unavailable")
-                        }
-                    }
+                    else StateGameLog.Error(getErrorMessage(response.errorBody()?.string()!!))
                 )
             }
         }
     }
 
-    fun gameLogUpdateFinished(id: Long) {
+    fun updateGameLogDates(updateGameLogsDatesRequest: UpdateGameLogsDatesRequest) {
         _state.value = StateGameLog.Loading
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             loading.postValue(true)
-            val response = gameLogRepository.gameLogUpdateFinished(id)
+            val response = gameLogRepository.updateGameLogDates(updateGameLogsDatesRequest)
             withContext(Dispatchers.Main) {
                 _state.postValue(
                     if (response.isSuccessful) StateGameLog.Success(response.body())
-                    else {
-                        if (response.code() == 403) {
-                            StateGameLog.Error("Your Session Expired, please sign in again")
-                        }
-                        else {
-                            StateGameLog.Error("Server Unavailable")
-                        }
-                    }
+                    else StateGameLog.Error(getErrorMessage(response.errorBody()?.string()!!))
                 )
             }
         }
     }
 
-    fun gameLogUpdateFinishedAtAll(id: Long) {
+    fun updateGameLogFinished(id: Long) {
         _state.value = StateGameLog.Loading
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             loading.postValue(true)
-            val response = gameLogRepository.gameLogUpdateFinishedAtAll(id)
+            val response = gameLogRepository.updateGameLogFinished(id)
             withContext(Dispatchers.Main) {
                 _state.postValue(
                     if (response.isSuccessful) StateGameLog.Success(response.body())
-                    else {
-                        if (response.code() == 403) {
-                            StateGameLog.Error("Your Session Expired, please sign in again")
-                        }
-                        else {
-                            StateGameLog.Error("Server Unavailable")
-                        }
-                    }
+                    else StateGameLog.Error(getErrorMessage(response.errorBody()?.string()!!))
+                )
+            }
+        }
+    }
+
+    fun updateGameLogFinishedAtAll(id: Long) {
+        _state.value = StateGameLog.Loading
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            loading.postValue(true)
+            val response = gameLogRepository.updateGameLogFinishedAtAll(id)
+            withContext(Dispatchers.Main) {
+                _state.postValue(
+                    if (response.isSuccessful) StateGameLog.Success(response.body())
+                    else StateGameLog.Error(getErrorMessage(response.errorBody()?.string()!!))
+                )
+            }
+        }
+    }
+
+    fun deleteGameLog(id: Long) {
+        _state.value = StateGameLog.Loading
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            loading.postValue(true)
+            val response = gameLogRepository.deleteGameLog(id)
+            withContext(Dispatchers.Main) {
+                _state.postValue(
+                    if (response.isSuccessful) StateGameLog.Success(response.body())
+                    else StateGameLog.Error(getErrorMessage(response.errorBody()?.string()!!))
                 )
             }
         }

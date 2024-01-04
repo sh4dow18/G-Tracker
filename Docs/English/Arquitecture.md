@@ -209,13 +209,13 @@ The Program's Subsystems are:
 - **Home**: This subsystem handles the application's home page, providing general information and navigation options for users.
 - **Registration**: In this subsystem, users can create a new account in the application.
 - **Login**: Allows users to access their existing accounts by providing their login credentials.
-- **Password Reset**: Offers users the ability to reset their password if forgotten.
-- **Viewing Game Records**: This subsystem allows users to view a list of games they can register in their account for tracking.
-- **Search**: Facilitates the search for games in the application's database, allowing users to find specific games.
-- **Profile**: In the user's profile, personal information and account settings are displayed.
-- **Game Tracking**: Allows users to track their progress in registered games.
-- **Game Record Update**: Users can use this subsystem to update information about registered games for tracking.
-- **Application Information**: This subsystem provides details about the application itself.
+- **Profile**: In the user profile, personal information and account settings are displayed.
+- **Game Tracking**: Enables users to track their progress in registered video games.
+- **Game Log View**: This subsystem allows users to view a list of video games they can register in their account for tracking.
+- **Game Log More Options**: Users can use this subsystem to update information about registered video games for tracking.
+- **Top Games**: Allows users to quickly access the top-rated games registered according to Metacritic.
+- **Search**: Facilitates the search for video games in the application's database, allowing users to find specific games.
+- **App Information**: This subsystem provides details about the application itself.
 
 ### Logical Decomposition
 

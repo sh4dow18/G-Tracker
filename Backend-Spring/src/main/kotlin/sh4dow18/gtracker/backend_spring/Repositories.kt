@@ -37,4 +37,11 @@ interface GameLogRepository: JpaRepository<GameLog, Long> {
     fun findFirst5ByUserEmailOrderByCreatedDateDesc(@Param("email") email: String): List<GameLog>
     fun findByGameAndUser(@Param("game") game: Game, @Param("user") user: User): Optional<GameLog>
     fun findTop5ByUserEmailAndGameNameContainingIgnoreCase(@Param("email") email: String, @Param("name") name: String): List<GameLog>
+    fun findByUserEmailOrderByCreatedDateAsc(@Param("email") email: String): List<GameLog>
 }
+
+@Repository
+interface LogRepository: JpaRepository<Log, Long>
+
+@Repository
+interface ActionTypeRepository: JpaRepository<ActionType, Long>

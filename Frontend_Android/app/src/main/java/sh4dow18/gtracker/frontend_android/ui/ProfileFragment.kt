@@ -86,30 +86,7 @@ class ProfileFragment : Fragment() {
             startActivity(Intent(activity, MainActivity::class.java))
         }
         binding.CloseAccount.setOnClickListener {
-            userViewModel.closeAccount(MyApplication.sessionManager!!.getUserEmail())
-            userViewModel.state.observe(viewLifecycleOwner){ state ->
-                when (state) {
-                    StateUser.Loading -> {}
-                    is StateUser.Error -> {
-                        Toast.makeText(
-                            requireContext(),
-                            state.message,
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                    is StateUser.Success -> {
-                        loginViewModel.logout()
-                        activity?.finish()
-                        startActivity(Intent(activity, MainActivity::class.java))
-                        Toast.makeText(
-                            requireContext(),
-                            "Eliminación de Cuenta Exitosa",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                    else -> {}
-                }
-            }
+            findNavController().navigate(R.id.nav_last_warning_close_account)
         }
         return binding.root
     }

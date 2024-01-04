@@ -2,6 +2,7 @@ package sh4dow18.gtracker.frontend_android.repositories
 
 import sh4dow18.gtracker.frontend_android.services.GameLogService
 import sh4dow18.gtracker.frontend_android.utils.GameLogRegistrationRequest
+import sh4dow18.gtracker.frontend_android.utils.UpdateGameLogsDatesRequest
 
 class GameLogRepository(
     private val gameLogService: GameLogService
@@ -16,7 +17,12 @@ class GameLogRepository(
     suspend fun gameLogRegistration(gameLogRegistrationRequest: GameLogRegistrationRequest) =
         gameLogService.gameLogRegistration(gameLogRegistrationRequest)
 
-    suspend fun gameLogUpdateFinished(id: Long) = gameLogService.gameLogUpdateFinished(id)
+    suspend fun updateGameLogDates(updateGameLogsDatesRequest: UpdateGameLogsDatesRequest) =
+        gameLogService.updateGameLogDates(updateGameLogsDatesRequest)
 
-    suspend fun gameLogUpdateFinishedAtAll(id: Long) = gameLogService.gameLogUpdateFinishedAtAll(id)
+    suspend fun updateGameLogFinished(id: Long) = gameLogService.updateGameLogFinished(id)
+
+    suspend fun updateGameLogFinishedAtAll(id: Long) = gameLogService.updateGameLogFinishedAtAll(id)
+
+    suspend fun deleteGameLog(id: Long) = gameLogService.deleteGameLog(id)
 }

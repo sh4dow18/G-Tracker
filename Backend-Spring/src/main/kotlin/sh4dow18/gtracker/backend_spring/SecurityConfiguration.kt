@@ -120,7 +120,7 @@ class JwtSecurityConfiguration {
             // Configure the Authentication Provider
             .authenticationProvider(authenticationProvider())
             // Applies an Additional Custom Security Configurations
-            .apply(AppCustomDsl.customDsl())
+            .with(AppCustomDsl.customDsl()) { AppCustomDsl.customDsl() }
         // Create the Spring Security Filter Chain
         return http.build()
     }

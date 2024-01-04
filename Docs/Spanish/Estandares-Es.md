@@ -30,6 +30,7 @@
 | Definición de Entidades de Springboot | El nombre debe seguir el formato PascalCase en inglés y ser explícito en cuanto a su utilidad. | User |
 | Definición de Mapeadores, Servicios, Controladores REST y Repositorios de Springboot | El formato del nombre debe ser PascalCase en inglés, y el nombre de la entidad debe ir seguido de "Mapper", "Service", "Controller" o "Repository", según corresponda. | UserMapper |
 | Definición de listas | El formato del nombre debe ser camelCase en inglés, y el nombre de la entidad en minúscula y en plural, seguido de la palabra "List". | usersList |
+| Definición de DTOs | El formato del nombre debe ser en PascalCase en Inglés, y el nombre debe seguir la siguiente estructura: "(Qué función)(Hacia Qué)(Qué es)" | RegisterUserRequest |
 
 ## Registro de Estandarés de Base de Datos
 
