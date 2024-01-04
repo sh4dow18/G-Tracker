@@ -30,6 +30,7 @@
 | Springboot Entity Definition | The name must follow the PascalCase format in English and be explicit about its utility. | User |
 | Springboot Mapper, Service, REST Controller, and Repository Definition | The name format must be PascalCase in English, and the entity name must be followed by "Mapper," "Service," "Controller," or "Repository," as appropriate. | UserMapper |
 | List Definition | The name format must be camelCase in English, and the entity name in lowercase and plural, followed by the word "List." | usersList |
+| DTOs Definition | The naming format should be in PascalCase in English, and the name should follow the following structure: "(What function)(To what)(What is)" | RegisterUserRequest |
 
 ## Database Standards Record
 

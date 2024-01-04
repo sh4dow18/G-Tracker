@@ -23,6 +23,7 @@ import sh4dow18.gtracker.frontend_android.repositories.UserRepository
 import sh4dow18.gtracker.frontend_android.utils.UpdateUserRequest
 import sh4dow18.gtracker.frontend_android.utils.UserRegistrationRequest
 import sh4dow18.gtracker.frontend_android.utils.UserResponse
+import sh4dow18.gtracker.frontend_android.utils.getErrorMessage
 import sh4dow18.gtracker.frontend_android.view_models.game.StateGame
 import java.io.File
 import java.io.IOException
@@ -56,14 +57,7 @@ class UserViewModel constructor(
                 withContext(Dispatchers.Main) {
                     _state.postValue(
                         if (response.isSuccessful) StateUser.Success(response.body())
-                        else {
-                            if (response.code() == 403) {
-                                StateUser.Error("Your Session Expired, please sign in again")
-                            }
-                            else {
-                                StateUser.Error("Server Unavailable")
-                            }
-                        }
+                        else StateUser.Error(getErrorMessage(response.errorBody()?.string()!!))
                     )
                 }
             } catch (e: Exception) {
@@ -83,14 +77,7 @@ class UserViewModel constructor(
                 withContext(Dispatchers.Main) {
                     _state.postValue(
                         if (response.isSuccessful) StateUser.Success(response.body())
-                        else {
-                            if (response.code() == 403) {
-                                StateUser.Error("Your Session Expired, please sign in again")
-                            }
-                            else {
-                                StateUser.Error("Server Unavailable")
-                            }
-                        }
+                        else StateUser.Error(getErrorMessage(response.errorBody()?.string()!!))
                     )
                 }
             } catch (e: Exception) {
@@ -130,14 +117,7 @@ class UserViewModel constructor(
                 withContext(Dispatchers.Main) {
                     _state.postValue(
                         if (response.isSuccessful) StateUser.Success(response.body())
-                        else {
-                            if (response.code() == 403) {
-                                StateUser.Error("Your Session Expired, please sign in again")
-                            }
-                            else {
-                                StateUser.Error("Server Unavailable")
-                            }
-                        }
+                        else StateUser.Error(getErrorMessage(response.errorBody()?.string()!!))
                     )
                 }
             } catch (e: Exception) {

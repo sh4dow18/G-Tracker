@@ -30,6 +30,24 @@
                 android:textStyle="bold" />
 
             <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginBottom="10dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="20dp">
+
+                <ImageView
+                    android:id="@+id/GameImage"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:src="@drawable/icon" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
                 android:id="@+id/GameItemContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,58 +58,103 @@
                 app:cardCornerRadius="20dp"
                 app:cardElevation="20dp">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/GameName"
                     android:layout_width="match_parent"
-                    android:layout_height="95dp"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:gravity="center_horizontal"
+                    android:text="The Legend of Zelda: Ocarina of Time"
+                    android:textColor="#A37835"
+                    android:textSize="20sp"
+                    android:textStyle="bold|italic" />
 
-                    <ImageView
-                        android:id="@+id/GameImage"
-                        android:layout_width="94dp"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/icon" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="86dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/GameName"
-                            android:layout_width="match_parent"
-                            android:layout_height="41dp"
-                            android:layout_marginRight="20dp"
-                            android:text="The Legend of Zelda: Ocarina of Time"
-                            android:textColor="#A37835"
-                            android:textSize="16sp"
-                            android:textStyle="bold|italic" />
-
-                        <TextView
-                            android:id="@+id/Metacritic"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="20dp"
-                            android:text="Rating (Metacritic): 92 / 100"
-                            android:textColor="@color/black"
-                            android:textSize="16sp"
-                            android:textStyle="bold|italic" />
-
-                        <TextView
-                            android:id="@+id/Genders"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="20dp"
-                            android:text="Rating (Users): 4.75 / 5"
-                            android:textColor="@color/black"
-                            android:textSize="16sp"
-                            android:textStyle="bold|italic" />
-
-                    </LinearLayout>
-                </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:id="@+id/RatingInformationContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/MetacriticContainer"
+                    android:layout_width="198dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/MetacriticTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center_horizontal"
+                        android:text="Metacritic"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/MetacriticDescriptionContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="40dp"
+                        app:cardCornerRadius="30dp"
+                        app:cardElevation="20dp">
+
+                        <TextView
+                            android:id="@+id/MetacriticDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="15dp"
+                            android:gravity="center_horizontal"
+                            android:text="95"
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/RatingUsersContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/RatingUsersTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center_horizontal"
+                        android:text="Users"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/RatingUsersDescriptionContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="40dp"
+                        app:cardCornerRadius="30dp"
+                        app:cardElevation="20dp">
+
+                        <TextView
+                            android:id="@+id/RatingUsersDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="15dp"
+                            android:gravity="center_horizontal"
+                            android:text="4.75"
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/GameReleaseContainer"
@@ -213,53 +276,53 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/GameLogCreateDateContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/GameLogCreateDateTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center_horizontal"
+                    android:text="Created / Started Date"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/GameLogCreateDateDescriptionContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="40dp"
+                    app:cardCornerRadius="30dp"
+                    app:cardElevation="20dp">
+
+                    <TextView
+                        android:id="@+id/GameLogCreateDateDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="15dp"
+                        android:gravity="center_horizontal"
+                        android:text="26/11/2023 12:00:00"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/GameLogInformationContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:id="@+id/GameLogCreateDateContainer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/GameLogCreateDateTitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center_horizontal"
-                        android:text="Create Date"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/GameLogCreateDateDescriptionContainer"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginBottom="40dp"
-                        app:cardCornerRadius="30dp"
-                        app:cardElevation="20dp">
-
-                        <TextView
-                            android:id="@+id/GameLogCreateDateDescription"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="15dp"
-                            android:gravity="center_horizontal"
-                            android:text="26/11/2023"
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
-                    </androidx.cardview.widget.CardView>
-                </LinearLayout>
-
-                <LinearLayout
                     android:id="@+id/GameLogFinishedContainer"
-                    android:layout_width="117dp"
+                    android:layout_width="198dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
@@ -290,7 +353,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="15dp"
                             android:gravity="center_horizontal"
-                            android:text="Yes"
+                            android:text="26/11/2023 12:00:00"
                             android:textColor="@color/black"
                             android:textSize="16sp" />
                     </androidx.cardview.widget.CardView>
@@ -329,7 +392,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="15dp"
                             android:gravity="center_horizontal"
-                            android:text="No"
+                            android:text="26/11/2023 12:00:00"
                             android:textColor="@color/black"
                             android:textSize="16sp" />
                     </androidx.cardview.widget.CardView>
@@ -346,7 +409,7 @@
                 android:backgroundTint="#B4F6DB9D"
                 android:paddingTop="15dp"
                 android:paddingBottom="15dp"
-                android:text="Finished"
+                android:text="Finished Now"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -363,7 +426,7 @@
                 android:enabled="false"
                 android:paddingTop="15dp"
                 android:paddingBottom="15dp"
-                android:text="Finished At All"
+                android:text="100% Now"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -384,7 +447,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:gravity="center_horizontal"
-                    android:text="The Finished button is for you to register that you have finished the game in its main story or its main objectives. If you press it while &quot;Finished: No&quot; it will update to &quot;Finished: Yes&quot; and vice versa"
+                    android:text="The Finished button is for you to register that you have finished the game in its main story or its main objectives. If you press it while &quot;Finished: No&quot; it will update to &quot;Finished: (Date)&quot; and vice versa"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -405,11 +468,27 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:gravity="center_horizontal"
-                    android:text="The &quot;Finished At All&quot; button is for you to register that you have finished the game 100%, discovering all its secrets and curiosities. If you press it while &quot;100%: No&quot; it will update to &quot;100%: Yes&quot; and vice versa"
+                    android:text="The &quot;100%&quot; button is for you to register that you have finished the game 100%, discovering all its secrets and curiosities. If you press it while &quot;100%: No&quot; it will update to &quot;100%: (Date)&quot; and vice versa"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold" />
             </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/MoreOptionsButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"
+                android:layout_marginBottom="20dp"
+                android:backgroundTint="#B4F6DB9D"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="More Options"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:cornerRadius="20dp" />
 
         </LinearLayout>
     </ScrollView>

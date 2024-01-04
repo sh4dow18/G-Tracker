@@ -55,14 +55,18 @@ class GameFragment : Fragment() {
                 }
                 is StateGame.Success -> {
                     val game = state.game!!
-                    val gameMetacritic = "Rating(Metacritic): " + game.metacritic + " / 100"
-                    val gameRating = "Rating(Users): " + game.rating + " / 5"
-                    var genres = ""
-                    game.gendersList.forEach { genres += (it.name + " / ") }
-                    genres = genres.substring(0, genres.length - 3)
-                    var platforms = ""
-                    game.platformsList.forEach { platforms += (it.name + " / ") }
-                    platforms = platforms.substring(0, platforms.length - 3)
+                    var genres = "No Information Found"
+                    var platforms = "No Information Found"
+                    if (game.gendersList.isNotEmpty()) {
+                        genres = ""
+                        game.gendersList.forEach { genres += (it.name + " / ") }
+                        genres = genres.substring(0, genres.length - 3)
+                    }
+                    if (game.platformsList.isNotEmpty()) {
+                        platforms = ""
+                        game.platformsList.forEach { platforms += (it.name + " / ") }
+                        platforms = platforms.substring(0, platforms.length - 3)
+                    }
                     if (game.imageUrl != "") {
                         Glide.with(this)
                             .load(game.imageUrl)
@@ -70,8 +74,8 @@ class GameFragment : Fragment() {
                             .into(binding.GameImage)
                     }
                     binding.GameName.text = game.name
-                    binding.Metacritic.text = gameMetacritic
-                    binding.Genders.text = gameRating
+                    binding.MetacriticDescription.text = game.metacritic.toString()
+                    binding.RatingUsersDescription.text = game.rating.toString()
                     binding.GameReleaseDescription.text = game.releaseDate
                     binding.GameGenresDescription.text = genres
                     binding.GamePlatformDescription.text = platforms

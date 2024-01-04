@@ -22,7 +22,7 @@
     - [Seguridad](#seguridad)
       - [Registro de usuarios nuevos](#registro-de-usuarios-nuevos)
       - [Control de acceso de los usuarios y los componentes del sistema](#control-de-acceso-de-los-usuarios-y-los-componentes-del-sistema)
-      - [Bitácoras de transacciones](#bitácoras-de-transacciones)
+      - [Bitácora de transacciones](#bitácora-de-transacciones)
       - [Controles sobre la composición y asignación del password (políticas de seguridad)](#controles-sobre-la-composición-y-asignación-del-password-políticas-de-seguridad)
     - [Confiabilidad/Disponibilidad](#confiabilidaddisponibilidad)
     - [Desempeño](#desempeño)
@@ -161,7 +161,7 @@ En lo que respecta al proceso de registro de nuevos usuarios, es el propio usuar
 - Información de la aplicación:
   - ¿Quiénes pueden acceder?: Todos los que posean una sesión iniciada
 
-#### Bitácoras de transacciones
+#### Bitácora de transacciones
 
 La bitácora de transacciones se refiere a la compilación y el registro de todas las acciones y modificaciones
 significativas que se realizan en el sistema. Cada vez que se lleva a cabo una transacción, el sistema
@@ -242,12 +242,12 @@ Los Subsistemas del Programa son:
 - **Inicio**: Este subsistema se encarga de la página inicial de la aplicación, proporcionando información general y opciones de navegación para los usuarios.
 - **Registro**: En este subsistema, los usuarios pueden crear una nueva cuenta en la aplicación
 - **Inicio de Sesión**: Permite a los usuarios acceder a sus cuentas existentes proporcionando sus credenciales de inicio de sesión.
-- **Restablecimiento de Contraseña**: Ofrece a los usuarios la posibilidad de restablecer su contraseña en caso de olvidarla
-- **Visualización de Registro de Videojuegos**: Este subsistema permite a los usuarios ver una lista de los videojuegos que pueden registrar en su cuenta para realizar seguimiento
-- **Búsqueda**: Facilita la búsqueda de videojuegos en la base de datos de la aplicación, permitiendo a los usuarios encontrar juegos específicos
 - **Perfil**: En el perfil del usuario, se muestra información personal y ajustes de la cuenta
 - **Seguimiento de Videojuegos**: Permite a los usuarios realizar un seguimiento de su progreso en los videojuegos registrados
-- **Actualización de Registro de Juego**: Los usuarios pueden utilizar este subsistema para actualizar la información de los videojuegos registrados para seguimiento
+- **Visualización de Registro de Videojuegos**: Este subsistema permite a los usuarios ver una lista de los videojuegos que pueden registrar en su cuenta para realizar seguimiento
+- **Más Opciones de Registro de Juego**: Los usuarios pueden utilizar este subsistema para actualizar la información de los videojuegos registrados para seguimiento
+- **Mejores Videojuegos**: Permite a los usuarios tener rápidamente los mejores juegos registrados según Metacritic
+- **Búsqueda**: Facilita la búsqueda de videojuegos en la base de datos de la aplicación, permitiendo a los usuarios encontrar juegos específicos
 - **Información de la Aplicación**: Este subsistema proporciona detalles sobre la aplicación en sí
 
 ### Descomposición lógica

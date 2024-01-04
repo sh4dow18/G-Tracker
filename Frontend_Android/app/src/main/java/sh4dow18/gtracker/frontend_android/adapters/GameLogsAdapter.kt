@@ -41,11 +41,11 @@ class GameLogsAdapter : RecyclerView.Adapter<MainViewHolder>() {
                 .into(holder.binding.GameImage)
         }
         var finished = "No"
-        if (gameLog.finished) {
+        if (gameLog.finished != "") {
             finished = "Yes"
         }
         var finishedAtAll = "No"
-        if (gameLog.finishedAtAll) {
+        if (gameLog.finishedAtAll != "") {
             finishedAtAll = "Yes"
         }
         val gameRating = "Rating(Users): ${game.rating} / 5"

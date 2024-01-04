@@ -21,7 +21,7 @@ La versión en ingles de este archivo y de toda la documentación se puede acced
 
 ## Versión
 
-Versión: **1.0.1**
+Versión: **2.0.0**
 
 ## Licencia
 
@@ -43,7 +43,22 @@ Para ver la documentación completa y actualizada de este proyecto, puedes hacer
 
 ## Actualizaciones
 
-### 1.0.1
+### 2.0.0 (2024-01-03)
+
+- Se cambió el diseño de la interfaz de usuario del juego y el registro del juego.
+- Se corrigió el error que existe cuando un juego no tiene una lista de géneros.
+- Se cambió los tipos de datos "Finalizado" y "Finalizado en total" de Booleano a ZonedDateTime.
+- Se añadió sección de Funciones Adicionales en el Registro del Juego.
+- Se añadió función para actualizar fechas (Fecha de Creación, Fecha de Finalización y Fecha al 100%).
+- Mejora en los manejadores de errores para utilizar los Errores de la API en lugar de errores locales.
+- Se actualizó la configuración de seguridad JWT para el DSL personalizado utilizando "with" en lugar de "apply".
+- Se añadieron funciones de respaldo para los registros de juegos.
+- Se cambiaron los iconos de los menus
+- Se añadió la funcionalidad de la bitacora de transacciones en el Backend
+- Se añadió la función de eliminación de Registro de Juego y de Registro General
+- Se añadió un aviso extra para la función de cerrar la cuenta en el Frontend
+
+### 1.0.1 (2023-12-10)
 
 - Se añadió el Modo de Transacción en los Servicios del Backend que crean y actualizan en la base de datos. Esto es para tener la misma información con 2 instancias de base de datos diferentes.
 - Se añadió la Verificación de Conflicto de Plataformas y Géneros.

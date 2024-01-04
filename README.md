@@ -2,7 +2,7 @@
 
 ![G-Tracker-Logo](/Images/G-Tracker%20Documentación%20con%20Fondo.png)
 
-[![Release](https://img.shields.io/badge/Release-1.0.1-FFA500?style=for-the-badge&logo=gpl&labelColor=gray)](https://github.com/sh4dow18/G-Tracker/releases/tag/1.0.1)
+[![Release](https://img.shields.io/badge/Release-2.0.0-FFA500?style=for-the-badge&logo=gpl&labelColor=gray)](https://github.com/sh4dow18/G-Tracker/releases/tag/1.0.1)
 [![GPLv3 license](https://img.shields.io/badge/License-GPL%203.0-0000FF?style=for-the-badge&logo=gpl&labelColor=gray)](https://github.com/sh4dow18/G-Tracker/blob/main/LICENSE)
 
 G-Tracker is built with the following Technologies:
@@ -21,7 +21,7 @@ The Spanish version of this readme and all documentation can be access if you cl
 
 ## Version
 
-Version: **1.0.1**
+Version: **2.0.0**
 
 ## License
 
@@ -41,9 +41,24 @@ To see the complete and updated documentation of this project, you can click on 
 - **[Standarts](/Docs/English/Standards.md)**
 - **[Vision](/Docs/English/Vision.md)**
 
-## Updates
+## Updates (Sorted By Date)
 
-### 1.0.1
+### 2.0.0 (2024-01-03)
+
+- Changed Game and Game log UI
+- Fixed bug when a game has not a genres list
+- Changed "Finished" and "Finished At All" data types from Boolean to ZonedDateTime
+- Added Game Log More Functions Section
+- Added function to update dates (Created Date, Finished Date and 100% Date)
+- Improved the Error handlers to use the API Errors instead local errors
+- Updated the JWT Security Configuration for Custom DSL using "with" instead of "apply"
+- Added Backup Functions for Game Logs
+- Changed Menus Icons
+- Added Transaction log functionality to the backend.
+- Added Game log and General log deletion functions
+- Added an additional message the account closure function in the frontend
+
+### 1.0.1 (2023-12-10)
 
 - Added Transaction Mode in Backend Services that create and update in database. This is to have the same information with 2 different database instances
 - Added Platform and Genres Conflict Verification

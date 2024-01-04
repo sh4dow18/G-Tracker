@@ -1,5 +1,7 @@
 package sh4dow18.gtracker.backend_spring
 
+import jakarta.persistence.EntityManager
+import jakarta.persistence.EntityManagerFactory
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -19,6 +21,7 @@ import java.io.FileInputStream
 import java.io.IOException
 import java.net.URL
 import java.nio.file.Paths
+import java.time.ZonedDateTime
 import javax.imageio.ImageIO
 
 @Bean
@@ -42,7 +45,9 @@ class AbstractUserService(
     @Autowired
     val mappingService: MappingService,
     @Value("\${upload.path}")
-    val uploadPath: String
+    val uploadPath: String,
+    @Autowired
+    val logService: LogService
 ): UserService {
     @Throws(NoSuchElementException::class)
     override fun findUserById(email: String): UserResponse {
@@ -59,7 +64,15 @@ class AbstractUserService(
             throw ElementAlreadyExists(String.format("The User with the email %s already exists", userRegistrationRequest.email))
         }
         val newUser = userMapper.userRegistrationRequestToUser(userRegistrationRequest, mappingService, passwordEncoder())
-        return userMapper.userToUserResponse(userRepository.save(newUser), mappingService)
+        val response = userMapper.userToUserResponse(userRepository.save(newUser), mappingService)
+        logService.registerLog(
+            RegisterLogRequest(
+                action = "New User",
+                actionType = 1,
+                user = response.email
+            )
+        )
+        return response
     }
     @Transactional(rollbackFor = [NoSuchElementException::class, BadRequestException::class, ElementAlreadyExists::class])
     @Throws(NoSuchElementException::class, BadRequestException::class, ElementAlreadyExists::class)
@@ -99,7 +112,15 @@ class AbstractUserService(
             ImageIO.write(resizedImage, "png", File("$uploadPath/users/$uniqueFileName"))
             user.image = true
         }
-        return userMapper.userToUserResponse(userRepository.save(user), mappingService)
+        val response = userMapper.userToUserResponse(userRepository.save(user), mappingService)
+        logService.registerLog(
+            RegisterLogRequest(
+                action = "Update Profile",
+                actionType = 2,
+                user = response.email
+            )
+        )
+        return response
     }
     @Transactional(rollbackFor = [NoSuchElementException::class])
     @Throws(NoSuchElementException::class)
@@ -109,7 +130,15 @@ class AbstractUserService(
         }
         user.password = null
         user.enabled = false
-        return userMapper.userToUserResponse(userRepository.save(user), mappingService)
+        val response = userMapper.userToUserResponse(userRepository.save(user), mappingService)
+        logService.registerLog(
+            RegisterLogRequest(
+                action = "Close Account",
+                actionType = 2,
+                user = response.email
+            )
+        )
+        return response
     }
     @Transactional(rollbackFor = [IOException::class, NoSuchElementException::class])
     @Throws(IOException::class, NoSuchElementException::class)
@@ -132,8 +161,6 @@ interface GameService {
     fun findGameById(id: Long): GameResponse
     fun gameRegistration(gameRegistrationRequest: GameRegistrationRequest): GameResponse
     fun gamesRegistration(gameRegistrationRequests: List<GameRegistrationRequest>): List<GameResponse>
-    fun createImageFromGameUrl(id: Long): Boolean
-    fun createImagesFromGamesUrls(): Boolean
     fun serveGameImage(imageName: String?, response: HttpServletResponse)
 }
 @Service
@@ -149,7 +176,9 @@ class AbstractGameService(
     @Autowired
     val mappingService: MappingService,
     @Value("\${upload.path}")
-    val uploadPath: String
+    val uploadPath: String,
+    @Autowired
+    val logService: LogService
 ): GameService {
     override fun findAllGames(): List<GameResponse> {
         return gameMapper.gamesListToGameResponsesList(gameRepository.findAll(), mappingService)
@@ -192,40 +221,6 @@ class AbstractGameService(
             gamesResponsesList.add(gameRegistration(game))
         }
         return gamesResponsesList
-    }
-    @Transactional(rollbackFor = [NoSuchElementException::class])
-    @Throws(NoSuchElementException::class)
-    override fun createImageFromGameUrl(id: Long): Boolean {
-        val game: Game = gameRepository.findById(id).orElseThrow {
-            NoSuchElementException(String.format("The Game with the id %d does not exists", id))
-        }
-        if (game.imageUrl != "") {
-            val originalImage = ImageIO.read(URL(game.imageUrl))
-                ?: throw NoSuchElementException(String.format("The Image with the URL %s was not found", game.imageUrl))
-            val targetWidth = 95
-            val targetHeight = 95
-            val xScale = targetWidth.toDouble() / originalImage.width
-            val yScale = targetHeight.toDouble() / originalImage.height
-            val scale = if (xScale > yScale) xScale else yScale
-            val newWidth = (originalImage.width * scale).toInt()
-            val newHeight = (originalImage.height * scale).toInt()
-            val resizedImage = BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB)
-            val graphics = resizedImage.createGraphics()
-            graphics.drawImage(originalImage, (targetWidth - newWidth) / 2, (targetHeight - newHeight) / 2, newWidth, newHeight, null)
-            graphics.dispose()
-            val uniqueFileName = "${game.id}.png"
-            // Renders the image as "jpg" and save it in the path "uploadPath"
-            ImageIO.write(resizedImage, "png", File("$uploadPath/games/$uniqueFileName"))
-        }
-        return true
-    }
-    @Transactional(rollbackFor = [NoSuchElementException::class])
-    @Throws(NoSuchElementException::class)
-    override fun createImagesFromGamesUrls(): Boolean {
-        gameRepository.findAll().forEach { game ->
-            createImageFromGameUrl(game.id)
-        }
-        return true
     }
     @Throws(IOException::class, NoSuchElementException::class)
     override fun serveGameImage(imageName: String?, response: HttpServletResponse) {
@@ -315,8 +310,10 @@ interface GameLogService {
     fun findTop5ByUserEmailAndGameNameContainingIgnoreCase(userEmail: String, gameName: String): List<GameLogResponse>
     fun findGameLogById(id: Long): GameLogResponse
     fun gameLogRegistration(gameLogRegistrationRequest: GameLogRegistrationRequest): GameLogResponse
-    fun gameLogUpdateFinished(id: Long): GameLogResponse
-    fun gameLogUpdateFinishedAtAll(id: Long): GameLogResponse
+    fun updateGameLogDates(updateGameLogsDatesRequest: UpdateGameLogsDatesRequest): GameLogResponse
+    fun updateGameLogFinished(id: Long): GameLogResponse
+    fun updateGameLogFinishedAtAll(id: Long): GameLogResponse
+    fun deleteGameLog(id: Long): GameLogResponse
 }
 @Service
 class AbstractGameLogService(
@@ -329,7 +326,11 @@ class AbstractGameLogService(
     @Autowired
     val userRepository: UserRepository,
     @Autowired
-    val mappingService: MappingService
+    val mappingService: MappingService,
+    @Autowired
+    val logService: LogService,
+    @Autowired
+    val entityManagerFactory: EntityManagerFactory
 ): GameLogService {
     override fun findAllGameLogs(): List<GameLogResponse> {
         return gameLogMapper.gameLogsListToGameLogsResponsesList(gameLogRepository.findAll(), mappingService)
@@ -349,7 +350,7 @@ class AbstractGameLogService(
         }
         return gameLogMapper.gameLogToGameLogResponse(gameLog, mappingService)
     }
-    @Transactional(rollbackFor = [NoSuchElementException::class])
+    @Transactional(rollbackFor = [NoSuchElementException::class, ElementAlreadyExists::class])
     @Throws(NoSuchElementException::class, ElementAlreadyExists::class)
     override fun gameLogRegistration(gameLogRegistrationRequest: GameLogRegistrationRequest): GameLogResponse {
         val game: Game = gameRepository.findById(gameLogRegistrationRequest.game).orElseThrow {
@@ -365,33 +366,190 @@ class AbstractGameLogService(
             throw ElementAlreadyExists("The Game Log Already Exists")
         }
         val newGameLog: GameLog = gameLogMapper.gameAndUserToGameLog(GameLogContext(game, user))
-        return gameLogMapper.gameLogToGameLogResponse(gameLogRepository.save(newGameLog), mappingService)
+        val response = gameLogMapper.gameLogToGameLogResponse(gameLogRepository.save(newGameLog), mappingService)
+        logService.registerLog(
+            RegisterLogRequest(
+                action = "New Game Log of ${response.game.name} (${response.id})",
+                actionType = 1,
+                user = response.user.email
+            )
+        )
+        return response
+    }
+    @Transactional(rollbackFor = [NoSuchElementException::class, BadRequestException::class])
+    @Throws(NoSuchElementException::class, BadRequestException::class)
+    override fun updateGameLogDates(updateGameLogsDatesRequest: UpdateGameLogsDatesRequest): GameLogResponse {
+        val gameLog: GameLog = gameLogRepository.findById(updateGameLogsDatesRequest.id).orElseThrow {
+            NoSuchElementException(String.format("The Game Log with the id %d do not found", updateGameLogsDatesRequest.id))
+        }
+        val oldDate: String
+        val date = getDateStringAsDate(updateGameLogsDatesRequest.date, updateGameLogsDatesRequest.time)
+        if (date > ZonedDateTime.now()) {
+            throw BadRequestException("Date can not be a Future Date")
+        }
+        when (updateGameLogsDatesRequest.dateToUpdate) {
+            "createdDate" -> {
+                if (gameLog.finished != null && gameLog.finished!! < date) {
+                    throw BadRequestException("Finished Date can not be later than Created Date")
+                }
+                if (gameLog.finishedAtAll != null && gameLog.finishedAtAll!! < date) {
+                    throw BadRequestException("Finished At All Date can not be later than Created Date")
+                }
+                oldDate = "Created Date from ${gameLog.createdDate}"
+                gameLog.createdDate = date
+            }
+            "finished" -> {
+                if (gameLog.createdDate > date) {
+                    throw BadRequestException("Created Date can not be later than Finished Date")
+                }
+                if (gameLog.finishedAtAll != null && gameLog.finishedAtAll!! < date) {
+                    throw BadRequestException("Finished At All Date can not be later than Finished Date")
+                }
+                oldDate = "Finished Date from ${gameLog.finished}"
+                gameLog.finished = date
+            }
+            "finishedAtAll" -> {
+                if (gameLog.createdDate > date) {
+                    throw BadRequestException("Created Date can not be later than Finished At All Date")
+                }
+                if (gameLog.finished != null && gameLog.finished!! > date) {
+                    throw BadRequestException("Finished Date can not be later than Finished At All Date")
+                }
+                oldDate = "Finished At All Date from ${gameLog.finishedAtAll}"
+                gameLog.finishedAtAll = date
+            }
+            else -> {
+                throw BadRequestException("Date introduced not found")
+            }
+        }
+        val response = gameLogMapper.gameLogToGameLogResponse(gameLogRepository.save(gameLog), mappingService)
+        logService.registerLog(
+            RegisterLogRequest(
+                action = "Update $oldDate to $date of Game Log of ${response.game.name} (${response.id})",
+                actionType = 2,
+                user = response.user.email
+            )
+        )
+        return response
     }
     @Transactional(rollbackFor = [NoSuchElementException::class])
     @Throws(NoSuchElementException::class)
-    override fun gameLogUpdateFinished(id: Long): GameLogResponse {
+    override fun updateGameLogFinished(id: Long): GameLogResponse {
         val gameLog: GameLog = gameLogRepository.findById(id).orElseThrow {
             NoSuchElementException(String.format("The Game Log with the id %d do not found", id))
         }
-        gameLog.finished = !gameLog.finished
-        return gameLogMapper.gameLogToGameLogResponse(gameLogRepository.save(gameLog), mappingService)
+        val oldDate = gameLog.finished
+        gameLog.finished = if (gameLog.finished == null) ZonedDateTime.now() else null
+        val response = gameLogMapper.gameLogToGameLogResponse(gameLogRepository.save(gameLog), mappingService)
+        logService.registerLog(
+            RegisterLogRequest(
+                action = "Update Finished Date from $oldDate to ${response.finished} of Game Log of ${response.game.name} (${response.id})",
+                actionType = 2,
+                user = response.user.email
+            )
+        )
+        return response
     }
     @Transactional(rollbackFor = [NoSuchElementException::class])
     @Throws(NoSuchElementException::class)
-    override fun gameLogUpdateFinishedAtAll(id: Long): GameLogResponse {
+    override fun updateGameLogFinishedAtAll(id: Long): GameLogResponse {
         val gameLog: GameLog = gameLogRepository.findById(id).orElseThrow {
             NoSuchElementException(String.format("The Game Log with the id %d do not found", id))
         }
-        gameLog.finishedAtAll = !gameLog.finishedAtAll
-        return gameLogMapper.gameLogToGameLogResponse(gameLogRepository.save(gameLog), mappingService)
+        val oldDate = gameLog.finished
+        gameLog.finishedAtAll = if (gameLog.finishedAtAll == null) ZonedDateTime.now() else null
+        val response = gameLogMapper.gameLogToGameLogResponse(gameLogRepository.save(gameLog), mappingService)
+        logService.registerLog(
+            RegisterLogRequest(
+                action = "Update Finished At All Date from $oldDate to ${response.finishedAtAll} of Game Log of ${response.game.name} (${response.id})",
+                actionType = 2,
+                user = response.user.email
+            )
+        )
+        return response
+    }
+    @Transactional(rollbackFor = [NoSuchElementException::class])
+    @Throws(NoSuchElementException::class)
+    override fun deleteGameLog(id: Long): GameLogResponse {
+        val gameLog: GameLog = gameLogRepository.findById(id).orElseThrow {
+            NoSuchElementException(String.format("The Game Log with the id %d do not found", id))
+        }
+        val response = gameLogMapper.gameLogToGameLogResponse(gameLog, mappingService)
+        gameLogRepository.delete(gameLog)
+        restartAutoIncrement(
+            entityManagerFactory = entityManagerFactory,
+            sequence = "game_log_id_seq",
+            startAt = gameLogRepository.findAll().size + 1
+        )
+        return response
+    }
+}
+
+interface LogService {
+    fun findAll(): List<LogResponse>
+    fun findById(id: Long): LogResponse
+    fun registerLog(registerLogRequest: RegisterLogRequest): LogResponse
+    fun deleteLog(id: Long): LogResponse
+}
+@Service
+class AbstractLogService(
+    @Autowired
+    val logRepository: LogRepository,
+    @Autowired
+    val logMapper: LogMapper,
+    @Autowired
+    val actionTypeRepository: ActionTypeRepository,
+    @Autowired
+    val userRepository: UserRepository,
+    @Autowired
+    val mappingService: MappingService,
+    @Autowired
+    val entityManagerFactory: EntityManagerFactory
+): LogService {
+    override fun findAll(): List<LogResponse> {
+        return logMapper.logsListToLogResponsesList(logRepository.findAll(), mappingService)
+    }
+    @Throws(NoSuchElementException::class)
+    override fun findById(id: Long): LogResponse {
+        val log: Log = logRepository.findById(id).orElseThrow {
+            NoSuchElementException(String.format("Log with the Id '%d' not found", id))
+        }
+        return logMapper.logToLogResponse(log, mappingService)
+    }
+    @Transactional(rollbackFor = [NoSuchElementException::class])
+    @Throws(NoSuchElementException::class)
+    override fun registerLog(registerLogRequest: RegisterLogRequest): LogResponse {
+        val actionType: ActionType = actionTypeRepository.findById(registerLogRequest.actionType).orElseThrow {
+            NoSuchElementException(String.format("Action Type with Id '%d' not found", registerLogRequest.actionType))
+        }
+        val user: User = userRepository.findById(registerLogRequest.user).orElseThrow {
+            NoSuchElementException(String.format("User with Email '%s' not found", registerLogRequest.user))
+        }
+        val newLog = logMapper.registerLogRequestToLog(registerLogRequest, actionType, user)
+        return logMapper.logToLogResponse(logRepository.save(newLog), mappingService)
+    }
+    @Transactional(rollbackFor = [NoSuchElementException::class])
+    @Throws(NoSuchElementException::class)
+    override fun deleteLog(id: Long): LogResponse {
+        val log: Log = logRepository.findById(id).orElseThrow {
+            NoSuchElementException(String.format("The Game Log with the id %d do not found", id))
+        }
+        val response = logMapper.logToLogResponse(log, mappingService)
+        logRepository.delete(log)
+        restartAutoIncrement(
+            entityManagerFactory = entityManagerFactory,
+            sequence = "logs_id_seq",
+            startAt = logRepository.findAll().size + 1
+        )
+        return response
     }
 }
 
 interface MappingService {
-    fun findRoleByIdToMapper(id: Long): Role
     fun findAllGenresByGameId(list: Set<Long>): Set<GenreDetails>
     fun findAllPlatformsByGameId(list: Set<Long>): Set<PlatformDetails>
     fun findAllGameLogsByUser(email: String): UserGamesLogsResponse
+    fun findRoleByIdToMapper(id: Long): Role
 }
 @Service
 class AbstractMappingService(
@@ -408,9 +566,6 @@ class AbstractMappingService(
     @Autowired
     val userRepository: UserRepository
 ) : MappingService {
-    override fun findRoleByIdToMapper(id: Long): Role {
-        return roleRepository.findById(id).orElse(null)
-    }
     override fun findAllGenresByGameId(list: Set<Long>): Set<GenreDetails> {
         return genreMapper.genresListToGenresDetailsList(genreRepository.findAllById(list)).toSet()
     }
@@ -426,14 +581,82 @@ class AbstractMappingService(
         }
         val totalGames = user.gamesLogsList.size
         user.gamesLogsList.forEach { gameLog ->
-            if (gameLog.finished) {
+            if (gameLog.finished != null) {
                 finished++
-                if (gameLog.finishedAtAll) {
+                if (gameLog.finishedAtAll != null) {
                     finishedAtAll++
                 }
             }
         }
         return UserGamesLogsResponse(totalGames, totalGames - finished, finished, finishedAtAll)
+    }
+    override fun findRoleByIdToMapper(id: Long): Role {
+        return roleRepository.findById(id).orElse(null)
+    }
+}
+
+interface BackupService {
+    fun backupGameLogs(): List<BackupUserGameLogsDetails>
+    fun saveGameLogs(backupUserGameLogsDetailsList: List<BackupUserGameLogsDetails>): List<GameLogResponse>
+    fun deleteGameLogs(): List<GameLogResponse>
+}
+@Service
+class AbstractBackupService(
+    @Autowired
+    val gameLogRepository: GameLogRepository,
+    @Autowired
+    val gameLogMapper: GameLogMapper,
+    @Autowired
+    val gameRepository: GameRepository,
+    @Autowired
+    val userRepository: UserRepository,
+    @Autowired
+    val mappingService: MappingService,
+    @Autowired
+    val entityManagerFactory: EntityManagerFactory
+): BackupService {
+    override fun backupGameLogs(): List<BackupUserGameLogsDetails> {
+        return userRepository.findAll().map { user ->
+            BackupUserGameLogsDetails(
+                gamesList = gameLogRepository.findByUserEmailOrderByCreatedDateAsc(user.email).map { gameLog -> gameLog.game.slug },
+                user = user.email
+            )
+        }
+    }
+    @Transactional(rollbackFor = [ElementAlreadyExists::class])
+    @Throws(ElementAlreadyExists::class)
+    override fun saveGameLogs(backupUserGameLogsDetailsList: List<BackupUserGameLogsDetails>): List<GameLogResponse> {
+        val gamesLogsResponsesList: MutableList<GameLogResponse> = mutableListOf()
+        backupUserGameLogsDetailsList.forEach {
+            val user: User = userRepository.findById(it.user).orElseThrow {
+                NoSuchElementException(String.format("User with the email %s not found", it.user))
+            }
+            val gamesList = it.gamesList.map { gameSlug ->
+                gameRepository.findBySlug(gameSlug).orElseThrow {
+                    NoSuchElementException(String.format("Game with slug '%s' not found", gameSlug))
+                }
+            }
+            gamesList.forEach { game ->
+                val gameLog: GameLog? = gameLogRepository.findByGameAndUser(game, user).orElse(null)
+                if (gameLog != null) {
+                    throw ElementAlreadyExists(
+                        String.format("The Game Log with game %s and user '%s' already exists", game.name, user.email)
+                    )
+                }
+                val newGameLog = gameLogRepository.save(gameLogMapper.gameAndUserToGameLog(GameLogContext(game, user)))
+                gamesLogsResponsesList.add(gameLogMapper.gameLogToGameLogResponse(newGameLog, mappingService))
+            }
+        }
+        return gamesLogsResponsesList
+    }
+    override fun deleteGameLogs(): List<GameLogResponse> {
+        gameLogRepository.deleteAll()
+        restartAutoIncrement(
+            entityManagerFactory = entityManagerFactory,
+            sequence = "game_log_id_seq",
+            startAt = 1
+        )
+        return gameLogMapper.gameLogsListToGameLogsResponsesList(gameLogRepository.findAll(), mappingService)
     }
 }
 
@@ -452,8 +675,6 @@ class AppUserDetailsService(
     @Throws(UsernameNotFoundException::class)
     // Function that is used to the user details during the authentication
     override fun loadUserByUsername(email: String): UserDetails {
-        // Check if an "AccessPageCategory" with the given "id" already exists, if not exists,
-        // returns a Spring Security User
         val user: User = userRepository.findById(email).orElse(null)
             ?: return org.springframework.security.core.userdetails.User(
                 "Error", "Error", true, true, true, true,

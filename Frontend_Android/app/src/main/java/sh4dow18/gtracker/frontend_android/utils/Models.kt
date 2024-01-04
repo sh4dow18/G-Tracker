@@ -1,6 +1,10 @@
 package sh4dow18.gtracker.frontend_android.utils
 
+import java.time.ZonedDateTime
+
 // Requests
+
+// Register
 
 data class UserRegistrationRequest(
     var email: String,
@@ -8,24 +12,30 @@ data class UserRegistrationRequest(
     var password: String
 )
 
-data class UserLoginRequest(
-    var email: String,
-    var password: String
+data class GameLogRegistrationRequest(
+    var game: Long,
+    var user: String
 )
+
+// Update
 
 data class UpdateUserRequest(
     var email: String,
     var userName: String
 )
 
-data class GameLogRegistrationRequest(
-    var game: Long,
-    var user: String
+data class UpdateGameLogsDatesRequest(
+    var id: Long,
+    var dateToUpdate: String,
+    var date: String,
+    var time: String
 )
 
-data class First5GameLogsFromUserSearchRequest(
-    var gameName: String,
-    var user: String
+// Auth
+
+data class UserLoginRequest(
+    var email: String,
+    var password: String
 )
 
 // Responses
@@ -66,8 +76,8 @@ data class GameResponse(
 data class GameLogResponse(
     var id: Long,
     var createdDate: String,
-    var finished: Boolean,
-    var finishedAtAll: Boolean,
+    var finished: String,
+    var finishedAtAll: String,
     var game: GameResponse,
     var user: UserResponse
 )

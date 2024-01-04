@@ -12,6 +12,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import sh4dow18.gtracker.frontend_android.repositories.GameRepository
 import sh4dow18.gtracker.frontend_android.utils.GameResponse
+import sh4dow18.gtracker.frontend_android.utils.getErrorMessage
+import sh4dow18.gtracker.frontend_android.view_models.gameLog.StateGameLog
 
 
 sealed class StateGame {
@@ -42,14 +44,7 @@ class GameViewModel constructor(
             withContext(Dispatchers.Main) {
                 _state.postValue(
                     if (response.isSuccessful) StateGame.SuccessList(response.body())
-                    else {
-                        if (response.code() == 403) {
-                            StateGame.Error("Your Session Expired, please sign in again")
-                        }
-                        else {
-                            StateGame.Error("Server Unavailable")
-                        }
-                    }
+                    else StateGame.Error(getErrorMessage(response.errorBody()?.string()!!))
                 )
             }
         }
@@ -63,14 +58,7 @@ class GameViewModel constructor(
             withContext(Dispatchers.Main) {
                 _state.postValue(
                     if (response.isSuccessful) StateGame.SuccessList(response.body())
-                    else {
-                        if (response.code() == 403) {
-                            StateGame.Error("Your Session Expired, please sign in again")
-                        }
-                        else {
-                            StateGame.Error("Server Unavailable")
-                        }
-                    }
+                    else StateGame.Error(getErrorMessage(response.errorBody()?.string()!!))
                 )
             }
         }
@@ -84,14 +72,7 @@ class GameViewModel constructor(
             withContext(Dispatchers.Main) {
                 _state.postValue(
                     if (response.isSuccessful) StateGame.Success(response.body())
-                    else {
-                        if (response.code() == 403) {
-                            StateGame.Error("Your Session Expired, please sign in again")
-                        }
-                        else {
-                            StateGame.Error("Server Unavailable")
-                        }
-                    }
+                    else StateGame.Error(getErrorMessage(response.errorBody()?.string()!!))
                 )
             }
         }

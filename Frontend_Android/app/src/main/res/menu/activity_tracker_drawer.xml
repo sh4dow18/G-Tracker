@@ -7,12 +7,12 @@
 
         <item
             android:id="@+id/nav_profile"
-            android:icon="@drawable/profile"
+            android:icon="@drawable/profile_icon"
             android:title="Profile" />
 
         <item
             android:id="@+id/nav_tracker"
-            android:icon="@drawable/tracker"
+            android:icon="@drawable/icon_icon"
             android:title="Tracker" />
 
         <item
@@ -22,12 +22,12 @@
 
         <item
             android:id="@+id/nav_games"
-            android:icon="@drawable/control"
+            android:icon="@drawable/magnifying_glass_icon"
             android:title="Search Games" />
 
         <item
             android:id="@+id/nav_app"
-            android:icon="@drawable/logo"
+            android:icon="@drawable/information_icon"
             android:title="Information" />
 
     </group>

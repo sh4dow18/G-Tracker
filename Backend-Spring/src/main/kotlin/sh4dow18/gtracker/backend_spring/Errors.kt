@@ -4,18 +4,17 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
-import org.springframework.web.client.HttpClientErrorException.BadRequest
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 import java.lang.RuntimeException
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 data class ApiSubError(
     val code: String? = "NO-CODE",
     val message: String? = "NO MESSAGE",
 )
 data class ApiError(
-    val localDateTime: String = LocalDateTime.now().toString(),
+    val date: String = getDateAsString(ZonedDateTime.now(), true),
     val status: HttpStatus,
     val message: String? = null,
     val debugMessage: String? = null,
@@ -76,7 +75,7 @@ class RestExceptionHandler : ResponseEntityExceptionHandler() {
         logger.debug("Backend - G-Tracker {}", ex)
         return buildResponseEntity(apiError)
     }
-    @ExceptionHandler(Exception::class)
+    @ExceptionHandler(Exception::class, RuntimeException::class)
     fun handleAll(
         ex: java.lang.Exception,
         request: WebRequest,

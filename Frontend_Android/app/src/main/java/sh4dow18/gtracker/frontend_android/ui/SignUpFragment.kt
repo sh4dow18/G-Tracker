@@ -72,15 +72,19 @@ class SignUpFragment : Fragment() {
                 password = binding.PasswordInput.text.toString()))
             userViewModel.state.observe(viewLifecycleOwner){ state ->
                 when (state) {
-                    StateUser.Loading -> {}
+                    StateUser.Loading -> {
+                        binding.FragmentLoading.visibility = View.VISIBLE
+                    }
                     is StateUser.Error -> {
                         Toast.makeText(
                             requireContext(),
                             state.message,
                             Toast.LENGTH_LONG
                         ).show()
+                        binding.FragmentLoading.visibility = View.GONE
                     }
                     is StateUser.Success -> {
+                        binding.FragmentLoading.visibility = View.GONE
                         findNavController().navigate(R.id.nav_sign_in)
                         Toast.makeText(
                             requireContext(),

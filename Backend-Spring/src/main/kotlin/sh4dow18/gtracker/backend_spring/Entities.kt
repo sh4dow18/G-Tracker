@@ -40,25 +40,7 @@ data class Role(
     var id: Long,
     var name: String,
     @OneToMany(mappedBy = "role")
-    var usersList: List<User>,
-    @ManyToMany(mappedBy = "rolesList")
-    var pagesList: List<Page>
-)
-
-@Entity
-@Table(name = "pages")
-data class Page(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long,
-    var name: String,
-    @ManyToMany
-    @JoinTable(
-        name = "role_page",
-        joinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")],
-        inverseJoinColumns = [JoinColumn(name = "page_id", referencedColumnName = "id")]
-    )
-    var rolesList: List<Role>
+    var usersList: List<User>
 )
 
 @Entity
@@ -68,8 +50,8 @@ data class GameLog(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long,
     var createdDate: ZonedDateTime,
-    var finished: Boolean,
-    var finishedAtAll: Boolean,
+    var finished: ZonedDateTime?,
+    var finishedAtAll: ZonedDateTime?,
     @ManyToOne
     @JoinColumn(name = "game_id", nullable = false, referencedColumnName = "id")
     var game: Game,

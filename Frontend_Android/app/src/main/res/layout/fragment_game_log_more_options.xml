@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".ui.SignUpFragment">
+
+    <ScrollView
+        android:id="@+id/FragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/UpdateGameLogTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:gravity="center_horizontal"
+                android:text="Update Date"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:padding="20dp"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/CreatedDateContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="20dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/DatesLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Date to Update"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <RadioGroup
+                            android:id="@+id/radioButtonsGroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <RadioButton
+                                android:id="@+id/CreatedDateRadioButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:tag="createdDate"
+                                android:text="Created / Started Date" />
+
+                            <RadioButton
+                                android:id="@+id/FinishedDateRadioButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:tag="finished"
+                                android:text="Finished Date" />
+
+                            <RadioButton
+                                android:id="@+id/FinishedAtAllDateRadioButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:tag="finishedAtAll"
+                                android:text="100% date" />
+                        </RadioGroup>
+
+                        <TextView
+                            android:id="@+id/CreatedDateDateLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Date"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <DatePicker
+                            android:id="@+id/CreatedDateDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:headerBackground="@color/primary"
+                            android:inputType="date" />
+
+                        <TextView
+                            android:id="@+id/CreatedDateTimeLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Time"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <TimePicker
+                            android:id="@+id/CreatedDateTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:headerBackground="@color/primary"
+                            android:inputType="time"
+                            android:numbersSelectorColor="@color/primary" />
+
+                        <TextView
+                            android:id="@+id/CreatedDateHelper"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="If you do not put information, will use the actual date/time"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/Submit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="60dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="60dp"
+                        android:layout_marginBottom="20dp"
+                        android:backgroundTint="#B4F6DB9D"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
+                        android:text="Update"
+                        android:textColor="@color/black"
+                        app:cornerRadius="60dp" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/DeleteGameLogTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center_horizontal"
+                android:text="Danger Zone"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/DeleteGameLogSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="60dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="60dp"
+                android:layout_marginBottom="20dp"
+                android:backgroundTint="@color/red"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:text="Delete Game Log"
+                android:textColor="@color/black"
+                app:cornerRadius="60dp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/FragmentLoading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/primary"
+        android:foregroundTint="@color/primary"
+        android:indeterminateTint="@color/primary"
+        android:progressBackgroundTint="@color/primary"
+        android:progressTint="@color/primary"
+        android:secondaryProgressTint="@color/primary"
+        android:visibility="gone" />
+</FrameLayout>
